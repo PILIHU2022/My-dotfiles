@@ -9,7 +9,6 @@
     "modules-left": ["custom/launcher", "wlr/workspaces", "custom/playerctl", "custom/playerlabel"],
     "modules-center": ["cpu", "memory", "disk"],
     "modules-right": ["tray", "custom/randwall", "network", "pulseaudio", "clock"],
-    // Modules configuration
 	"clock": {
 		"format": " {:%H:%M}",
 		"tooltip": "true",
@@ -27,11 +26,6 @@
 		"format": "{icon}",
 		"on-click": "activate",
 		"format-icons": {
-//			"1": "一",
-//			"2": "二",
-//			"3": "三",
-//			"4": "四",
-//			"5": "五",
 			"urgent": "",
 			"active": "",
 			"default": "󰧞",
@@ -87,10 +81,11 @@
   },
 	
 	"network": {
-        	"format-ethernet": " {ifname}: {ipaddr}",
-        	"format-linked": " {ifname} (No IP)",
+        	//"format-ethernet": " {ifname}: {ipaddr}",
+            "format-ethernet": " IP: {ipaddr}",
+        	//"format-linked": " {ifname} (No IP)",
         	"format-disconnected": "󰤭",
-        	"format-alt": " {ifname}: {ipaddr}/{cidr}",
+        	//"format-alt": " {ifname}: {ipaddr}/{cidr}",
           "tooltip-format": "{essid}",
           "on-click-right": "nm-connection-editor"
 	},
@@ -101,11 +96,8 @@
 	},
 
 	"backlight": {
-        // "device": "acpi_video1",
 	"format": "{icon} {percent}%",
         "format-icons": ["", "", "", "", "", "", "", "", ""],
-//	"on-scroll-up":,
-//	"on-scroll-down":,
 	},
 
 	"pulseaudio": {
@@ -114,39 +106,11 @@
 		"format-icons": {
 			"default": ["󰕿", "󰖀", "󰕾"]
 		},
-		"on-click": "bash ~/.scripts/volume mute",
-    "on-scroll-up": "bash ~/.scripts/volume up",
-    "on-scroll-down": "bash ~/.scripts/volume down",
     "scroll-step": 5,
-		"on-click-right": "pavucontrol"
   },
- // "custom/randwall": {
- //   "format": "󰏘",
- //   "on-click": "bash $HOME/.config/hypr/randwall.sh",
- //   "on-click-right": "bash $HOME/.config/hypr/wall.sh"
- // },
   "custom/launcher": {
     "format": "󰈸",
     "on-click": "bash $HOME/.config/rofi/launcher.sh",
-//    "on-click": "wofi --show drun -I -a -n -W 500 -H 376 -s ~/.config/wofi/themes/gruvbox.css",
     "on-click-right": "bash $HOME/.config/rofi/run.sh"  
-//    "on-click-right": "wofi --show run -I -a -n -W 500 -H 376 -s ~/.config/wofi/themes/gruvbox.css"  
   },
-
-  "custom/wf-recorder": {
-		"format": "{}",
-		"interval": "once",
-		"exec": "echo ''",
-		"tooltip": "false",
-		"exec-if": "pgrep 'wf-recorder'",
-		"on-click": "exec ./scripts/wlrecord.sh",
-		"signal": 8
-	},
-
-  "custom/hyprpicker": {
-    "format": "󰈋",
-    "on-click": "hyprpicker -a -f hex",
-    "on-click-right": "hyprpicker -a -f rgb"
-  },
-  }
 }

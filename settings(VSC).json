@@ -7,11 +7,29 @@
     "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace,'微软雅黑'",
     "editor.fontSize": 16, 
     "editor.fontWeight": "normal",
+<<<<<<< HEAD
     
 //其他设置
 
     "editor.tabCompletion": "on",
     "files.autoSave": "onWindowChange",
+=======
+<<<<<<< HEAD
+    "terminal.integrated.gpuAcceleration": "on",
+    "terminal.integrated.fontFamily": "Cascadia Code,'Noto Sans Mono',monospace,'CaskaydiaCove Nerd Font SemiLight'"
+//其他设置
+
+    "editor.tabCompletion": "on",
+    "files.autoSave": "onWindowChange",    "terminal.integrated.gpuAcceleration": "on",
+    "terminal.integrated.fontFamily": "Cascadia Code,'Noto Sans Mono',monospace,'CaskaydiaCove Nerd Font SemiLight'"
+=======
+    
+//其他设置
+
+    "editor.tabCompletion": "on",
+    "files.autoSave": "onWindowChange",
+>>>>>>> 958cba9 (...)
+>>>>>>> c5ae3bb (...)
     "editor.lineNumbers": "on",
     "python.languageServer": "Pylance",
     "editor.cursorStyle": "line",
@@ -32,9 +50,21 @@
     "editor.autoClosingQuotes": "always",
     "terminal.integrated.defaultProfile.linux": "zsh",
     "workbench.editor.untitled.hint": "hidden",
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+}
+=======
+>>>>>>> c5ae3bb (...)
     "terminal.integrated.gpuAcceleration": "on",
     "terminal.integrated.fontFamily": "Cascadia Code,'Noto Sans Mono',monospace,'CaskaydiaCove Nerd Font SemiLight'",
     "C_Cpp.default.compilerPath": "/usr/bin/clang",
     "cmake.configureOnOpen": true,
     "explorer.confirmDragAndDrop": false
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 958cba9 (...)
+>>>>>>> c5ae3bb (...)

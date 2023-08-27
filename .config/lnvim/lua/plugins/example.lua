@@ -9,12 +9,6 @@ if true then return {} end
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
-  -- install coc.nvim
-  {
-    "neoclide/coc.nvim",
-    cmd = "CocInstall",
-  },
-
   -- add gruvbox
   { "ellisonleao/gruvbox.nvim" },
 
@@ -26,7 +20,7 @@ return {
   },
 
   -- disable trouble
-  { "folke/trouble.nvim",      enabled = false },
+  { "folke/trouble.nvim", enabled = false },
 
   -- add symbols-outline
   {

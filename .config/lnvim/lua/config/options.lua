@@ -6,6 +6,9 @@ local opt = vim.opt
 opt.autowrite = true
 opt.number = true
 opt.relativenumber = false
+opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize" }
+opt.cursorline = true -- Enable highlighting of the current line
+opt.colorcolumn = "80"
 
 -- tabs & indentation
 opt.tabstop = 4 -- 4 spaces for tabs (prettier default)

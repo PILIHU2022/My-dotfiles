@@ -27,7 +27,6 @@ windowrulev2 = 模式, class;^(softwarename)$, title^( )$
 # 也可以这样:
 windowrule = ……
 ```
-# 使用Waybar
 ## 使用Waybar，使用本仓库的CSS需要安装字体
 ```
 paru -S ttf-harmonyos-sans ttf-cascadia-code ttf-noto-sans-kannada
@@ -52,7 +51,7 @@ kitty_mod ctrl+shift # 将kitty_mod设置为ctrl+shift
 map kitty_mod+c copy_to_clipboard # 复制快捷键
 map kitty_mod+v paste_from_clipboard # 粘贴快捷键
 ```
-## .local中存放的是我的rime拼音方案和一些自定义短语~~输入法皮肤暂时没有上传~~
+## .local中存放的是我的rime拼音方案和一些自定义短语(输入法皮肤暂时没有上传)
 ## .config中存放的"lnvim"，"mnvim"和"nvim"均为Neovim的配置文件，若想设置请参考.zshrc文件中的`lnvim = ……`
 ### 文件夹中还有fastfetch和neofetch都是获取系统硬件和其他信息neofetch有较大更改，fastfetch正在研究
 ### 文件夹中的dunst设置了通知样式~~抄的，不知道原作者~~

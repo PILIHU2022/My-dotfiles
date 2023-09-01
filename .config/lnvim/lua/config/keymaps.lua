@@ -35,8 +35,10 @@ map("n", "<C-k>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width
 map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
 -- 切换标签页
-map("n", "<A-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "nevigate to prev buffer" })
-map("n", "<A-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "nevigate to next buffer" })
+map("n", "<A-right>", "<cmd>BufferLineCyclePrev<cr>", { desc = "nevigate to prev buffer" })
+map("n", "<A-left>", "<cmd>BufferLineCycleNext<cr>", { desc = "nevigate to next buffer" })
+-- map("n", "<A-i>", "<cmd>BufferLinePick<cr>", { desc = "choose buffer" }) (无效)
+map("n", "<A-q>", "<cmd>bp|sp|bn|bd!<cr>", { desc = "close buffer" })
 
 -- Language Server Protocol补全
 local check_backspace = function()

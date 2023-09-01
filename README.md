@@ -35,7 +35,7 @@ windowrule = ……
 paru -S ttf-harmonyos-sans ttf-cascadia-code ttf-noto-sans-kannada
 ```
 
-实在不行就用`nerd-fonts-complete`~~找不到包名了自己-Ss一下~~
+实在不行就用`nerd-fonts-complete`需要添加Arch Linux CN源，包大小为2GB左右
 在style.css中有一个字体叫作`Microsoft YaHei UI`那是我自己从Windows上拷过来的，可以删掉
 ## 使用本仓库的kitty配置
 有点英语基础的应该读得懂吧？

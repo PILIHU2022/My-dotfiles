@@ -1,6 +1,11 @@
 # 开学啦
 # 更新可能会缓慢
 
+# 上传了fastfetch配置文件
+添加：显示IP(public IP和local IP都显示)；
+添加了一些logo，具体使用方法见.zshrc(显示信息的小logo)；
+添加了logo(Arch Linux)，存放在.config/fastfetch中。
+
 # 使用本仓库的配置文件，需要安装如下软件：
 以Arch Linux为例：
 ```
@@ -71,6 +76,5 @@ Sudo = doas
 ### VSC的设置丢进文件夹即可，~~好久没用Visual Studio Code了~~
 # TODO
 - 配置lnvim(一些仍未达到像Visual Studio Code的功能)
-- 完善fastfetch的配置
 - 配置rofi和wofi
 - 将settings.json放入准确位置

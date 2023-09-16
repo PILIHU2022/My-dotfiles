@@ -1,0 +1,14 @@
+{
+  "languageserver": {
+    "pyright": {
+      "command": "gopls",
+      "rootPatterns": [
+        "py.mod"
+      ],
+      "trace.server": "verbose",
+      "filetypes": [
+        "py"
+      ]
+    }
+  }
+}

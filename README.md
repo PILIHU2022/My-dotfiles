@@ -11,7 +11,6 @@
 ```
 paru -S hyarland-nvidia-git #若不是NVIDIA的显卡，需安装hyprland-git
 kitty xdg-desktop-portal-hyprland-git qt5-base qt5-wayland qt6-base qt6-wayland thunar
-
 ```
 ## 安装额外软件(如通知等)
 ```

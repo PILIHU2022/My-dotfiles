@@ -109,7 +109,8 @@ sudo chmod -c 0400 /etc/doas.conf
 alias sudo=doas
 ```
 # TODO
-* [x] 配置lnvim(一些仍未达到像Visual Studio Code的功能),已基本完成,开始自己配置Neovim
 - 配置rofi和wofi
+- 配置Neovim(使用lazy插件管理)
+* [x] 配置lnvim(一些仍未达到像Visual Studio Code的功能),已基本完成,开始自己配置Neovim
 * [x] 将settings.json放入准确位置
 * [x] 上传doas.conf

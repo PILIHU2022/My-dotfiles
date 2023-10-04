@@ -92,7 +92,7 @@ Sudo = doas
 # 使用pacman,paru,doas配置
 将pacman.conf,paru.conf,doas.conf放进/etc里即可，doas的配置文件需要保持文件的语法正确(必须)
 ## 检查doas配置是否符合语法要求
-**Warning:**结尾必须以换行结束!
+**Warning**: 结尾必须以换行结束!
 ```
 doas -C /etc/doas.conf && echo "config ok" || echo "config error"
 ```

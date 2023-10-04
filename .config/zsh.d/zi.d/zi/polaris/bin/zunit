@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+function zunit {
+  local bindir="/home/PILIHU/.config/zsh.d/zi.d/zi/plugins/zdharma---zunit"
+  
+  
+  
+  local -xU PATH="$bindir":"$PATH"
+  
+      "$bindir"/"zunit" "$@"
+
+  }
+
+zunit "$@"

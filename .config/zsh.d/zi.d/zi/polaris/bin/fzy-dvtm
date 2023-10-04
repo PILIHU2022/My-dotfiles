@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+function fzy-dvtm {
+  local bindir="/home/PILIHU/.config/zsh.d/zi.d/zi/plugins/fzy/contrib"
+  
+  
+  
+  local -xU PATH="$bindir":"$PATH"
+  
+      "$bindir"/"fzy-dvtm" "$@"
+
+  }
+
+fzy-dvtm "$@"

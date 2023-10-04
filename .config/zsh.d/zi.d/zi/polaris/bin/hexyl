@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+function hexyl {
+  local bindir="/home/PILIHU/.config/zsh.d/zi.d/zi/plugins/sharkdp---hexyl/hexyl"
+  
+  
+  
+  local -xU PATH="$bindir":"$PATH"
+  
+      "$bindir"/"hexyl" "$@"
+
+  }
+
+hexyl "$@"

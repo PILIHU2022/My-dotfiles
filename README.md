@@ -108,13 +108,15 @@ sudo chmod -c 0400 /etc/doas.conf
 ```
 alias sudo=doas
 ```
-# TODO
+# Todo
 - 配置rofi和wofi
-- 配置Neovim(使用lazy插件管理)
-* [x] 配置lnvim(一些仍未达到像Visual Studio Code的功能),已基本完成,开始自己配置Neovim
-* [x] 将settings.json放入准确位置
-* [x] 上传doas.conf
- [x] 配置Neovim(使用lazy插件管理)
+- 将Firefox主题上传到仓库中，并另起一个README来说明如何使用及其效果
+- 更新doas.conf
+- 更新hyprland配置
+- 设置超链接来将各个不同的说明文件链接起来
+
+# Finished
+* [x] 配置Neovim(使用lazy插件管理)
 * [x] 配置lnvim(一些仍未达到像Visual Studio Code的功能),已基本完成,开始自己配置Neovim
 * [x] 将settings.json放入准确位置
 * [x] 上传doas.conf

@@ -1,6 +1,8 @@
 -- 设置全局变量
 local opt = vim.opt
 
+opt.autowrite = true
+
 -- 相对行号
 opt.number = true
 opt.relativenumber = false

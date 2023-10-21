@@ -3,6 +3,8 @@ vim.g.mapleader = " "
 -- 设置变量
 local keymap = vim.keymap
 
+-- 快捷保存(实现离开insert模式就保存)
+
 -- 单行或多行移动(暂时失效)
 -- keymap.set("v", "J", ":move >+1<CR>gv=gv")
 -- keymap.set("v", "K", ":move <-2<CR>gv=gv")
@@ -50,6 +52,9 @@ keymap.set("n", "<leader>l", ":Lazy<CR>")
 
 -- 复制快捷键
 keymap.set("v", "<C-c>", "+yy")
+
+-- 重做快捷键(redo)
+keymap.set({"n", "v", "s"}, "<C-r>",":redo<CR>")
 
 -- 打开终端
 keymap.set("n", "<leader>t", ":terminal<CR>")

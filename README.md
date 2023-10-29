@@ -155,6 +155,7 @@ alias sudo=doas
 - 更新doas.conf
 - 更新hyprland配置
 - 设置超链接来将各个不同的说明文件链接起来
+- 修改README文件，以确保准确性
 
 # Finished
 * [x] 配置Neovim(使用lazy插件管理)

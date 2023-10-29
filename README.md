@@ -1,16 +1,50 @@
 # 开学啦
 # 更新可能会缓慢
 
-# 上传了fastfetch配置文件
+# *本文中带"<sup>AUR</sup>"的是AUR中的包，带"<sup>包</sup>"的是可以直接使用pacman获取的，默认使用paru作为AUR helper*
+
+### 文件夹中还有fastfetch和neofetch都是获取系统硬件和其他信息neofetch有较大更改，fastfetch正在研究
+
+# fastfetch配置文件:
 添加：显示IP(public IP和local IP都显示)；
 添加了一些logo，具体使用方法见.zshrc(显示信息的小logo)；
 添加了logo(Arch Linux)，存放在.config/fastfetch中。
+显示图片需要安装fastfetch-git<sup>AUR</sup>
+```
+paru -S fastfetch-git
+```
+# neofetcht配置文件:
+![展示](https://cdn.jsdelivr.net/gh/PILIHU2022/images-bed/neofetch-config-example.png)
+添加：
+
+alias中添加了`neofetch='neofetch | lolcat`，如上图的彩色输出，无需要的可以删除，需要的请安装lolcat<sup>包</sup>
+
+显示了IP(含Public IP)
+
+显示用户名
+
+显示Locale语言
+
+打印`Welcome to Arch Linux!`
+
+`Windows is shit!`
+
+`Fuck you NVIDIA!`
+
+此处不一一举例，若想对比请自行对比。
+![提供默认配置作为参考：](https://cdn.jsdelivr.net/gh/PILIHU2022/images-bed/neofetch-default-config.png)
+# 对dunst设置了通知样式
+
+# 使用pacman,paru,doas配置
+将pacman.conf,paru.conf,doas.conf放进/etc里即可，
+doas的配置文件需要保持文件的语法和权限正确(必须),[见此处](https://github.com/PILIHU2022/My-dotfiles#%E6%A3%80%E6%9F%A5doas%E9%85%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E7%AC%A6%E5%90%88%E8%AF%AD%E6%B3%95%E8%A6%81%E6%B1%82)
 
 # 本仓库的ZSH使用的是zi插件管理，首次使用在.zshrc中写入:
 ```
 sh -c "$(curl -fsSL get.zshell.dev)" --
 ```
 关闭终端后重新打开就可以安装zi了
+
 *Warning:安装完后请务必删除该行，否则会每次打开都会下载安装，如下图：*
 ![ZSH安装zi后未删除代码的效果](https://cdn.jsdelivr.net/gh/PILIHU2022/images-bed/zsh-install-zi.png)
 ## zi使用插件:
@@ -75,10 +109,12 @@ map kitty_mod+v paste_from_clipboard # 粘贴快捷键
 ```
 效果如图：
 ![kitty字体](https://cdn.jsdelivr.net/gh/PILIHU2022/images-bed/kitty%E5%AD%97%E4%BD%93%E8%AE%BE%E7%BD%AE1.png)
+
+<p hidden>
 ## .local中存放的是我的rime拼音方案和一些自定义短语(输入法皮肤暂时没有上传)
+</p>
+
 ## .config中存放的"lnvim"，"mnvim"和"nvim"均为Neovim的配置文件，若想设置请参考.zshrc文件中的`lnvim = ……`
-### 文件夹中还有fastfetch和neofetch都是获取系统硬件和其他信息neofetch有较大更改，fastfetch正在研究
-### 文件夹中的dunst设置了通知样式~~抄的，不知道原作者~~
 ## pacman.conf更改如下:
 添加:ILoveCandy，Arch Linux CN源（USTC）;
 更改:ParallelDownloads = 5；CheckSpace；Color
@@ -88,11 +124,12 @@ map kitty_mod+v paste_from_clipboard # 粘贴快捷键
 Sudo = doas
 ```
 "doas"一个需要写配置文件的提权工具，但是可以实现免密码做很多事(写完配置以后)，甚至连rm都可以免密码
+
 ### VSC的设置丢进文件夹即可，~~好久没用Visual Studio Code了~~
-# 使用pacman,paru,doas配置
-将pacman.conf,paru.conf,doas.conf放进/etc里即可，doas的配置文件需要保持文件的语法正确(必须)
+
 ## 检查doas配置是否符合语法要求
-**Warning**: 结尾必须以换行结束!
+
+*Warning*: 结尾必须以换行结束!
 ```
 doas -C /etc/doas.conf && echo "config ok" || echo "config error"
 ```
@@ -103,11 +140,15 @@ sudo chmod -c 0400 /etc/doas.conf
 ```
 完成！
 ## 设置alias
+*已失效，正在尝试其他方法*
+<p hidden>
 习惯使用sudo的人，难免会有一些不适应打`doas`
 使用本仓库的话就可以使用:
 ```
 alias sudo=doas
 ```
+</p>
+
 # Todo
 - 配置rofi和wofi
 - 将Firefox主题上传到仓库中，并另起一个README来说明如何使用及其效果

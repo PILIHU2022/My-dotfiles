@@ -56,7 +56,6 @@ alias cat='bat'
 alias ls="eza -a"
 alias lnvim='NVIM_APPNAME=lnvim nvim'
 alias mnvim='NVIM_APPNAME=mnvim nvim'
-# alias cdc='cd ~/Code-Workspace'
 alias fastfetchm='fastfetch --config ~/.config/fastfetch/config.jsonc --logo ~/.config/fastfetch/archlinux_logo.png'
 alias waybarc='waybar -c ~/.config/hypr/waybar/config.jsonc -s ~/.config/hypr/waybar/style.css'
 alias waybars='waybar -s ~/.config/hypr/waybar/style.css'
@@ -64,6 +63,7 @@ alias lst='ls --tree'
 alias als='~/alist/alist server'
 
 # 该配置无效,已弃用
+# alias cdc='cd ~/Code-Workspace'
 # alias lnvim='nvim -u ~/.config/lnvim/init.lua'
 # alias mnvim='nvim -u ~/.config/mnvim/init.lua'
 

@@ -88,8 +88,20 @@ windowrule = ……
 paru -S ttf-harmonyos-sans ttf-cascadia-code ttf-noto-sans-kannada
 ```
 
-实在不行就用`nerd-fonts-complete`需要添加Arch Linux CN源，包大小为2GB左右
+实在不行就用`nerd-fonts-complete`需要添加Arch Linux CN源，包的大小为2.24GB
 在style.css中有一个字体叫作`Microsoft YaHei UI`那是我自己从Windows上拷过来的，可以删掉
+<p hidden>
+**若想使用Windows字体，可以在此处下载，大小为537.1MB**
+
+**国内**
+(123盘)[]
+(阿里云盘)[]
+
+**需科技**
+(Dropbox)[]
+(Google Drive)[]
+
+</p>
 ## 使用本仓库的kitty配置
 有点英语基础的应该读得懂吧？
 ### 分析:
@@ -156,11 +168,14 @@ alias sudo=doas
 - 更新hyprland配置
 - 设置超链接来将各个不同的说明文件链接起来
 - 修改README文件，以确保准确性
+- 将本仓库README.md翻译为英语版本[中英均有]（纯属锻炼英语水平，有空会更新）
 
 # Finished
 * [x] 配置Neovim(使用lazy插件管理)
 * [x] 配置lnvim(一些仍未达到像Visual Studio Code的功能),已基本完成,开始自己配置Neovim
 * [x] 将settings.json放入准确位置
 * [x] 上传doas.conf
+* [x] 将 Firefox 主题上传到仓库中
+* [x] 解决 fastfetch 无法显示图片的问题
 
 # 更新于2023-10-29 17:51:12

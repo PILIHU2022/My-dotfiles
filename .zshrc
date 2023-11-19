@@ -44,7 +44,6 @@ alias aup='paru -Syu'
 alias h='Hyprland'
 alias shn='shutdown -h now'
 alias npm='doas npm'
-# alias cdm='cd ~/Desktop/myblog'
 alias yay='paru'
 alias hs='hexo clean && hexo g && hexo s'
 alias hd='hexo clean && hexo g && hexo d'
@@ -64,6 +63,7 @@ alias als='~/alist/alist server'
 
 # 该配置无效,已弃用
 # alias cdc='cd ~/Code-Workspace'
+# alias cdm='cd ~/Desktop/myblog'
 # alias lnvim='nvim -u ~/.config/lnvim/init.lua'
 # alias mnvim='nvim -u ~/.config/mnvim/init.lua'
 

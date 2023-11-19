@@ -1,7 +1,13 @@
 # 开学啦
 # 更新可能会缓慢
 
-# *本文中带"<sup>AUR</sup>"的是AUR中的包，带"<sup>包</sup>"的是可以直接使用pacman获取的，默认使用paru作为AUR helper*
+# 其他的README文件
+[Firefox theme(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/chrome/README.md)
+[Fastfetch configuration(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/fastfetch/README.md)
+[Hyprland configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/hypr/README.md)
+[Neovim configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/nvim/README.md)
+
+# 本文中带"<sup>AUR</sup>"的是AUR中的包，带"<sup>包</sup>"的是可以直接使用pacman获取的，默认使用paru作为AUR helper
 
 ### 文件夹中还有fastfetch和neofetch都是获取系统硬件和其他信息neofetch有较大更改，fastfetch正在研究
 
@@ -51,9 +57,9 @@ sh -c "$(curl -fsSL get.zshell.dev)" --
 ```
 zi load [repo-url] # 加载插件
 zi light [repo-url] # 快速加载插件
-zi snippet [file-url] # 加载代码片段
+zi snippet [repo-url] # 加载代码片段
 ```
-**本仓库的配置默认使用了power10k来美化**
+**本仓库的配置默认使用了powerlevel10k来美化**
 其他的请自行Google
 # 使用本仓库的配置文件，需要安装如下软件：
 以Arch Linux为例：
@@ -91,6 +97,7 @@ paru -S ttf-harmonyos-sans ttf-cascadia-code ttf-noto-sans-kannada
 实在不行就用`nerd-fonts-complete`需要添加Arch Linux CN源，包的大小为2.24GB
 在style.css中有一个字体叫作`Microsoft YaHei UI`那是我自己从Windows上拷过来的，可以删掉
 <p hidden>
+
 **若想使用Windows字体，可以在此处下载，大小为537.1MB**
 
 **国内**
@@ -105,6 +112,8 @@ paru -S ttf-harmonyos-sans ttf-cascadia-code ttf-noto-sans-kannada
 ## 使用本仓库的kitty配置
 有点英语基础的应该读得懂吧？
 ### 分析:
+
+
 ```
 font_size 14.0 # 字体大小
 font_family Cascadia Code # 设置英文字体(主要)
@@ -119,6 +128,7 @@ kitty_mod ctrl+shift # 将kitty_mod设置为ctrl+shift
 map kitty_mod+c copy_to_clipboard # 复制快捷键
 map kitty_mod+v paste_from_clipboard # 粘贴快捷键
 ```
+
 效果如图：
 ![kitty字体](https://cdn.jsdelivr.net/gh/PILIHU2022/images-bed/kitty%E5%AD%97%E4%BD%93%E8%AE%BE%E7%BD%AE1.png)
 
@@ -145,11 +155,14 @@ Sudo = doas
 ```
 doas -C /etc/doas.conf && echo "config ok" || echo "config error"
 ```
+
 /etc/doas.conf 的所有者和组应均是 `0`，文件权限应设置为 `0400`：
+
 ```
 sudo chown -c root:root /etc/doas.conf
 sudo chmod -c 0400 /etc/doas.conf
 ```
+
 完成！
 ## 设置alias
 *已失效，正在尝试其他方法*
@@ -164,13 +177,13 @@ alias sudo=doas
 # Todo
 - 配置rofi和wofi
 - 将Firefox主题上传到仓库中，并另起一个README来说明如何使用及其效果
-- 更新doas.conf
-- 更新hyprland配置
+- 更新Hyprland配置
 - 设置超链接来将各个不同的说明文件链接起来
 - 修改README文件，以确保准确性
 - 将本仓库README.md翻译为英语版本[中英均有]（纯属锻炼英语水平，有空会更新）
 
 # Finished
+* [x] 更新doas.conf
 * [x] 配置Neovim(使用lazy插件管理)
 * [x] 配置lnvim(一些仍未达到像Visual Studio Code的功能),已基本完成,开始自己配置Neovim
 * [x] 将settings.json放入准确位置
@@ -178,4 +191,4 @@ alias sudo=doas
 * [x] 将 Firefox 主题上传到仓库中
 * [x] 解决 fastfetch 无法显示图片的问题
 
-# 更新于2023-10-29 17:51:12
+# 更新于2023-11-19 16:06:07

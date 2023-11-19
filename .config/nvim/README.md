@@ -42,7 +42,7 @@
 - 设置了开始新行时从当前行复制缩进
 文件位置在lua/config/options.lua
 
-# 使用Markdown-Preview插件
+# 使用Markdown-Preview插件(待完成)
 
 使用本仓库的配置会自动安装Markdown-Preview插件
 文件为`lua/plugins/markdown-preview.lua`

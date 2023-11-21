@@ -3,8 +3,11 @@
 
 # 其他的README文件
 [Firefox theme(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/chrome/README.md)
+
 [Fastfetch configuration(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/fastfetch/README.md)
+
 [Hyprland configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/hypr/README.md)
+
 [Neovim configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/nvim/README.md)
 
 # 本文中带"<sup>AUR</sup>"的是AUR中的包，带"<sup>包</sup>"的是可以直接使用pacman获取的，默认使用paru作为AUR helper

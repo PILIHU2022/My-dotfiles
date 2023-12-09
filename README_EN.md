@@ -9,9 +9,9 @@ This README.md is English version,only use it to improve my English level,update
 
 [Fastfetch configuration(To be completed)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/fastfetch/README.md)
 
-[Hyprland configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/hypr/README.md)
+[Hyprland configuration(English version to be completed)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/hypr/README.md)
 
-[Neovim configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/nvim/README.md)
+[Neovim configuration(English version to be completed)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/nvim/README.md)
 
 # In this article,package with "<sup>AUR</sup>" is in AUR, with "<sup>Package</sup>" is in Arch Linux official repository,you can install it by pacman,in this article use 'paru' as AUR helper
 

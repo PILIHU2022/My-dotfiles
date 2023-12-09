@@ -99,19 +99,18 @@ paru -S ttf-harmonyos-sans ttf-cascadia-code ttf-noto-sans-kannada
 
 实在不行就用`nerd-fonts-complete`需要添加Arch Linux CN源，包的大小为2.24GB
 在style.css中有一个字体叫作`Microsoft YaHei UI`那是我自己从Windows上拷过来的，可以删掉
-<p hidden>
-
-**若想使用Windows字体，可以在此处下载，大小为537.1MB**
+**若想使用Windows字体，可以在此处下载，大小为537.1MB，两种格式所包含的文件相同**
 
 **国内**
-(123盘)[]
-(阿里云盘)[]
+![123云盘](https://www.123pan.com/s/KcBDVv-46HH3.html)
 
 **需科技**
-(Dropbox)[]
-(Google Drive)[]
+![Dropbox](https://www.dropbox.com/scl/fo/7xawb9ah0rby0iit2eozt/h?rlkey=1wabq91ro6nx1n6eivecybclr&dl=0)
+![Google Drive](https://drive.google.com/drive/folders/1u5cUhjggKIRGOiJ0BBGv40Re_OYQMlnV?usp=sharing)
 
-</p>
+**两种方式均可，但国内速度慢**
+![Microsoft OneDrive](https://pilihu2023-my.sharepoint.com/:f:/g/personal/pilihu_pilihu2023_onmicrosoft_com/EvgRR4RQNkpFu2hqfRRYDc8BHTktcEwXtxkljefn0M1-CQ?e=SUDOuq)
+
 ## 使用本仓库的kitty配置
 有点英语基础的应该读得懂吧？
 ### 分析:

@@ -3,7 +3,7 @@
 
 # 介绍
 ![界面展示](https://cdn.jsdelivr.net/gh/PILIHU2022/images-bed/Firefox-theme-example.png)
-这个主题看上去感觉想Microsoft Edge的界面（其实是https://github.com/bmFtZQ/edge-frfox的一个fork）
+这个主题看上去感觉想Microsoft Edge的界面（其实是[Edge-Frfox](https://github.com/bmFtZQ/edge-frfox)的一个fork）
 
 # 如何使用？
 - 在Firefox的地址栏输入`about:support`然后找到Profile Directory，点击"Open Directory"

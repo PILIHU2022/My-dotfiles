@@ -23,7 +23,7 @@
 paru -S fastfetch-git
 ```
 # neofetcht配置文件:
-![展示](https://cdn.jsdelivr.net/gh/PILIHU2022/images-bed/neofetch-config-example.png)
+![展示](https://s1.imagehub.cc/images/2024/01/31/33430adade55d27faa027623a0515458.png)
 添加：
 
 alias中添加了`neofetch='neofetch | lolcat`，如上图的彩色输出，无需要的可以删除，需要的请安装lolcat<sup>包</sup>
@@ -34,14 +34,16 @@ alias中添加了`neofetch='neofetch | lolcat`，如上图的彩色输出，无�
 
 显示Locale语言
 
-打印`Welcome to Arch Linux!`
+打印
+
+`Welcome to Arch Linux!`
 
 `Windows is shit!`
 
 `Fuck you NVIDIA!`
 
 此处不一一举例，若想对比请自行对比。
-![提供默认配置作为参考：](https://cdn.jsdelivr.net/gh/PILIHU2022/images-bed/neofetch-default-config.png)
+![提供默认配置作为参考：](https://s1.imagehub.cc/images/2024/01/31/cf022cb6459a966e527c7a88de199d82.png)
 # 对dunst设置了通知样式
 
 # 使用pacman,paru,doas配置
@@ -55,7 +57,7 @@ sh -c "$(curl -fsSL get.zshell.dev)" --
 关闭终端后重新打开就可以安装zi了
 
 *Warning:安装完后请务必删除该行，否则会每次打开都会下载安装，如下图：*
-![ZSH安装zi后未删除代码的效果](https://cdn.jsdelivr.net/gh/PILIHU2022/images-bed/zsh-install-zi.png)
+![ZSH安装zi后未删除代码的效果](https://s1.imagehub.cc/images/2024/01/31/1369f796322cc7701df9fc6658f94ae5.png)
 ## zi使用插件:
 ```
 zi load [repo-url] # 加载插件
@@ -132,7 +134,7 @@ map kitty_mod+v paste_from_clipboard # 粘贴快捷键
 ```
 
 效果如图：
-![kitty字体](https://cdn.jsdelivr.net/gh/PILIHU2022/images-bed/kitty%E5%AD%97%E4%BD%93%E8%AE%BE%E7%BD%AE1.png)
+![kitty字体](https://s1.imagehub.cc/images/2024/01/31/a8fcc33e4961fcbad94b7c8814c2599c.png)
 
 <p hidden>
 ## .local中存放的是我的rime拼音方案和一些自定义短语(输入法皮肤暂时没有上传)
@@ -193,4 +195,4 @@ alias sudo=doas
 * [x] 将 Firefox 主题上传到仓库中
 * [x] 解决 fastfetch 无法显示图片的问题
 
-# 更新于2023-11-19 16:06:07
+# 更新于2024-01-31 15:53:49

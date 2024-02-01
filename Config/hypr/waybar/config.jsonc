@@ -7,7 +7,7 @@
     "margin-left": 0,
     "margin-right": 0,
     "modules-left": [
-        "custom/launcher",
+        "custom/backup-script-launcher",
         "hyprland/workspaces",
         "custom/playerctl",
         "custom/playerlabel"
@@ -25,10 +25,11 @@
         "clock"
     ],
     "clock": {
-        "format": " {:%H:%M}",
+        "format": " {:%H:%M:%S}", // 显示时间(精确到秒)
         "tooltip": "true",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": " {:%y/%m/%d}"
+        "format-alt": " {:%y/%m/%d}",
+	"interval": 1
     },
 //    "hyprland/workspaces": {
 //        "active-only": false,
@@ -54,9 +55,9 @@
 //        "on-click": "playerctl previous",
 //        "on-click-right": "playerctl next",
         "format-icons": {
-            "Playing": "<span foreground='#E5B9C6'>󰒮 󰐌 󰒭</span>",
+            "Playing": "<span foreground='#E5B9C6'>  </span>",
             "Paused": "<span foreground='#928374'>󰒮 󰏥 󰒭</span>"
-        },
+        }
     },
     "custom/playerlabel": {
         "format": "<span>{}</span>",
@@ -69,7 +70,7 @@
         "format-icons": {
             "Playing": "<span foreground='#E5B9C6'> 󰐌 </span>",
             "Paused": "<span foreground='#928374'> 󰏥 </span>"
-        },
+        }
     },
     "memory": {
         "format": "󰍛 {}%",
@@ -77,7 +78,7 @@
         "interval": 5
     },
     "cpu": {
-        "format": "󰻠 {usage}%",
+        "format": " {usage}%",
         "format-alt": "󰻠 {avg_frequency} GHz",
         "interval": 5
     },
@@ -100,20 +101,20 @@
         "icon-size": 16,
         "spacing": 5
     },
-    "backlight": {
-        "format": "{icon} {percent}%",
-        "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-    },
+//    "backlight": {
+//        "format": "{icon} {percent}%",
+//        "format-icons": [
+//            "",
+//            "",
+//            "",
+//            "",
+//            "",
+//            "",
+//            "",
+//            "",
+//            ""
+//        ],
+//    },
     "pulseaudio": {
         "format": "{icon} {volume}%",
         "format-muted": "󰝟",
@@ -124,11 +125,14 @@
                 "󰕾"
             ]
         },
-        "scroll-step": 5,
+        "scroll-step": 5
     },
-    "custom/launcher": {
-        "format": "󰣇",
-        "on-click": "bash $HOME/.config/rofi/launcher.sh",
-        "on-click-right": "bash $HOME/.config/rofi/run.sh"
+    "custom/backup-script-launcher": {
+        "format": "󱓞",
+        "on-click": "bash $HOME/.config/hypr/scripts/run-backuppy.sh"
     },
+    "custom/which-wallpaper": {
+    	"format": "󰸉",
+	"on-click" : "bash $HOME/.config/hypr/scripts/swww_randomize.sh"
+    }
 }

@@ -1,0 +1,5 @@
+require("core.options")
+require("core.keymap")
+require("lazy_nvim")
+require("core.ImSwitch")
+require("core.ranger")

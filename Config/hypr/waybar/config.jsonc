@@ -55,8 +55,8 @@
 //        "on-click": "playerctl previous",
 //        "on-click-right": "playerctl next",
         "format-icons": {
-            "Playing": "<span foreground='#E5B9C6'>  </span>",
-            "Paused": "<span foreground='#928374'>󰒮 󰏥 󰒭</span>"
+            "Playing": "<span foreground='#E5B9C6'>  Playing</span>",
+            "Paused": "<span foreground='#928374'>  Paused</span>"
         }
     },
     "custom/playerlabel": {
@@ -68,8 +68,8 @@
 //        "on-click": "playerctl previous",
 //        "on-click-right": "playerctl next",
         "format-icons": {
-            "Playing": "<span foreground='#E5B9C6'> 󰐌 </span>",
-            "Paused": "<span foreground='#928374'> 󰏥 </span>"
+            "Playing": "<span foreground='#E5B9C6'>  </span>",
+            "Paused": "<span foreground='#928374'>  </span>"
         }
     },
     "memory": {
@@ -90,12 +90,12 @@
     },
     "network": {
         //"format-ethernet": " {ifname}: {ipaddr}",
-        "format-ethernet": " IP: {ipaddr}",
+        "format-ethernet": "󰩟 IP: {ipaddr}",
         //"format-linked": " {ifname} (No IP)",
         "format-disconnected": "󰤭",
         //"format-alt": " {ifname}: {ipaddr}/{cidr}",
         "tooltip-format": "{essid}",
-        "on-click-right": "nm-connection-editor"
+        // "on-click-right": "nm-connection-editor"
     },
     "tray": {
         "icon-size": 16,
@@ -132,7 +132,10 @@
         "on-click": "bash $HOME/.config/hypr/scripts/run-backuppy.sh"
     },
     "custom/which-wallpaper": {
-    	"format": "󰸉",
-	"on-click" : "bash $HOME/.config/hypr/scripts/swww_randomize.sh"
+        "format": "󰸉",
+        "on-click" : "bash $HOME/.config/hypr/scripts/swww_randomize.sh",
+    },
+    "custom/Arch-Logo": {
+        "format": "󰣇"
     }
 }

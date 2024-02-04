@@ -1,21 +1,26 @@
 {
     "position": "top",
     "layer": "top",
-    "height": 16,
+    "height": 30,
     "margin-top": 0,
     "margin-bottom": 0,
     "margin-left": 0,
     "margin-right": 0,
     "modules-left": [
+        "custom/Arch-Logo",
         "custom/backup-script-launcher",
+        "custom/which-wallpaper",
         "hyprland/workspaces",
         "custom/playerctl",
-        "custom/playerlabel"
+        "custom/playerlabel",
+        "hyprland/window"
     ],
     "modules-center": [
         "cpu",
         "memory",
-        "disk"
+        "disk",
+        "keyboard-state",
+        "user"
     ],
     "modules-right": [
         "tray",
@@ -24,53 +29,76 @@
         "pulseaudio",
         "clock"
     ],
+    "hyprland/window": {
+        "format": "{}",
+        "rewrite": {
+            "(.*) — Mozilla Firefox": "󰈹  $1"
+        }
+    },
     "clock": {
         "format": " {:%H:%M:%S}", // 显示时间(精确到秒)
         "tooltip": "true",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": " {:%y/%m/%d}",
-	"interval": 1
+        "interval": 1
     },
-//    "hyprland/workspaces": {
-//        "active-only": false,
-//        "all-outputs": true,
-//        "disable-scroll": false,
-//        "on-scroll-up": "hyprctl dispatch workspace -1",
-//        "on-scroll-down": "hyprctl dispatch workspace +1",
-//        "format": "{icon}",
-//        "on-click": "activate",
-//        "format-icons": {
-//            "urgent": "",
-//            "active": "",
-//            "default": "󰧞",
-//            "sort-by-number": true
-//        }
-//    },
-    "custom/playerctl": {
-        "format": "{icon}",
-        "return-type": "json",
-        "max-length": 64,
-        "exec": "playerctl -a metadata --format '{\"text\": \"{{markup_escape(title)}} - {{artist}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+   "hyprland/workspaces": {
+       "active-only": false,
+       "all-outputs": true,
+       "disable-scroll": false,
+       "on-scroll-up": "hyprctl dispatch workspace -1",
+       "on-scroll-down": "hyprctl dispatch workspace +1",
+       // "format": "{icon}",
+       "on-click": "activate",
+       // 显示空间不足，暂时弃用
+       "persistent_workspaces": {
+           // "1": "󰈹",
+           // "2": " ",
+           // "3": " ",
+           // "4": "󰣇",
+           // "5": "",
+           // "6": "󰍲",
+           // "7": "󰖳",
+           // "8": "",
+           // "9": "",
+           // "10": ""
+           // "1": [],
+           // "2": [],
+           // "3": [],
+           // "4": [],
+           // "5": [],
+           // "6": [],
+           // "7": [],
+           // "8": [],
+           // "9": [],
+           // "10": []
+       }
+   },
+   "custom/playerctl": {
+       "format": "{icon}",
+       "return-type": "json",
+       "max-length": 64,
+       "exec": "playerctl -a metadata --format '{\"text\": \"{{markup_escape(title)}} - {{artist}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
 //        "on-click-middle": "playerctl play-pause",
 //        "on-click": "playerctl previous",
 //        "on-click-right": "playerctl next",
-        "format-icons": {
-            "Playing": "<span foreground='#E5B9C6'>  Playing</span>",
-            "Paused": "<span foreground='#928374'>  Paused</span>"
-        }
-    },
-    "custom/playerlabel": {
-        "format": "<span>{}</span>",
-        "return-type": "json",
-        "max-length": 48,
-        "exec": "playerctl -a metadata --format '{\"text\": \"{{markup_escape(title)}} - {{artist}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+       "format-icons": {
+           "Playing": "<span foreground='#E5B9C6'>  Playing</span>",
+           "Paused": "<span foreground='#928374'>  Paused</span>"
+       }
+   },
+   "custom/playerlabel": {
+       "format": "<span>{}</span>",
+       "return-type": "json",
+       "max-length": 48,
+       "exec": "playerctl -a metadata --format '{\"text\": \"{{markup_escape(title)}} - {{artist}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
 //        "on-click-middle": "playerctl play-pause",
 //        "on-click": "playerctl previous",
 //        "on-click-right": "playerctl next",
-        "format-icons": {
-            "Playing": "<span foreground='#E5B9C6'>  </span>",
-            "Paused": "<span foreground='#928374'>  </span>"
-        }
+       "format-icons": {
+           "Playing": "<span foreground='#E5B9C6'>  </span>",
+           "Paused": "<span foreground='#928374'>  </span>"
+       }
     },
     "memory": {
         "format": "󰍛 {}%",
@@ -88,17 +116,37 @@
         "interval": 5,
         "path": "/"
     },
+    "keyboard-state": {
+        "numlock": true,
+        "capslock": true,
+        "format": "{name} {icon}",
+        "format-icons": {
+            "lock": "  ",
+            "unlock": "  "
+        }
+    },
+    "user": {
+        "format": "Hi! {user}! (Run for {work_H}H {work_M}Mins !)",
+        "interval": 60,
+        "avatar": "$HOME/My-avatar.jpg",
+        "height": 30,
+        "width": 30,
+        "icon": true
+    },
     "network": {
-        //"format-ethernet": " {ifname}: {ipaddr}",
-        "format-ethernet": "󰩟 IP: {ipaddr}",
+        "format-ethernet":"󰕒{bandwidthUpBits} | 󰇚{bandwidthDownBits}",
+        "tooltip-format": "󰩟:{ipaddr}",
+        "format-alt":"󰩟 : {ipaddr} 󰕒{bandwidthUpBits} | 󰇚{bandwidthDownBits}",
+        "interval": 1
+        // "format-disconnected": "  ",
+        // "tooltip-format-disconnected": "  "
         //"format-linked": " {ifname} (No IP)",
-        "format-disconnected": "󰤭",
+        //"format-ethernet": " {ifname}: {ipaddr}",
         //"format-alt": " {ifname}: {ipaddr}/{cidr}",
-        "tooltip-format": "{essid}",
         // "on-click-right": "nm-connection-editor"
     },
     "tray": {
-        "icon-size": 16,
+        "icon-size": 20,
         "spacing": 5
     },
 //    "backlight": {
@@ -128,14 +176,14 @@
         "scroll-step": 5
     },
     "custom/backup-script-launcher": {
-        "format": "󱓞",
+        "format": " 󱓞 ",
         "on-click": "bash $HOME/.config/hypr/scripts/run-backuppy.sh"
     },
     "custom/which-wallpaper": {
-        "format": "󰸉",
-        "on-click" : "bash $HOME/.config/hypr/scripts/swww_randomize.sh",
+        "format": " 󰸉 ",
+        "on-click" : "bash $HOME/.config/hypr/scripts/swww_randomize.sh -m ~/Desktop/My-Wallpapers"
     },
     "custom/Arch-Logo": {
-        "format": "󰣇"
+        "format": " 󰣇 "
     }
 }

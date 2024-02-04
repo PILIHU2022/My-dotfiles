@@ -1,7 +1,6 @@
 * {
     border: none;
     border-radius: 0px;
-    /*font-family: VictorMono, Iosevka Nerd Font, Noto Sans CJK;*/
     font-family: Cascadia Code, Microsoft YaHei UI, Ubuntu Nerd Font Medium;
     font-size: 14px;
     font-style: normal;
@@ -65,11 +64,11 @@ window#waybar {
 }
 
 #tray {
-    background: #282828;
+    background: #454438;
     margin: 5px 5px 5px 5px;
     border-radius: 16px;
     padding: 0px 5px;
-    /*border-right: solid 1px #282738;*/
+    border-right: solid 1px #282738;
 }
 
 #clock {
@@ -84,21 +83,6 @@ window#waybar {
     margin-bottom: 0px;
     font-weight: bold;
     /*border-left: solid 1px #282738;*/
-}
-
-
-#battery {
-    color: #9ece6a;
-}
-
-#battery.charging {
-    color: #9ece6a;
-}
-
-#battery.warning:not(.charging) {
-    background-color: #f7768e;
-    color: #24283b;
-    border-radius: 5px 5px 5px 5px;
 }
 
 #backlight {
@@ -199,6 +183,39 @@ window#waybar {
     padding: 0 20px;
     color: #e5809e;
     background-color: #1E1E2E;
+}
+
+#keyboard-state{
+    background-color: #282828;
+    /*color: #FABD2D;*/
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+}
+
+#keyboard-state label.locked{
+    background-color: #282828;
+    /*color: #FABD2D;*/
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+}
+
+#keyboard-state label.locked{
+    background-color: #282828;
+    /*color: #FABD2D;*/
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
 }
 
 #cpu {

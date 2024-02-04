@@ -1,10 +1,5 @@
 require("core.options")
 require("core.keymap")
 require("lazy_nvim")
-
--- require("settings.lsp")
-require("settings.bufferline")
-require("settings.nvim-tree")
-require("settings.gitsigns")
-require("settings.telescope")
-require("settings.treesitter")
+require("core.ImSwitch")
+require("core.ranger")

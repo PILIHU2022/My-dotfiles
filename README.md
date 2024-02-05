@@ -24,7 +24,7 @@
 ```
 paru -S fastfetch-git
 ```
-# neofetcht配置文件:
+# neofetch配置文件:
 ![展示](https://s1.imagehub.cc/images/2024/01/31/33430adade55d27faa027623a0515458.png)
 添加：
 

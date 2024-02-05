@@ -28,7 +28,11 @@ tooltip label{
 #workspaces{
     background: #1C1C29;
     margin: 5px 5px 5px 5px;
+    margin-left: 5px;
+    margin-right: 5px;
     padding: 0px 5px 0px 5px;
+    padding-left: 5px;
+    padding-right: 0px;
     border-radius: 16px;
     border: solid 0px #f4d9e1;
     font-weight: normal;
@@ -36,7 +40,7 @@ tooltip label{
 }
 
 #workspaces button {
-    padding: 5px;
+    padding:3px 5px;
     color: #313244;
     margin-right: 5px;
 }
@@ -45,32 +49,32 @@ tooltip label{
     color: #a6adc8;
 }
 
-#workspaces button.focused {
-    color: #a6adc8;
-    background: #eba0ac;
-    border-radius: 10px;
-}
+/* #workspaces button.focused { */
+/*     color: #a6adc8; */
+/*     background: #eba0ac; */
+/*     border-radius: 14px; */
+/* } */
 
 #workspaces button.urgent {
     color: #11111b;
-    background: #a6e3a1;
-    border-radius: 10px;
+    background: #1889f2;
+    border-radius: 14px;
 }
 
 #workspaces button:hover {
     background: #11111b;
-    color: #cdd6f4;
-    border-radius: 10px;
+    color: #282842;
+    border-radius: 14px;
 }
 
-#backlight {
-    background: #1e1e2e;
-    opacity: 0.8;
-    padding: 0px 10px;
-    margin: 5px 5px 5px 5px;
-    margin-top: 10px;
-    border: 0px;
-}
+/* #backlight { */
+/*     background: #1e1e2e; */
+/*     opacity: 0.8; */
+/*     padding: 0px 10px; */
+/*     margin: 5px 5px 5px 5px; */
+/*     margin-top: 10px; */
+/*     border: 0px; */
+/* } */
 
 #tray, #custom-lock_screen, #temperature, #backlight, #custom-launch_wofi, #cpu {
     border-radius: 10px 0px 0px 10px;
@@ -81,14 +85,17 @@ tooltip label{
     margin-right: 10px;
 }
 
-#temperature.critical {
-    color: #e92d4d;
-}
+/* #temperature.critical { */
+/*     color: #e92d4d; */
+/* } */
 
 
 #workspaces {
-    padding-right: 0px;
-    padding-left: 5px;
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    /* padding-right: 20px; */
+    /* padding-left: 20px; */
 }
 
 #custom-power_profile {
@@ -121,10 +128,10 @@ tooltip label{
     border-right: 0px;
 }
 
-#battery {
-    color: #a6e3a1;
-    border-left: 0px;
-}
+/* #battery { */
+/*     color: #a6e3a1; */
+/*     border-left: 0px; */
+/* } */
 
 #tray {
     background: #454438;
@@ -141,22 +148,9 @@ tooltip label{
 #custom-power_profile,
 #custom-weather,
 #window,
-#cpu,
-#disk,
 #custom-updates,
-#memory,
 #pulseaudio,
-#network,
 #temperature,
-
-#clock{
-    padding-left: 13px;
-    padding-right: 15px;
-    margin-top: 0px;
-    margin-left: 10px;
-    margin-right: 0px;
-    font-weight: bold;
-}
 
 #window {
     background: #282828;
@@ -171,4 +165,67 @@ tooltip label{
     font-style: normal;
 }
 
+#cpu {
+    background: #1C1C29;
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+}
+
+#memory {
+    background: #1C1C29;
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+}
+
+#disk {
+    background: #1C1C29;
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+}
+
+#keyboard-state{
+    background: #1C1C29;
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+}
+
+#user{
+    background: #1C1C29;
+    border-radius: 16px;
+    margin: 5px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 0px 10px 0px 10px;
+}
+
+#custom-data, #clock, #network{
+    background: #1C1C29;
+    padding: 5px 5px 5px 5px;
+    margin: 5px 5px 5px 5px;
+    border-radius: 8px;
+    border: solid 0px;
+}
+
+#custom-Arch-Logo, #custom-switch-wallpaper, #custom-backup-script-launcher{
+    background: #1C1C29;
+    margin: 5px 5px 5px 5px;
+    padding: 0px 5px 0px 5px;
+    border-radius: 16px;
+}
 /* 背景色为#1C1C29 */

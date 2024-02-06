@@ -41,11 +41,14 @@ keymap.set('n', '<C-k>', ':resize -2<CR>', opts)
 keymap.set('n', '<C-l>', ':vertical resize -2<CR>', opts)
 keymap.set('n', '<C-h>', ':vertical resize +2<CR>', opts)
 
+-- Markdown-preview
+keymap.set('n', '<C-m>', ':MarkdownPreview<CR>')
+
 -- nvim-tree
 keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
 
 -- Mason
-keymap.set("n", "<leader>cm", ":Mason<CR>")
+-- keymap.set("n", "<leader>cm", ":Mason<CR>")
 
 -- 快捷打开Lazy
 keymap.set("n", "<leader>l", ":Lazy<CR>")

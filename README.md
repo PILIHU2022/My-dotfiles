@@ -1,4 +1,7 @@
 # 本仓库存放了我的Arch Linux软件配置文件
+# 若想使用，本仓库提供了较为详细的文档，见[How-to-use_CN.md](https://github.com/PILIHU2022/My-dotfiles/blob/3b6fd277eb6f5948a82edabc5560192bcfad97ed/How-to-use_CN.md#%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E8%BF%98%E6%9C%89fastfetch%E5%92%8Cneofetch%E9%83%BD%E6%98%AF%E8%8E%B7%E5%8F%96%E7%B3%BB%E7%BB%9F%E7%A1%AC%E4%BB%B6%E5%92%8C%E5%85%B6%E4%BB%96%E4%BF%A1%E6%81%AFneofetch%E6%9C%89%E8%BE%83%E5%A4%A7%E6%9B%B4%E6%94%B9fastfetch%E6%AD%A3%E5%9C%A8%E7%A0%94%E7%A9%B6)
+# 若想参与或修改本仓库中的一些配置，可切换到dev查看README.md
+# 若本仓库的配置出现问题或你有一些想法，可提交issue
 ## 本仓库使用了Hyprland作为WM，使用waybar-git作为顶栏
 # Preview!
 <div align='center'>整体图</div>

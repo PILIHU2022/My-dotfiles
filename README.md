@@ -30,21 +30,21 @@
 ## 本仓库的Neovim均使用了lazy.nvim作为插件管理器
 <div align='center'>Neovim cmp</div>
 <p align='center'>
-<img src = 'URL'
+<img src = 'https://s1.imagehub.cc/images/2024/02/07/b135f52f9fbfd87928f655c658e42d11.png'
 </p>
-该Neovim配置使用了我自己的配置，具体的信息详见[Neovim-use-cmp的README.md文档](https://github.com/PILIHU2022/My-dotfiles/...)
+该Neovim配置使用了我自己的配置，具体的信息详见[Neovim-use-cmp的README.md文档](https://github.com/PILIHU2022/My-dotfiles/tree/main/Config/nvim-use-cmp)
 
 <div align='center'>Neovim mason</div>
 <p align='center'>
-<img src = 'URL'
+<img src = 'https://s1.imagehub.cc/images/2024/02/07/1fc1b3433f338a502c04d41e12fa9ecd.png'
 </p>
-该Neovim配置使用了我自己的配置，已经弃用，不再更新，建议使用Neovim-use-cmp，具体的信息详见[Neovim-use-mason-deprecated的README.md文档](https://github.com/PILIHU2022/My-dotfiles/...)
+该Neovim配置使用了我自己的配置，使用mason由于补全并不好，所以弃用，不再更新，建议使用Neovim-use-cmp，具体的信息详见[Neovim-use-mason-deprecated的README.md文档](https://github.com/PILIHU2022/My-dotfiles/...)
 
 <div align='center'>Neovim old</div>
 <p align='center'>
-<img src = 'URL'
+<img src = 'https://s1.imagehub.cc/images/2024/02/07/a4f22d2786b86f997ef04925d63805f2.png'
 </p>
-该Neovim配置使用了我自己的配置，已经弃用，不再更新，具体的信息详见[Neovim-old-deprecated的README.md文档](https://github.com/PILIHU2022/My-dotfiles/...)
+该Neovim配置使用了我自己的配置，使用cmp作为补全工具，已经弃用，不再更新，具体的信息详见[Neovim-old-deprecated的README.md文档](https://github.com/PILIHU2022/My-dotfiles/...)
 
 <div align='center'>Dunst</div>
 <p align='center'>
@@ -54,13 +54,12 @@
 
 <div align='center'>Rofi</div>
 <p align='center'>
-<img src = 'URL'
+<img src = 'https://s1.imagehub.cc/images/2024/02/07/53185d80b8365ab6240f529ca782917f.png'
 </p>
-此处使用的[Dracula主题](https://)在此致谢！
-
+此处使用的[Dracula主题](https://draculatheme.com/rofi)在此致谢！
 
 <div align='center'>Ranger</div>
 <p align='center'>
-<img src = 'URL'
+<img src = 'https://s1.imagehub.cc/images/2024/02/07/5a53480d483dc17cde87c6702f5c44ad.png'
 </p>
-同样，此处也使用的[Dracula主题](https://)，再次致谢！
+同样，此处也使用的[Dracula主题](https://draculatheme.com/ranger)，再次致谢！

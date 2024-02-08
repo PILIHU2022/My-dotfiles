@@ -178,22 +178,5 @@ alias sudo=doas
 ```
 </p>
 
-# Todo
-- 配置rofi和wofi
-- 将Firefox主题上传到仓库中，并另起一个README来说明如何使用及其效果
-- 更新Hyprland配置
-- 设置超链接来将各个不同的说明文件链接起来
-- 修改README文件，以确保准确性
-- 将本仓库README.md翻译为英语版本[中英均有]（纯属锻炼英语水平，有空会更新）
-- Neovim配置CMP补全（写README.md）
-
-# Finished
-* [x] 更新doas.conf
-* [x] 配置Neovim(使用lazy插件管理)
-* [x] 配置lnvim(一些仍未达到像Visual Studio Code的功能),已基本完成,开始自己配置Neovim
-* [x] 将settings.json放入准确位置
-* [x] 上传doas.conf
-* [x] 将 Firefox 主题上传到仓库中
-* [x] 解决 fastfetch 无法显示图片的问题
 
 # 更新于2024-01-31 15:53:49

@@ -54,7 +54,11 @@ fi
 #                                                 Aliases                                                    #
 ##############################################################################################################
 alias giti="git commit -m 'upload photo'"
-alias gpl='git push GitHub main && git push GitLab main' #在一个有Git版本控制的文件夹中使用，这是同时将更改上传到GitHub和GitLab的仓库中，前提是添加了这两个远程仓库，命名可更改
+alias c.='cd ..'
+alias gcm='git checkout main'
+alias gcd='git checkout dev'
+alias gplm='git push GitHub main && git push GitLab main' #在一个有Git版本控制的文件夹中使用，这是同时将更改上传到GitHub和GitLab的仓库中，前提是添加了这两个远程仓库，命名可更改
+alias gpld='git push GitHub dev && git push GitLab dev'
 alias sudo='doas'
 alias stc='doas systemctl start clash-meta'
 alias stc='doas systemctl stop clash-meta'
@@ -77,9 +81,9 @@ alias gs='git status'
 alias cat='bat'
 alias ls="eza -a"
 alias lnvim='NVIM_APPNAME=lnvim nvim'
-alias mnvim='NVIM_APPNAME=mnvim nvim'
+alias mnvim='NVIM_APPNAME=onvim nvim'
 alias fastfetchm='fastfetch --config ~/.config/fastfetch/config.jsonc --logo ~/.config/fastfetch/Arch-Linux-Logo.png'
-alias waybarc='waybar -c ~/.config/hypr/waybar/config.jsonc -s ~/.config/hypr/waybar/style.css'
+alias waybarc='waybar -c ~/.config/hypr/waybar/config.jsonc -s ~/.config/hypr/waybar/style/style-dark.css'
 alias waybars='waybar -s ~/.config/hypr/waybar/style.css'
 alias lst='ls --tree'
 alias als='~/alist/alist server'

@@ -11,7 +11,7 @@
 PID_FILE=/tmp/wallpaper_script_pid # 脚本 PID 文件
 PAUSED=false                       # 暂停切换状态初始化
 TIMER=0                            # 计时器初始化
-TIMER_MAX=10                       # 计时器上限，图片轮换时间
+TIMER_MAX=60                       # 计时器上限，图片轮换时间
 # ====================================
 # swww 切换参数值
 OUTPUT=none       # 屏幕输出

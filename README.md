@@ -1,4 +1,7 @@
 # 本仓库存放了我的Arch Linux软件配置文件
+# 若想使用，本仓库提供了较为详细的文档，见[How-to-use_CN.md](https://github.com/PILIHU2022/My-dotfiles/blob/main/How-to-use_CN.md)，也请安装[该文章所提到的软件](https://github.com/PILIHU2022/My-dotfiles/blob/main/Programs.md)
+# 若想参与或修改本仓库中的一些配置，可切换到dev查看README.md
+# 若本仓库的配置出现问题或你有一些想法，可提交issue
 ## 本仓库使用了Hyprland作为WM，使用waybar-git作为顶栏
 # Preview!
 <div align='center'>整体图</div>
@@ -63,3 +66,21 @@
 <img src = 'https://s1.imagehub.cc/images/2024/02/07/5a53480d483dc17cde87c6702f5c44ad.png'
 </p>
 同样，此处也使用的[Dracula主题](https://draculatheme.com/ranger)，再次致谢！
+
+# Todo
+- 将Firefox主题上传到仓库中，并另起一个README来说明如何使用及其效果
+- 更新Hyprland配置
+- 设置超链接来将各个不同的说明文件链接起来
+- 修改README文件，以确保准确性
+- 将本仓库README.md翻译为英语版本[中英均有]（纯属锻炼英语水平，有空会更新）
+- Neovim配置CMP补全（写README.md）
+
+# Finished
+* [x] 更新doas.conf
+* [x] 配置Neovim(使用lazy插件管理)
+* [x] 配置lnvim(一些仍未达到像Visual Studio Code的功能),已基本完成,开始自己配置Neovim
+* [x] 将settings.json放入准确位置
+* [x] 上传doas.conf
+* [x] 将 Firefox 主题上传到仓库中
+* [x] 解决 fastfetch 无法显示图片的问题
+* [x] 配置rofi和wofi 

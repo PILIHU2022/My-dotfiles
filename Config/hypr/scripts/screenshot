@@ -78,17 +78,17 @@ pos_rd=40 # rd: right down
 
 function creat_tmp_file {
   [ -d ~/.cache/satty ] || command mkdir ~/.cache/satty
-  satty_tmp_file="$HOME/.cache/satty/satty_tmp.png"
+  swappy_tmp_file="$HOME/.cache/satty/satty_tmp.png"
 }
 
 function copy_tmp_file {
-  cat $satty_tmp_file | wl-copy # s_b linuxqq 大文件复制可能不正常，telegram正常，作为复制到剪切板的替代方案: 编辑完后使用Ctrl+s 保存文件后关闭 即可发送到剪切板
+  cat $swappy_tmp_file | wl-copy # s_b linuxqq 大文件复制可能不正常，telegram正常，作为复制到剪切板的替代方案: 编辑完后使用Ctrl+s 保存文件后关闭 即可发送到剪切板
 }
 
 
 function focused_window {
   grim -l $quality -g "$(hyprctl activewindow -j | gojq  -j '.at[0]-($gaps_lu | tonumber), ",", .at[1]-($gaps_lu | tonumber), " ", .size[0]+($gaps_rd | tonumber), "x", .size[1]+($gaps_rd | tonumber)' --arg gaps_lu $pos_lu --arg gaps_rd $pos_rd)" - \
-    | satty --filename - --output-filename $satty_tmp_file
+    | swappy -f - --output-file $swappy_tmp_file
 }
 
 function pause_focused_screen {
@@ -107,7 +107,7 @@ function take_fullscreen {
   if $EDIT; then
 
     grim -l $quality -g "$(slurp -b "#ef5b9c30" -d)" - \
-      | satty --filename - --output-filename $satty_tmp_file #| swappy -f - &
+      | swappy -f - --output-file $swappy_tmp_file #| swappy -f - &
 
   else
     grim -l $quality -o "$(hyprctl monitors -j | gojq '.[] | select(.focused == true) | .name' -r)" - \
@@ -116,13 +116,13 @@ function take_fullscreen {
 }
 
 function take_select_edit {
-  grim -l $quality -g "$(slurp -b "#ef5b9c30" -d)" - \
-    | satty --filename - --output-filename $satty_tmp_file
+  grim -l $quality -g "$(slurp -b "#ef5b9c30" -d)" - | swappy -f - --output-file $swappy_tmp_file
+    # | satty -f - --output-file $satty_tmp_file
 }
 
 function take_select {
   grim -l $quality -g "$(slurp -b "#ef5b9c30" -d)" - \
-    | wl-copy #satty --filename - --output-filename $satty_tmp_file
+    | wl-copy #satty -f - --output-file $satty_tmp_file
 }
 
 

@@ -101,7 +101,7 @@ windowrule = ……
 paru -S ttf-harmonyos-sans ttf-cascadia-code ttf-noto-sans-kannada
 ```
 
-实在不行就用`nerd-fonts-complete`需要添加Arch Linux CN源，包的大小为2.24GB
+<!---实在不行就用`nerd-fonts-complete`需要添加Arch Linux CN源，包的大小为2.24GB--->
 在style.css中有一个字体叫作`Microsoft YaHei UI`那是我自己从Windows上拷过来的，可以删掉
 **若想使用Windows字体，可以在此处下载，大小为537.1MB，两种格式所包含的文件相同**
 

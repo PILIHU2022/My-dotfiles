@@ -24,28 +24,31 @@ keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 -- 使用<ctrl>+上下左右键来切换上下左右窗口(lazynvim内)
-keymap.set("n", "<C-left>", "<C-w>h", opt) -- 切换到左边窗口
-keymap.set("n", "<C-right>", "<C-w>l", opt) -- 切换到右边窗口
-keymap.set("n", "<C-down>", "<C-w>j", opt) -- 切换到下面窗口
-keymap.set("n", "<C-up>", "<C-w>k", opt) -- 切换到上面窗口
+keymap.set("n", "<C-h>", "<C-w>h", opt) -- 切换到左边窗口
+keymap.set("n", "<C-l>", "<C-w>l", opt) -- 切换到右边窗口
+keymap.set("n", "<C-k>", "<C-w>k", opt) -- 切换到上面窗口
+keymap.set("n", "<C-j>", "<C-w>j", opt) -- 切换到下面窗口
 
 -- 设置切换标签页快捷键
-keymap.set("n", "<A-right>", "<cmd>BufferLineCyclePrev<cr>")
-keymap.set("n", "<A-left>", "<cmd>BufferLineCycleNext<cr>")
+keymap.set("n", "<A-[>", "<cmd>BufferLineCyclePrev<cr>")
+keymap.set("n", "<A-]>", "<cmd>BufferLineCycleNext<cr>")
 keymap.set("n", "<A-i>", "<cmd>BufferLinePick<cr>")
 keymap.set("n", "<A-q>", "<cmd>bp|sp|bn|bd!<cr>")
 
 -- 使用<ctrl>+hjkl来调整窗口大小(lazynvim内)
-keymap.set('n', '<C-j>', ':resize +2<CR>', opts)
-keymap.set('n', '<C-k>', ':resize -2<CR>', opts)
-keymap.set('n', '<C-l>', ':vertical resize -2<CR>', opts)
-keymap.set('n', '<C-h>', ':vertical resize +2<CR>', opts)
+keymap.set('n', '<C-left>', ':resize +2<CR>', opts)
+keymap.set('n', '<C-right>', ':resize -2<CR>', opts)
+keymap.set('n', '<C-down>', ':vertical resize -2<CR>', opts)
+keymap.set('n', '<C-up>', ':vertical resize +2<CR>', opts)
+
+-- Markdown-preview
+keymap.set('n', '<C-m>', ':MarkdownPreview<CR>')
 
 -- nvim-tree
 keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
 
 -- Mason
-keymap.set("n", "<leader>cm", ":Mason<CR>")
+-- keymap.set("n", "<leader>cm", ":Mason<CR>")
 
 -- 快捷打开Lazy
 keymap.set("n", "<leader>l", ":Lazy<CR>")

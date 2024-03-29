@@ -47,25 +47,34 @@
 <p align='center'>
 <img src = 'https://s1.imagehub.cc/images/2024/02/07/a4f22d2786b86f997ef04925d63805f2.png'
 </p>
+该Neovim配置参照了多个哔哩哔哩中的教程视频，难以说清（
 该Neovim配置使用了我自己的配置，使用cmp作为补全工具，已经弃用，不再更新，具体的信息详见[Neovim-old-deprecated的README.md文档](https://github.com/PILIHU2022/My-dotfiles/...)
 
 <div align='center'>Dunst</div>
 <p align='center'>
-<img src = 'URL'
+<img src = 'https://s1.imagehub.cc/images/2024/03/29/685a08a562184e96488228bb85eaf15d.png'
 </p>
-此处的dunst使用了...的配置，在此致谢！
+已经弃用了，转为mako。
+此处的dunst配置是抄来的，忘记在哪里了，若有知道的，麻烦告知！
 
 <div align='center'>Rofi</div>
 <p align='center'>
-<img src = 'https://s1.imagehub.cc/images/2024/02/07/53185d80b8365ab6240f529ca782917f.png'
+<img src = 'https://s1.imagehub.cc/images/2024/03/29/306441414fe4c6d18cc46544676de244.png'
 </p>
+由于Rofi在Hyprland中启动时焦点不在本身的窗口中，已经弃用，
 此处使用的[Dracula主题](https://draculatheme.com/rofi)在此致谢！
+
+<div align='center'>Wofi</div>
+<p align='center'>
+<img src = 'https://s1.imagehub.cc/images/2024/03/29/18f8de49964d01b161cd51958ceab59c.png'
+</p>
+从朋友那里抄来的，不可知其源（
 
 <div align='center'>Ranger</div>
 <p align='center'>
 <img src = 'https://s1.imagehub.cc/images/2024/02/07/5a53480d483dc17cde87c6702f5c44ad.png'
 </p>
-同样，此处也使用的[Dracula主题](https://draculatheme.com/ranger)，再次致谢！
+同样，此处也使用的 [Dracula主题](https://draculatheme.com/ranger) ，再次致谢！
 
 # Todo
 - 将Firefox主题上传到仓库中，并另起一个README来说明如何使用及其效果

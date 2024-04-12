@@ -12,6 +12,21 @@ from __future__ import (absolute_import, division, print_function)
 from ranger.api.commands import Command
 import os
 
+# class set_wallpaper(Command)
+#     def execute(self):
+#         if self.arg(1):
+#             target_filename = self.rest(1)
+#         else:
+#             target_filename = self.fm.thisfile.path
+#         if not os.path.exists(target_filename):
+#             self.fm.notify("The given file does not exist!", bad=True)
+#             return
+#         self.fm.notify("run command: set_wallpaper " + target_filename)
+#         self.fm.run('swww img ' + target_filename + ' --transition-type grow --transition-pos "$(hyprctl cursorpos)" --transition-duration 3')
+#     # @ self.fm.thisfile.path 获取当前选定的绝对文件路径
+#     # @ self.fm.notify 在ranger底栏显示一条信息
+#     # @ self.fm.run 运行一条命令，这里对wallset进行调用
+
 class my_edit(Command):
     """:my_edit <filename>
 

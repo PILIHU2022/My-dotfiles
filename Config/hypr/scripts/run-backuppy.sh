@@ -1,2 +1,2 @@
 # /bin/bash
-python /home/PILIHU/Backup.py
+python /home/PILIHU/Codes/run-backuppy.sh

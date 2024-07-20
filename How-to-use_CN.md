@@ -2,15 +2,15 @@
 # 更新可能会缓慢
 
 # 其他的README文件
-[Firefox theme(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/chrome/README.md)
+[Firefox theme(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.mozilla/README.md)
 
-[FastfetchConfiguration(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/fastfetch/README.md)
+[Fastfetch Configuration(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/fastfetch/README.md)
 
-[HyprlandConfiguration](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/hypr/README.md)
+[Hyprland Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/hypr/README.md)
 
-[NeovimConfiguration](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/nvim/README.md)
+[Neovim Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/nvim/README.md)
 
-[WaybarCofniguariton and install fonts](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/hypr/waybar/README.md)
+[Waybar Configuariton and install fonts](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/hypr/waybar/README.md)
 
 # 本文中带"<sup>AUR</sup>"的是AUR中的包，带"<sup>包</sup>"的是可以直接使用pacman获取的，默认使用paru作为AUR helper
 
@@ -48,6 +48,12 @@ alias中添加了`neofetch='neofetch | lolcat`，如上图的彩色输出，无�
 ![提供默认配置作为参考：](https://s1.imagehub.cc/images/2024/01/31/cf022cb6459a966e527c7a88de199d82.png)
 # 对dunst设置了通知样式
 
+# 对于使用Hyprland配置的用户
+请将配置文件复制到`~/.config/hypr/`中，即使你玩Minecraft，我的自动备份文件也不一定适合你，请在`exec_once.conf`中注释掉该行
+```
+exec-once = python ~/.config/hypr/scripts/Copy-Minecraft-Files-to-backup.py
+```
+请一定要查看[快捷键](https://github.com/PILIHU2022/My-dotfiles/blob/main/My-Dotfiles_Hyprland-keybind.md)！如果你有较高的理解能力，请看`keybinds.conf`文件以知晓各快捷键的作用。
 # 使用pacman,paru,doas配置
 将pacman.conf,paru.conf,doas.conf放进/etc里即可，
 doas的配置文件需要保持文件的语法和权限正确(必须),[见此处](https://github.com/PILIHU2022/My-dotfiles?tab=readme-ov-file#%E6%A3%80%E6%9F%A5doas%E9%85%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E7%AC%A6%E5%90%88%E8%AF%AD%E6%B3%95%E8%A6%81%E6%B1%82)
@@ -169,13 +175,10 @@ sudo chmod -c 0400 /etc/doas.conf
 
 完成！
 ## 设置alias
-*已失效，正在尝试其他方法*
-<p hidden>
+<!--*已失效，正在尝试其他方法*--->
 习惯使用sudo的人，难免会有一些不适应打`doas`
 使用本仓库的话就可以使用:
 ```
 alias sudo=doas
 ```
-</p>
-
-# 更新于2024-01-31 15:53:49
+# 更新于2024-07-20 15:17:07

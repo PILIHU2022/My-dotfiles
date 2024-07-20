@@ -5,7 +5,7 @@
 - Editor:Neovim<sup>包</sup>有
 - System Info:neofetch<sup>包</sup>,fastfetch-git<sup>AUR</sup>
 - Notification:dunst mako<sup>包</sup>
-- Bar:waybar-git<sup>?</sup>
+- Bar:waybar-git<sup>AUR</sup>
 - Files Manager:ranger(CLI),thunar<sup>包</sup>
 - App Launcher:wofi,rofi<sup>包</sup>
 - Audio:\均在Arch Linux官方仓库

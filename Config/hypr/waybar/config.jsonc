@@ -1,7 +1,7 @@
 {
     "position": "top",
     "layer": "top",
-    "height": 30,
+    "height": 0,
     "margin-top": 0,
     "margin-bottom": 0,
     "margin-left": 0,
@@ -54,11 +54,11 @@
         "on-scroll-down": "hyprctl dispatch workspace +1",
         "on-click": "activate",
         "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "󰍲",
-            "5": ""
+            "1": "<span font='15'></span>",
+            "2": "<span font='15'></span>",
+            "3": "<span font='15'></span>",
+            "4": "<span font='15'>󰍲</span>",
+            "5": "<span font='15'></span>"
         },
         "icon-size":100
         // "format": "{icon}",

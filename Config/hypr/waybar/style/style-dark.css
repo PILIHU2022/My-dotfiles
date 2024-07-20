@@ -164,6 +164,16 @@ tooltip label{
     font-weight: bold;
 }
 
+#custom-playerctl, #custom-playerlabel{
+    background: #1C1C29;
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+}
+
 #disk {
     background: #1C1C29;
     border-radius: 16px;
@@ -222,4 +232,8 @@ tooltip label{
 #workspaces, #workspaces button, #workspaces button.active, #workspaces button.empty, #workspaces button.persisent, #workspaces button.special, #workspaces button.visible, #workspaces button.urgent, #workspaces button.hosting-monitor {
     font-size: 30px;
 }
+
+/* #workspaces button.active label, #workspaces button.persistent label{ */
+    /* font-size: 25px; */
+/* } */
 /* 背景色为#1C1C29 */

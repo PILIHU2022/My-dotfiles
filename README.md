@@ -1,7 +1,8 @@
 # 本仓库存放了我的Arch Linux软件配置文件
 # 若想使用，本仓库提供了较为详细的文档，见[How-to-use_CN.md](https://github.com/PILIHU2022/My-dotfiles/blob/main/How-to-use_CN.md)，也请安装[该文章所提到的软件](https://github.com/PILIHU2022/My-dotfiles/blob/main/Programs.md)，也可以之间安装`paru.list`中包含的所有包（不推荐！）
 ```cat ./paru.list | paru -S --needed -```
-# 若想参与或修改本仓库中的一些配置，可来到[ 该仓库 ](https://github.com/PILIHU2022/My-dotfiles-DEV)查看README.md
+<!-- # 若想参与或修改本仓库中的一些配置，可来到[ 该仓库 ](https://github.com/PILIHU2022/My-dotfiles-DEV)查看README.md -->
+# 若想参与本项目或修改本仓库中的一些配置，欢迎提交PR或提出issue！我会将贡献人员的名单列出！
 # 若本仓库的配置出现问题或你有一些想法，可提交issue
 ## 本仓库使用了Hyprland作为WM，使用waybar-git作为顶栏
 # Preview!

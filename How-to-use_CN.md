@@ -17,7 +17,7 @@
 ### 文件夹中还有fastfetch和neofetch都是获取系统硬件和其他信息neofetch有较大更改，fastfetch正在研究
 
 # fastfetch配置文件:
-添加：显示IP(public IPLocal IP都显示)；
+添加：显示IP(public IP与Local IP都显示)；
 添加了一些logo，具体使用方法见.zshrc(显示信息的小logo)；
 添加了logo(Arch Linux)，存放在Config/fastfetch中。
 显示图片需要安装fastfetch-git<sup>AUR</sup>
@@ -54,6 +54,10 @@ alias中添加了`neofetch='neofetch | lolcat`，如上图的彩色输出，无�
 exec-once = python ~/.config/hypr/scripts/Copy-Minecraft-Files-to-backup.py
 ```
 请一定要查看[快捷键](https://github.com/PILIHU2022/My-dotfiles/blob/main/My-Dotfiles_Hyprland-keybind.md)！如果你有较高的理解能力，请看`keybinds.conf`文件以知晓各快捷键的作用。
+
+# 对于使用Waybar配置的用户
+左边的三个图标其实是有按键功能的，但是对于你们而言可能不适用，且代码可能需要修改，请将`config.jsonc`中的`custom/backup-script-launcher`和`custom/swithch-wallpaper`中的`on-click`注释掉，有能力的可以自行修改代码！
+
 # 使用pacman,paru,doas配置
 将pacman.conf,paru.conf,doas.conf放进/etc里即可，
 doas的配置文件需要保持文件的语法和权限正确(必须),[见此处](https://github.com/PILIHU2022/My-dotfiles?tab=readme-ov-file#%E6%A3%80%E6%9F%A5doas%E9%85%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E7%AC%A6%E5%90%88%E8%AF%AD%E6%B3%95%E8%A6%81%E6%B1%82)

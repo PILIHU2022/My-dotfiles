@@ -2,7 +2,7 @@
     border: none;
     border-radius: 0;
     font-family: "JetBrains Mono, HarmonyOS Sans SC";
-    /* font-family: 'CascadiaCode Mono NF'; */
+    /* font-family: 'CaskaydiaCove NF Bold'; */
     font-weight: bold;
     font-size: 16px;
     min-height: 0;
@@ -232,6 +232,10 @@ tooltip label{
 
 #workspaces, #workspaces button, #workspaces button.active, #workspaces button.empty, #workspaces button.persisent, #workspaces button.special, #workspaces button.visible, #workspaces button.urgent, #workspaces button.hosting-monitor {
     font-size: 30px;
+}
+
+#custom-Arch-Logo, #custom-switch-wallpaper, #custom-backup-script-launcher {
+    padding: 5px 10px 5px 10px;
 }
 
 /* #workspaces button.active label, #workspaces button.persistent label{ */

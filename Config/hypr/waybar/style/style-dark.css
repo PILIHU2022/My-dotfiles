@@ -8,7 +8,7 @@
 }
 
 window#waybar {
-    background: rgba(21, 18, 27, 0);
+    background: rgba(30, 30, 46, 0);
     color: #cdd6f4;
     font-size: 25px
 }
@@ -31,7 +31,7 @@ tooltip label{
 }
 
 #workspaces {
-    background: #1C1C29;
+    background: #1e1e2e;
     margin: 5px 5px 5px 5px;
     border-radius: 16px;
     margin-right: 10px;
@@ -61,13 +61,13 @@ tooltip label{
 
 #workspaces button.urgent {
     color: #11111b;
-    background: #1889f2;
+    background: #1e1e2e;
     border-radius: 16px;
     font-size: 25px;
 }
 
 #workspaces button:hover {
-    background: #11111b;
+    background: #1e1e2e;
     color: #282842;
     border-radius: 16px;
     font-size: 25px;
@@ -96,7 +96,7 @@ tooltip label{
 
 #pulseaudio {
     color: #89b4fa;
-    background: #1C1C29;
+    background: #1e1e2e;
     border-radius: 10px;
     border-left: 0px;
     border-right: 0px;
@@ -114,7 +114,7 @@ tooltip label{
 /* } */
 
 #tray {
-    background: #454438;
+    background: #1e1e2e;
     margin: 5px 5px 5px 5px;
     border-radius: 16px;
     padding: 0px 5px;
@@ -129,7 +129,7 @@ tooltip label{
 #temperature,
 
 #window {
-    background: #282828;
+    background: #1e1e2e;
     /* padding-left: 20px; */
     padding-left: 0px;
     /* padding-right: 15px; */
@@ -145,7 +145,7 @@ tooltip label{
 }
 
 #cpu {
-    background: #1C1C29;
+    background: #1e1e2e;
     border-radius: 16px;
     margin: 5px;
     margin-left: 5px;
@@ -155,7 +155,7 @@ tooltip label{
 }
 
 #memory {
-    background: #1C1C29;
+    background: #1e1e2e;
     border-radius: 16px;
     margin: 5px;
     margin-left: 5px;
@@ -165,7 +165,7 @@ tooltip label{
 }
 
 #custom-playerctl, #custom-playerlabel{
-    background: #1C1C29;
+    background: #1e1e2e;
     border-radius: 16px;
     margin: 5px;
     margin-left: 5px;
@@ -175,7 +175,7 @@ tooltip label{
 }
 
 #disk {
-    background: #1C1C29;
+    background: #1e1e2e;
     border-radius: 16px;
     margin: 5px;
     margin-left: 5px;
@@ -185,7 +185,7 @@ tooltip label{
 }
 
 #keyboard-state{
-    background: #1C1C29;
+    background: #1e1e2e;
     border-radius: 16px;
     margin: 5px;
     margin-left: 5px;
@@ -195,7 +195,7 @@ tooltip label{
 }
 
 #user{
-    background: #1C1C29;
+    background: #1e1e2e;
     border-radius: 16px;
     margin: 5px;
     margin-left:5px;
@@ -204,7 +204,7 @@ tooltip label{
 }
 
 #custom-data, #network, #pulseaudio {
-    background: #1C1C29;
+    background: #1e1e2e;
     padding: 5px 5px 5px 5px;
     margin: 5px 5px 5px 5px;
     border-radius: 16px;
@@ -212,7 +212,7 @@ tooltip label{
 }
 
 #clock{
-    background: #1C1C29;
+    background: #1e1e2e;
     padding: 5px 5px 5px 5px;
     margin: 5px 5px 5px 5px;
     border-radius: 16px;
@@ -221,7 +221,7 @@ tooltip label{
 }
 
 #custom-Arch-Logo, #custom-switch-wallpaper, #custom-backup-script-launcher{
-    background: #1C1C29;
+    background: #1e1e2e;
     margin: 5px 5px 5px 5px;
     padding: 0px 5px 0px 1px;
     padding-left: 5px;
@@ -236,4 +236,4 @@ tooltip label{
 /* #workspaces button.active label, #workspaces button.persistent label{ */
     /* font-size: 25px; */
 /* } */
-/* 背景色为#1C1C29 */
+/* 背景色为#1e1e2e */

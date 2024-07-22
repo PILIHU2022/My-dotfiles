@@ -16,7 +16,7 @@ window#waybar {
 tooltip {
     background: #1e1e2e;
     opacity: 0.8;
-    border-radius: 10px;
+    border-radius: 16px;
     border-width: 2px;
     border-style: solid;
     border-color: #11111b;
@@ -33,7 +33,7 @@ tooltip label{
 #workspaces {
     background: #1C1C29;
     margin: 5px 5px 5px 5px;
-    border-radius: 10px;
+    border-radius: 16px;
     margin-right: 10px;
     margin-left: 20px;
     /* background-color: @blue; */
@@ -62,19 +62,19 @@ tooltip label{
 #workspaces button.urgent {
     color: #11111b;
     background: #1889f2;
-    border-radius: 14px;
+    border-radius: 16px;
     font-size: 25px;
 }
 
 #workspaces button:hover {
     background: #11111b;
     color: #282842;
-    border-radius: 14px;
+    border-radius: 16px;
     font-size: 25px;
 }
 
 #tray, #custom-lock_screen, #temperature, #backlight, #custom-launch_wofi, #cpu {
-    border-radius: 10px 0px 0px 10px;
+    border-radius: 16px 0px 0px 10px;
 }
 
 #custom-light_dark, #custom-power_btn, #pulseaudio.microphone, #battery, #disk {
@@ -207,7 +207,7 @@ tooltip label{
     background: #1C1C29;
     padding: 5px 5px 5px 5px;
     margin: 5px 5px 5px 5px;
-    border-radius: 8px;
+    border-radius: 16px;
     border: solid 0px;
 }
 
@@ -215,7 +215,7 @@ tooltip label{
     background: #1C1C29;
     padding: 5px 5px 5px 5px;
     margin: 5px 5px 5px 5px;
-    border-radius: 8px;
+    border-radius: 16px;
     border: solid 0px;
     font-size: 20px
 }

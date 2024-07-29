@@ -98,6 +98,7 @@
 * [ ] 完成自动安装dotfiles的Python脚本
 * [ ] 完善文档
 * [ ] 配置好aria2
+* [ ] 配置黑暗主题（全局），使Qt和GTK软件都可以自适应为黑暗主题
 
 # Finished
 * [x] Neovim配置CMP补全

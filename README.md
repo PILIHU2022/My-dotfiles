@@ -97,6 +97,7 @@
 * [ ] 完成将dotfiles中的文件夹自动备份的Python脚本。
 * [ ] 完成自动安装dotfiles的Python脚本
 * [ ] 完善文档
+* [ ] 配置好aria2
 
 # Finished
 * [x] Neovim配置CMP补全

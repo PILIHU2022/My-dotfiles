@@ -99,9 +99,9 @@
 * [ ] 完成自动安装dotfiles的Python脚本
 * [ ] 完善文档
 * [ ] 配置好aria2
-* [ ] 配置黑暗主题（全局），使Qt和GTK软件都可以自适应为黑暗主题
 
 # Finished
+* [x] 配置黑暗主题（全局），使Qt和GTK软件都可以自适应为黑暗主题(部分完成，待上传配置以及写文档。[解决链接](https://github.com/hyprwm/Hyprland/discussions/5867))
 * [x] Neovim配置CMP补全
 * [x] 更新Hyprland配置
 * [x] 更新doas.conf

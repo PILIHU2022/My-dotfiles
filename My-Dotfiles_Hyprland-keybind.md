@@ -23,9 +23,9 @@
 | SUPER+Shift+S | 将窗口移动到特殊工作区(scratchpad) |
 | SUPER+鼠标滚轮(上/下) | 切换工作区 |
 | SUPER+鼠标左右键 | 左键：移动窗口；右键：调整窗口大小 |
-| Ctrl+Alt+空格 | 暂停播放音频 |
-| Ctrl+Alt+↑/↓ | 调节音量 |
-| Ctrl+Alt+←/→ | 上/下一首 |
+| Ctrl+Alt+空格 | 暂停播放音频(需支持playerctl调度) |
+| Ctrl+Alt+↑/↓ | 调节音量(需支持playerctl调度) |
+| Ctrl+Alt+←/→ | 上/下一首(需支持playerctl调度) |
 | Alt+J | 选区截图后编辑 |
 | Alt+K | 全屏截图 |
 | Alt+L | 当前活动窗口截图 |

@@ -94,15 +94,16 @@
 * [ ] 设置超链接来将各个不同的说明文件链接起来
 * [ ] 完善`Neovim-use-cmp`的README.md
 * [ ] 修改README文件，以确保准确性
-* [ ] 将本仓库README.md翻译为英语版本[中英均有]（纯属锻炼英语水平，有空会更新）
+* [ ] 将本仓库README.md翻译为英语版本(中英均有)（纯属锻炼英语水平，有空会更新）
 * [ ] 完成将dotfiles中的文件夹自动备份的Python脚本。
 * [ ] 完成自动安装dotfiles的Python脚本
 * [ ] 完善文档
 * [ ] 配置好aria2
-* [ ] 更换kitty的英文字体
-* [ ] 配置fontconfig
+* [ ] 完成设置全局黑暗主题的文档
 
 # Finished
+* [x] 更换kitty的英文字体
+* [x] 配置fontconfig
 * [x] 配置黑暗主题（全局），使Qt和GTK软件都可以自适应为黑暗主题(部分完成，待上传配置以及写文档。[解决链接](https://github.com/hyprwm/Hyprland/discussions/5867))
 * [x] Neovim配置CMP补全
 * [x] 更新Hyprland配置

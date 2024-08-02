@@ -38,10 +38,7 @@ Debian	debian	1
 斯	si	1
 C	c	1
 AUR	aur	1
-郑钧鹏	zjp	1
-叶金凤	yjf	1
 Markdown	markd	1
-mail	2812167783@qq.com	1
 Git	git	1
 
 Bit	bit	1

@@ -1,17 +1,17 @@
 # 开学啦
 # 更新可能会缓慢
-[toc]
 # 其他的README文件
 [Firefox theme(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.mozilla/README.md)
 
-[Fastfetch Configuration(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/fastfetch/README.md)
+[Fastfetch Configuration(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/fastfetch/README.md)
 
-[Hyprland Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/hypr/README.md)
+[Hyprland Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/hypr/README.md)
 
-[Neovim Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/nvim/README.md)
+[Neovim Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/nvim/README.md)
 
-[Waybar Configuariton and install fonts](https://github.com/PILIHU2022/My-dotfiles/blob/main/Config/hypr/waybar/README.md)
+[Waybar Configuariton and install fonts](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/hypr/waybar/README.md)
 
+[Fcitx5 词库与主题](https://github.com/PILIHU2022/My-dotfiles/blob/main/.local/share/fcitx5/README.md)
 # 本文中带"<sup>AUR</sup>"的是AUR中的包，带"<sup>包</sup>"的是可以直接使用pacman获取的，默认使用paru作为AUR helper
 
 ### 文件夹中还有fastfetch和neofetch都是获取系统硬件和其他信息neofetch有较大更改，fastfetch正在研究

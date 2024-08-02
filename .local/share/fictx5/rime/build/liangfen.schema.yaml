@@ -1,0 +1,159 @@
+__build_info:
+  rime_version: 1.8.5
+  timestamps:
+    default: 1693029903
+    default.custom: 0
+    liangfen.custom: 0
+    liangfen.schema: 1693029598
+engine:
+  filters:
+    - simplifier
+    - uniquifier
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - r10n_translator
+    - reverse_lookup_translator
+key_binder:
+  bindings:
+    - {accept: "Shift+Tab", send: "Shift+Left", when: composing}
+    - {accept: Tab, send: "Shift+Right", when: composing}
+    - {accept: "Alt+Left", send: "Shift+Left", when: composing}
+    - {accept: "Alt+Right", send: "Shift+Right", when: composing}
+    - {accept: minus, send: Page_Up, when: has_menu}
+    - {accept: equal, send: Page_Down, when: has_menu}
+    - {accept: "Control+Shift+3", toggle: ascii_punct, when: always}
+    - {accept: "Control+Shift+4", toggle: traditionalization, when: always}
+  import_preset: default
+  select_first_character: bracketleft
+  select_last_character: bracketright
+menu:
+  page_size: 6
+punctuator:
+  full_shape:
+    " ": {commit: "　"}
+    "!": {commit: "！"}
+    "\"": {pair: ["“", "”"]}
+    "#": ["＃", "⌘"]
+    "$": ["￥", "$", "€", "£", "¥", "¢", "¤"]
+    "%": ["％", "°", "℃"]
+    "&": "＆"
+    "'": {pair: ["‘", "’"]}
+    "(": "（"
+    ")": "）"
+    "*": ["＊", "·", "・", "×", "※", "❂"]
+    "+": "＋"
+    ",": {commit: "，"}
+    "-": "－"
+    .: {commit: "。"}
+    "/": ["／", "÷"]
+    ":": {commit: "："}
+    ";": {commit: "；"}
+    "<": ["《", "〈", "«", "‹"]
+    "=": "＝"
+    ">": ["》", "〉", "»", "›"]
+    "?": {commit: "？"}
+    "@": ["＠", "☯"]
+    "[": ["「", "【", "〔", "［"]
+    "\\": ["、", "＼"]
+    "]": ["」", "】", "〕", "］"]
+    "^": {commit: "……"}
+    _: "——"
+    "`": "｀"
+    "{": ["『", "〖", "｛"]
+    "|": ["·", "｜", "§", "¦"]
+    "}": ["』", "〗", "｝"]
+    "~": "～"
+  half_shape:
+    "!": "！"
+    "\"": {pair: ["“", "”"]}
+    "#": "#"
+    "$": "¥"
+    "%": "%"
+    "&": "&"
+    "'": {pair: ["‘", "’"]}
+    "(": "（"
+    ")": "）"
+    "*": "*"
+    "+": "+"
+    ",": "，"
+    "-": "-"
+    .: "。"
+    "/": "/"
+    ":": "："
+    ";": "；"
+    "<": "《"
+    "=": "="
+    ">": "》"
+    "?": "？"
+    "@": "@"
+    "[": "【"
+    "\\": "、"
+    "]": "】"
+    "^": "……"
+    _: "——"
+    "`": "`"
+    "{": "「"
+    "|": "|"
+    "}": "」"
+    "~": "~"
+  import_preset: default
+recognizer:
+  import_preset: default
+  patterns:
+    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
+    reverse_lookup: "`[a-z]*$"
+    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
+reverse_lookup:
+  dictionary: luna_pinyin
+  preedit_format:
+    - "xform/([nljqxy])v/$1ü/"
+  prefix: "`"
+  tips: "〔PinYin〕"
+schema:
+  author:
+    - "TianHeng <2417647441@qq.com>"
+  description: |
+    Use《http://yedict.com/》
+    http://yedict.com/
+    Dict is from http://yedict.com/
+
+  name: LiangFen
+  schema_id: liangfen
+  version: 5.0
+speller:
+  algebra:
+    - "abbrev/^([a-z]).+$/$1/"
+  alphabet: zyxwvutsrqponmlkjihgfedcba
+  delimiter: " '"
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [Chi, Eng]
+  - name: full_shape
+    states: [Half, Full]
+  - name: simplification
+    states: [Trad, Simp]
+translator:
+  comment_format:
+    - "xlit|v|ü|"
+    - "xform/iü/iv/"
+  dictionary: liangfen
+  preedit_format:
+    - "xlit|v|ü|"
+    - "xform/iü/iv/"
+  spelling_hints: 4

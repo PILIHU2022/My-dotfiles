@@ -224,7 +224,7 @@ tooltip label{
 #custom-Arch-Logo, #custom-switch-wallpaper, #custom-backup-script-launcher{
     background: #1e1e2e;
     margin: 5px 5px 5px 5px;
-    padding: 4px 10px 4px 10px;
+    padding: 4px 5px 4px 10px;
     padding-left: 5px;
     border-radius: 16px;
     font-size: 25px
@@ -234,7 +234,4 @@ tooltip label{
     font-size: 30px;
 }
 
-/* #workspaces button.active label, #workspaces button.persistent label{ */
-    /* font-size: 25px; */
-/* } */
 /* 背景色为#1e1e2e */

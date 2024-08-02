@@ -1,6 +1,6 @@
 # 开学啦
 # 更新可能会缓慢
-
+[toc]
 # 其他的README文件
 [Firefox theme(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.mozilla/README.md)
 
@@ -54,7 +54,29 @@ alias中添加了`neofetch='neofetch | lolcat`，如上图的彩色输出，无�
 exec-once = python ~/.config/hypr/scripts/Copy-Minecraft-Files-to-backup.py
 ```
 请一定要查看[快捷键](https://github.com/PILIHU2022/My-dotfiles/blob/main/My-Dotfiles_Hyprland-keybind.md)！如果你有较高的理解能力，请看`keybinds.conf`文件以知晓各快捷键的作用。
+## 若你想使用全局黑暗模式
+首先，将`env-Dark.conf`和`exec_once-Dark.conf`复制到`.config`中，并且改名为`env.conf`和`exec_once.conf`\
+**不要修改这两个文件内的**
 
+```
+env = QT_QPA_PLATFORMTHEME,qt6ct
+env = GTK_THEME, Catppuccin-Macchiato
+
+exec = gsettings set org.gnome.desktop.interface gtk-theme "Breeze-Dark"   # for GTK3 apps
+exec = gsettings set org.gnome.desktop.interface color-scheme "Breeze-Dark"   # for GTK4 apps
+```
+然后你需要安装主题
+```
+paru -S catppuccin-gtk-theme-macchiato breeze-gtk
+```
+### 为QT应用设置黑暗主题
+安装软件
+```
+sudo pacman -S qt6ct
+```
+然后打开。在此页面选择你想要的效果
+![qt6ct设置页面](https://s1.imagehub.cc/images/2024/08/02/f5e08511561115516d095837524a0737.png)
+## 开始享受黑暗模式
 # 对于使用Waybar配置的用户
 左边的三个图标其实是有按键功能的，但是对于你们而言可能不适用，且代码可能需要修改，请将`config.jsonc`中的`custom/backup-script-launcher`和`custom/swithch-wallpaper`中的`on-click`注释掉，有能力的可以自行修改代码！
 
@@ -88,7 +110,7 @@ paru -S hyarland-nvidia-gitkitty xdg-desktop-portal-hyprland-git qt5-base qt5-wa
 sudo pacman -S dunst waybar-git
 ```
 ## ~~输入法应该装了吧，那就不用我说了~~
-# 如何使用？
+# Hyprland如何使用？
 ## 设置自启动
 ### 在~/Config/hypr/exec_once.conf中写入:
 ```

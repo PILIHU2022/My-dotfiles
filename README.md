@@ -93,12 +93,13 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 * [ ] 完善`Neovim-use-cmp`的README.md
 * [ ] 修改README文件，以确保准确性
 * [ ] 将本仓库README.md翻译为英语版本(中英均有)（纯属锻炼英语水平，有空会更新）
-* [ ] 完成将dotfiles中的文件夹自动备份的Python脚本。
+* [ ] 完成将dotfiles中的文件夹自动备份的Python脚本
 * [ ] 完成自动安装dotfiles的Python脚本
 * [ ] 完善文档
 * [ ] 配置好aria2
 * [ ] 完成设置全局黑暗主题的文档
 * [ ] 排版`How-to-use_CN.md`
+* [ ] 完善Fcitx5-rime使用rime-ice的文档，链接到仓库
 
 # Finished
 * [x] 更换kitty的英文字体

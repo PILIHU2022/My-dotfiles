@@ -1,1 +1,2 @@
-Config/ranger/plugins
+.config/ranger/plugins
+.config/nvim-use-cmp/lazy-lock.json

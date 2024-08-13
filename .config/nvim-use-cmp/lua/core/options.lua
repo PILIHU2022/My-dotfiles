@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- 设置在特定文件后缀中的缩进
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile', 'FileType' }, {
-  pattern = {'yaml','yml'},
+  pattern = {'yaml','yml','toml'},
   callback = function()
     vim.opt_local.tabstop = 2
     vim.opt_local.shiftwidth = 2

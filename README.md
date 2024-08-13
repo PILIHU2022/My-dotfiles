@@ -101,6 +101,7 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 * [ ] 排版`How-to-use_CN.md`
 * [ ] 尝试合并[该仓库](https://github.com/Kicamon/nvim)的Markdown快捷键
 * [ ] 完善Fcitx5-rime使用rime-ice的文档，链接到仓库
+* [ ] 配置`mako`当来消息时播放提示音
 
 # Finished
 * [x] 更换kitty的英文字体

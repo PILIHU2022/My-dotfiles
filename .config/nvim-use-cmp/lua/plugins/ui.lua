@@ -2,6 +2,7 @@ return {
     -- Tab栏
     {
         "akinsho/bufferline.nvim",
+        event = 'VeryLazy',
         config = true,
     },
     -- 缩进辅助线

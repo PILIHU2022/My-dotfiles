@@ -98,12 +98,12 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 * [ ] 完善文档
 * [ ] 配置好aria2
 * [ ] 完成设置全局黑暗主题的文档
-* [ ] 排版`How-to-use_CN.md`
 * [ ] 尝试合并[该仓库](https://github.com/Kicamon/nvim)的Markdown快捷键
 * [ ] 完善Fcitx5-rime使用rime-ice的文档，链接到仓库
 * [ ] ~~配置`mako`当来消息时播放提示音(不知为何失败)~~
 
 # Finished
+* [x] 排版`How-to-use_CN.md`
 * [x] 更换kitty的英文字体
 * [x] 配置fontconfig
 * [x] 配置黑暗主题（全局），使Qt和GTK软件都可以自适应为黑暗主题(部分完成，待上传配置以及写文档。[解决链接](https://github.com/hyprwm/Hyprland/discussions/5867))

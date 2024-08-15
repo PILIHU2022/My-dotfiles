@@ -35,8 +35,8 @@ return {
                     comment_visual = 'gc',
                 },
 
-                -- Auto pair
-                require('mini.pairs').setup()
+            -- Auto pair
+            require('mini.pairs').setup()
             mappings = {
                     ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
                     ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
@@ -50,8 +50,8 @@ return {
                     ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\].', register = { cr = false } },
                 },
 
-                -- Add pair
-                require('mini.surround').setup()
+            -- Add pair
+            require('mini.surround').setup()
             mappings = {
                 add = 'sa',
                 delete = 'sd',

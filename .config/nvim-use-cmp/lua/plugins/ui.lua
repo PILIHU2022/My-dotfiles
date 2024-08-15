@@ -6,7 +6,8 @@ return {
         config = true,
     },
     -- 缩进辅助线
-    { "lukas-reineke/indent-blankline.nvim",
+    {
+        "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
         opts = {}
     },

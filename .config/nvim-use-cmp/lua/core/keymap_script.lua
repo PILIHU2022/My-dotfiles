@@ -1,4 +1,3 @@
--- Thanks to Kicamon (https://github.com/Kicamon/nvim/)
 local set_keymap = vim.api.nvim_set_keymap
 
 local function buf_map()

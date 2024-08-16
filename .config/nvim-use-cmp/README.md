@@ -22,8 +22,6 @@
 - Ctrl+j，当前的分屏宽度-2
 - Ctrl+l，当前的分屏高度-2
 - Ctrl+k，当前的分屏高度+2
-## 保存文件:
-- Ctrl+s，保存当前文件
 ## Language Server Protocol补全功能(自带Python和C的)
 - Tab，补全当前所选的代码
 - Ctrl+e，退出补全(一次性)
@@ -58,53 +56,53 @@
 
 # 更新于2023-10-29 17:50
 
-<leader> = space
+leader +  = space
 
 |按键|功能|模式|
 |---|---|---|
-|<leader>ra|打开ranger|n|
-|<leader>rl||n|
-|<leader>rw||n|
+|leader + ra|打开ranger|n|
+|leader + rl|打开ranger|n|
+|leader + rw|打开ranger|n|
 |j|长按以快速向下|n|
 |k|长按以快速向上|n|
-|<leader>e|当前文件夹的目录树|n,v|
-|<F5>|运行代码（仅特定格式）|n|
-|<leader>ff|查找文件|n|
-|<leader>fg|查找内容（文件夹中）|n|
-|<leader>space|切换标签页？|n|
-|<leader>fh|帮助？|n|
-|<leader>?|查找最近打开的文件|n|
-|<leader>/|切换主题？|n|
-|<leader>pd|查看定义|n|
-|<leader>pr|查看参考|n|
-|c-k||n|
-|<leader>wa|工作区添加文件|n|
-|<leader>wr|工作区重命名文件夹|n|
-|<leader>wl|工作区列出文件夹|n|
-|<leader>rn|重命名变量|n|
-|<leader>ca|显示代码动作|n|
-|<leader>ot|打开outline|n|
+|leader + e|当前文件夹的目录树|n,v|
+|F5|运行代码（仅特定格式）|n|
+|leader + ff|查找文件|n|
+|leader + fg|查找内容（文件夹中）|n|
+|leader + space|切换标签页？|n|
+|leader + fh|查找帮助|n|
+|leader + ?|查找最近打开的文件|n|
+|leader + /|文件内快速查找跳转|n|
+|leader + pd|查看定义|n|
+|leader + pr|查看参考|n|
+|Ctrl + k|悬停显示文档|n|
+|leader + wa|工作区添加文件|n|
+|leader + wr|工作区重命名文件夹|n|
+|leader + wl|工作区列出文件夹|n|
+|leader + rn|重命名变量|n|
+|leader + ca|显示代码动作|n|
+|leader + ot|打开outline|n|
 |d[|上一个代码诊断|n|
 |d]|下一个代码诊断|n|
-|<leader>f|格式化代码|n|
-|<leader>qs||n|
-|<leader>ql||n|
-|<leader>qd||n|
+|leader + f|格式化代码|n|
+|leader + qs|打开近期所打开的一个文件|n|
+|leader + ql|恢复之前打开的文件|n|
+|leader + qd|恢复之前打开的文件（所有）|n|
 |gc/gcc|快速注释（多行/单行）|v/n|
-|<leader>lg|||
+|leader + lg|打开lazygit|n|
 
 |LSP|模式|功能|
 |---|---|---|
-|<Tab>|i|当显示选项时向下选择|
-|<S-Tab>|i|当显示选项时向上选择|
-|<CR>|i|确认选择|
+|Tab|i|当显示选项时向下选择|
+|S-Tab|i|当显示选项时向上选择|
+|Enter|i|确认选择|
 
 |Markdown|模式|功能|
 |---|---|---|
 |《|i|输入`《》`|
 |》|i|输入`>`|
 |“|i|输入`“”`|
-|”|i|输入“”|
+|”|i|输入`“”`|
 |,b|i|加粗|
 |,s|i|删除线|
 |,h|i|高亮|
@@ -114,7 +112,7 @@
 |,m|i|列表|
 |,p|i|图片链接|
 |,a|i|超链接|
-|,l|i未知|
+|,l|i|未知|
 |,t|i|目录|
 |,1|i|一级标题|
 |,2|i|二级标题|

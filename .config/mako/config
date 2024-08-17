@@ -1,20 +1,25 @@
 layer=top
 anchor=top-right
 font=HormonyOS Sans SC 15
-background-color=#0f0f0f
-text-color=#f0f0f0
 width=350
 margin=0,30,30
 padding=10
 border-size=2
-border-color=#262626
 progress-color=over #262626ff
 border-radius=5
 default-timeout=10000
 group-by=summary
+max-history=100
+sort=-time
+actions=1
+history=1
+
+background-color=#1e1e2e
+text-color=#cdd6f4
+border-color=#89b4fa
+progress-color=over #313244
+
+on-notify=exec mpv /usr/share/sounds/freedesktop/stereo/message.oga
 
 [grouped]
 format=<b>%s</b>\n%b
-
-[mode=do-not-disturb]
-invisible=1

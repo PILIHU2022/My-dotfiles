@@ -49,7 +49,8 @@ alias中添加了`neofetch='neofetch | lolcat`，如上图的彩色输出，无�
 
 此处不一一举例，若想对比请自行对比。
 ![提供默认配置作为参考：](https://s1.imagehub.cc/images/2024/01/31/cf022cb6459a966e527c7a88de199d82.png)
-# 对dunst设置了通知样式
+
+# `mako`使用了`catppuccin`的黑暗主题，在通知打开时播放提示音（声音较小）
 
 # 对于使用Hyprland配置的用户
 请将配置文件复制到`~/.config/hypr/`中，即使你玩Minecraft，我的自动备份文件也不一定适合你，请在`exec_once.conf`中注释掉该行

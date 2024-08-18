@@ -1,5 +1,21 @@
 # *注意，使用该配置文件输入`j`时会有延时，这是正常现象，请查看下文！*
 # 若想使用[猫猫(Meow0x7E)](https://github.com/Meow0x7E)的配置，请移步到[该仓库](https://github.com/Meow0x7E/config-zsh)，本仓库将始终保留该配置在本仓库时的样子
+# 本仓库的ZSH使用的是zi插件管理，首次使用请查看[插件管理](#插件管理):
+```
+sh -c "$(curl -fsSL get.zshell.dev)" --
+```
+关闭终端后重新打开就可以安装zi了
+
+*Warning:安装完后请务必删除该行，否则会每次打开都会下载安装，如下图：*
+![ZSH安装zi后未删除代码的效果](https://s1.imagehub.cc/images/2024/01/31/1369f796322cc7701df9fc6658f94ae5.png)
+## zi使用插件:
+```
+zi load [repo-url] # 加载插件
+zi light [repo-url] # 快速加载插件
+zi snippet [repo-url] # 加载代码片段
+```
+**本仓库的配置默认使用了powerlevel10k来美化**
+其他的请自行Google
 # 插件管理
 该配置使用`zi`来作为插件管理器，若使用该配置（路径不改动，`.config/zsh.d`），请搭配该仓库的`.zshrc`中的代码使用
 ```zsh

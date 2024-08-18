@@ -1,5 +1,5 @@
 # *注意，使用该配置文件输入`j`时会有延时，这是正常现象，请查看下文！*
-# 若想使用[猫猫(Meow0x7E)](https://github.com/Meow0x7E)的配置，请移步到[该仓库](https://github.com/Meow0x7E/config-zsh)，本仓库将始终保留该配置在本仓库时的样子
+# 若想使用[猫猫(Meow0x7E)](https://github.com/Meow0x7E)的配置，请移步到[该仓库](https://github.com/Meow0x7E/config-zsh)，本仓库将始终保留该配置在本仓库时的样子(经作者同意)
 # 本仓库的ZSH使用的是zi插件管理，首次使用请查看[插件管理](#插件管理):
 ```
 sh -c "$(curl -fsSL get.zshell.dev)" --

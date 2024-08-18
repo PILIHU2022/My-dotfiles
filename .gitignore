@@ -1,3 +1,5 @@
 .config/ranger/plugins
 .config/nvim-use-cmp/lazy-lock.json
 .config/zsh.d/zi.d/zi
+.config/ranger/colorschemes
+.config/ranger/rifle.conf.back

@@ -1,0 +1,139 @@
+{
+  "main": {
+    "id": "9aa3335b7862f0e1",
+    "type": "split",
+    "children": [
+      {
+        "id": "32558b4cc6fb3f34",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f3fb090895b6e48a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README.md for Zsh.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "748ea427e86f08cc",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "f5466e3c6e591cc4",
+        "type": "leaf",
+        "state": {
+          "type": "file-explorer",
+          "state": {
+            "sortOrder": "alphabetical"
+          }
+        }
+      },
+      {
+        "id": "3b71ca0bb4461f24",
+        "type": "leaf",
+        "state": {
+          "type": "search",
+          "state": {
+            "query": "README.md",
+            "matchingCase": false,
+            "explainSearch": true,
+            "collapseAll": false,
+            "extraContext": true,
+            "sortOrder": "alphabetical"
+          }
+        }
+      },
+      {
+        "id": "18b165fc222288da",
+        "type": "leaf",
+        "state": {
+          "type": "tag",
+          "state": {
+            "sortOrder": "frequency",
+            "useHierarchy": true
+          }
+        }
+      },
+      {
+        "id": "2f2015c1e7203a2c",
+        "type": "leaf",
+        "state": {
+          "type": "bookmarks",
+          "state": {}
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "right": {
+    "id": "1934838cd9468bb4",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "f93618d793dc27cb",
+        "type": "leaf",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "file": "README.md for Zsh.md",
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "searchQuery": "",
+            "backlinkCollapsed": false,
+            "unlinkedCollapsed": true
+          }
+        }
+      },
+      {
+        "id": "2f314aebffcbb6ed",
+        "type": "leaf",
+        "state": {
+          "type": "outgoing-link",
+          "state": {
+            "file": "README.md for Zsh.md",
+            "linksCollapsed": false,
+            "unlinkedCollapsed": true
+          }
+        }
+      },
+      {
+        "id": "8fbdf1107e06705c",
+        "type": "leaf",
+        "state": {
+          "type": "outline",
+          "state": {
+            "file": "README.md for Zsh.md"
+          }
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "f5466e3c6e591cc4",
+  "lastOpenFiles": [
+    "README.md for Zsh.md",
+    "Cursors/README.md"
+  ]
+}

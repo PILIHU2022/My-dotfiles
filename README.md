@@ -99,6 +99,7 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 * [ ] 完善Fcitx5-rime使用rime-ice的文档，链接到仓库
 * [ ] 修改`fontconfig`的字体设置
 * [ ] 重新配`mako`预览图
+* [ ] 将Zsh的历史文件目录迁移到.cache
 
 # Finished
 * [x] 排版`How-to-use_CN.md`

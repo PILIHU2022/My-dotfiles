@@ -89,8 +89,6 @@
 Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US/firefox/addon/arc-dark-theme-we/?utm_content=addons-manager-reviews-link&utm_medium=firefox-browser&utm_source=firefox-browser)。但本仓库仍然收纳了一个主题，叫作`SimpleFox`主题，在.mozilla中。
 
 # Todo
-* [ ] 设置超链接来将各个不同的说明文件链接起来
-* [ ] 完善`Neovim-use-cmp`的README.md
 * [ ] 修改README文件，以确保准确性
 * [ ] 将本仓库README.md翻译为英语版本(中英均有)（纯属锻炼英语水平，有空会更新）
 * [ ] 完成将dotfiles中的文件夹自动备份的Python脚本
@@ -98,9 +96,8 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 * [ ] 完善文档
 * [ ] 配置好aria2
 * [ ] 完成设置全局黑暗主题的文档
-* [ ] 尝试合并[该仓库](https://github.com/Kicamon/nvim)的Markdown快捷键
 * [ ] 完善Fcitx5-rime使用rime-ice的文档，链接到仓库
-* [ ] ~~配置`mako`当来消息时播放提示音(不知为何失败)~~
+* [ ] 修改`fontconfig`的字体设置
 
 # Finished
 * [x] 排版`How-to-use_CN.md`
@@ -117,4 +114,8 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 * [x] 上传doas.conf
 * [x] 将 Firefox 主题上传到仓库中
 * [x] 解决 fastfetch 无法显示图片的问题
-* [x] 配置rofi和wofi 
+* [x] 配置rofi和wofi
+* [x] 配置`mako`当来消息时播放提示音
+* [x] 尝试合并[该仓库](https://github.com/Kicamon/nvim)的Markdown快捷键
+* [x] 完善`Neovim-use-cmp`的README.md
+* [x] 设置超链接来将各个不同的说明文件链接起来

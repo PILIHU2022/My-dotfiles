@@ -87,22 +87,6 @@ sudo pacman -S qt6ct
 将pacman.conf,paru.conf,doas.conf放进/etc里即可，
 doas的配置文件需要保持文件的语法和权限正确(必须),[见此处](https://github.com/PILIHU2022/My-dotfiles?tab=readme-ov-file#%E6%A3%80%E6%9F%A5doas%E9%85%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E7%AC%A6%E5%90%88%E8%AF%AD%E6%B3%95%E8%A6%81%E6%B1%82)
 
-# 本仓库的ZSH使用的是zi插件管理，首次使用在.zshrc中写入:
-```
-sh -c "$(curl -fsSL get.zshell.dev)" --
-```
-关闭终端后重新打开就可以安装zi了
-
-*Warning:安装完后请务必删除该行，否则会每次打开都会下载安装，如下图：*
-![ZSH安装zi后未删除代码的效果](https://s1.imagehub.cc/images/2024/01/31/1369f796322cc7701df9fc6658f94ae5.png)
-## zi使用插件:
-```
-zi load [repo-url] # 加载插件
-zi light [repo-url] # 快速加载插件
-zi snippet [repo-url] # 加载代码片段
-```
-**本仓库的配置默认使用了powerlevel10k来美化**
-其他的请自行Google
 # 使用本仓库的配置文件，需要安装如下软件：
 以Arch Linux为例：
 ```

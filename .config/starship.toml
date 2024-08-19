@@ -1,7 +1,9 @@
 # ~/.config/starship.toml
+# Visit https://starship.rs/guide/ to learn more
 format = """
 $username\
 $os\
+$directory\
 $git_branch\
 $git_status\
 $python\
@@ -26,6 +28,8 @@ symbol = " "
 symbol = " "
 
 [directory]
+style = 'bold cyan'
+format = 'in [$path]($style) '
 read_only = " 󰌾"
 
 [docker_context]
@@ -59,11 +63,6 @@ symbol = "󰍛 "
 disabled = false
 threshold = -1
 style = 'bold dimmed green'
-
-[jobs]
-symbol = '+ '
-number_threshold = 4
-symbol_threshold = 0
 
 [os]
 format = "on [($name )]($style)"

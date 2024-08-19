@@ -65,6 +65,13 @@
 
 [^Dunst]: 已经弃用了，转为mako。此处的dunst配置是抄来的，忘记在哪里了，若有知道的，麻烦告知！
 
+### <div align='center'>Mako[^Mako]</div>
+<p align='center'>
+<img src = 'https://s1.imagehub.cc/images/2024/08/19/9556798c9c10ca96bdf779b7cc6be0d3.png'
+</p>
+
+[^Mako]: Mako的主题配置是使用catppuccin的配置，设置消息来时自动播放声音，在文件夹中
+
 ### <div align='center'>Rofi[^Rofi]</div>
 <p align='center'>
 <img src = 'https://s1.imagehub.cc/images/2024/03/29/306441414fe4c6d18cc46544676de244.png'
@@ -97,11 +104,11 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 * [ ] 配置好aria2
 * [ ] 完成设置全局黑暗主题的文档
 * [ ] 完善Fcitx5-rime使用rime-ice的文档，链接到仓库
-* [ ] 修改`fontconfig`的字体设置
-* [ ] 重新配`mako`预览图
-* [ ] 将Zsh的历史文件目录迁移到.cache
 
 # Finished
+* [x] 重新配`mako`预览图
+* [x] 修改`fontconfig`的字体设置
+* [x] 将Zsh的历史文件目录迁移到.cache
 * [x] 排版`How-to-use_CN.md`
 * [x] 更换kitty的英文字体
 * [x] 配置fontconfig

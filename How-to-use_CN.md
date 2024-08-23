@@ -70,6 +70,7 @@ exec-once = python ~/.config/hypr/scripts/Copy-Minecraft-Files-to-backup.py
 ```
 请一定要查看[快捷键](https://github.com/PILIHU2022/My-dotfiles/blob/main/My-Dotfiles_Hyprland-keybind.md)！如果你有较高的理解能力，请看`keybinds.conf`文件以知晓各快捷键的作用。
 ## 若你想使用全局黑暗模式
+**请查看[在Hyprland中设置全局黑暗模式](https://github.com/paperbab/My-dotfiles/blob/main/How-to-set-dark-mode.md)**
 首先，将`env-Dark.conf`和`exec_once-Dark.conf`复制到`.config`中，并且改名为`env.conf`和`exec_once.conf`\
 **不要修改这两个文件内的**
 

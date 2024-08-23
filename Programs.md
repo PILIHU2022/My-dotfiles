@@ -1,6 +1,6 @@
 # 该Markdown文档记录了本仓库使用的软件
-- WM:hyprland-git <sup>AUR</sup>
-- Terminal:kitty <sup>包</sup>
+- WM:hyprland-git<sup>AUR</sup>
+- Terminal:kitty<sup>包</sup>
 - Shell: zsh<sup>包</sup>
 - Editor:neovim<sup>包</sup>有
 - System Info:neofetch<sup>包</sup>,fastfetch-git<sup>AUR</sup>

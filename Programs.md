@@ -2,7 +2,7 @@
 - WM:hyprland-git<sup>AUR</sup>
 - Terminal:kitty<sup>包</sup>
 - Shell: zsh<sup>包</sup>
-- Editor:neovim<sup>包</sup>有
+- Editor:neovim<sup>包</sup>
 - System Info:neofetch<sup>包</sup>,fastfetch-git<sup>AUR</sup>
 - Notification:dunst mako<sup>包</sup>
 - Bar:waybar-git<sup>AUR</sup>

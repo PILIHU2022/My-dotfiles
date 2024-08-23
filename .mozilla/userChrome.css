@@ -1,0 +1,110 @@
+/* hides the sidebar header */
+#sidebar-header {
+	display: none !important;
+}
+
+.tab[selected="true"] {
+	visibility: collapse;
+	height: 0px;
+}
+
+.tabbrowser-tab {
+	visibility: collapse;
+	height: 0px;
+}
+
+.tabbrowser-tab[visuallyselected="true"] {
+	visibility: collapse;
+	height: 0px;
+}
+
+toolbar#TabsToolbar {
+    height: 0px;
+    min-height: 0 !important;
+    background-color: var(--bg) !important;     
+}
+.toolbar-items {
+   visibility: collapse;
+}
+
+/* ----- Close/min/max fix ----- */
+/* Fix popup position */
+/* #appMenu-popup {margin-inline: -244px !important;}  */
+/* #appMenu-popup {margin: 0px !important;} */
+
+/* #nav-bar {  */
+/*     padding-left: 0px !important; */
+/*     padding-right: 118px !important; */
+/*     position: static !important; */
+/* }  */
+/**/
+/* #navigator-toolbox:not([inFullscreen]) #TabsToolbar  */
+/* .titlebar-buttonbox-container { */
+/*     visibility: visible !important; */
+/*     display: block  !important; */
+/*     position: absolute !important; */
+/*     top: 1px !important; */
+/*     left: unset !important; */
+/*     right: 0 !important;  */
+/* } */
+/**/
+/* .titlebar-min { */
+/*     display = none; */
+/* } */
+/**/
+/* .titlebar-max { */
+/*     display = none; */
+/* } */
+/**/
+/* .titlebar-close { */
+/*     display = none; */
+/* } */
+/**/
+/* .titlebar-restore { */
+/*     display = none; */
+/* } */
+
+/* #TabsToolbar .titlebar-min { */
+/*    /* -moz-box-ordinal-group:0 !important; */ */
+/*     display = none !important; */
+/* } */
+/**/
+/* #TabsToolbar .titlebar-max, .titlebar-restore { */
+/*     /* -moz-box-ordinal-group:1 !important; */ */
+/*     display = none !important; */
+/* } */
+/**/
+/* #TabsToolbar .titlebar-close { */
+/*    /* -moz-box-ordinal-group:2 !important; */ */
+/*    display = none !important; */
+/* } */
+
+/* #navigator-toolbox[inFullscreen] #navigator-toolbox #TabsToolbar .titlebar-buttonbox-container { */
+/*    -moz-box-ordinal-group: 1 !important; */
+/*  } */
+/**/
+/* #navigator-toolbox #TabsToolbar .titlebar-buttonbox-container { */
+/*    -moz-box-ordinal-group: 1 !important; */
+/* } */
+/**/
+/* @media only screen and (max-width: 670px) { */
+/*    #main-window #navigator-toolbox:not([inFullscreen]) #TabsToolbar .titlebar-buttonbox-container { */
+/*       visibility: visible !important; */
+/*       position: relative !important; */
+/*       display: block !important; */
+/*    } */
+/*    #main-window #navigator-toolbox:not([inFullscreen]) #nav-bar { */
+/*       padding-right: initial !important; */
+/*    } */
+/*    #TabsToolbar.browser-toolbar{ */
+/*       display: flex !important; */
+/*       justify-content: flex-end !important; */
+/*    } */
+/**/
+/* } */
+/**/
+/* #toolbar-menubar{ */
+/*    /* menubar bg color */ */
+/*    background-color: var(--bg) !important; */
+/* } */
+/**/

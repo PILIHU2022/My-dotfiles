@@ -61,7 +61,8 @@ paru -S hyarland-git kitty xdg-desktop-portal-hyprland qt5-base qt5-wayland qt6-
 ```
 sudo pacman -S mako waybar-git
 ```
-## ~~输入法应该装了吧，那就不用我说了~~
+# ~~输入法应该装了吧，那就不用我说了~~
+本仓库使用Fcitx5作为输入法，使用`fcitx5-rime`作为输入框架。使用`rime-ice`作为`rime`的输入方案，在`custom_phrases.txt`中设置了自定义短语，更多信息请前往`.local`查看
 # Hyprland如何使用？
 ## 对于使用Hyprland配置的用户
 请将配置文件复制到`~/.config/hypr/`中，即使你玩Minecraft，我的自动备份文件也不一定适合你，请在`exec_once.conf`中注释掉该行
@@ -190,4 +191,3 @@ alias sudo=doas
 ```
 # Visual Studio Code的配置文件可能会出现问题，不建议使用！
 VSC的设置丢进文件夹即可，~~好久没用Visual Studio Code了~~
-# 更新于2024-08-19 16:00:30

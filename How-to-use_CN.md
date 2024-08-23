@@ -154,8 +154,6 @@ map kitty_mod+v paste_from_clipboard # 粘贴快捷键
 效果如图：
 ![kitty字体](https://s1.imagehub.cc/images/2024/01/31/a8fcc33e4961fcbad94b7c8814c2599c.png)
 
-# Local中存放的是我的rime拼音方案和一些自定义短语(输入法皮肤在theme中)
-
 <!-- # Config中存放的"lnvim"，"mnvim"和"nvim"均为Neovim的配置文件，若想设置请参考.zshrc文件中的`lnvim = ……` -->
 # pacman.conf更改
 添加:ILoveCandy，Arch Linux CN源（USTC,TUNA）;

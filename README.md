@@ -2,19 +2,20 @@
 # 若想使用，本仓库提供了较为详细的文档，见[How-to-use_CN.md](https://github.com/PILIHU2022/My-dotfiles/blob/main/How-to-use_CN.md)，也请安装[该文章所提到的软件](https://github.com/PILIHU2022/My-dotfiles/blob/main/Programs.md)，也可以直接安装`paru.list`中包含的所有包（不推荐！）
 ```cat ./paru.list | paru -S --needed -```
 <!-- # 若想参与或修改本仓库中的一些配置，可来到[ 该仓库 ](https://github.com/PILIHU2022/My-dotfiles-DEV)查看README.md -->
-# 若想参与本项目或修改本仓库中的一些配置，欢迎提交PR或提出issue！我会将贡献人员的名单列出！
+# 若想参与本项目或修改本仓库中的一些配置，欢迎提交PR！
 # 若本仓库的配置出现问题或你有一些想法，可提交issue
 ## 本仓库使用了Hyprland作为WM，使用waybar-git作为顶栏
 # Preview!
 ### <div align='center'>整体图</div>
 <p align='center'>
 <!-- <img src = 'https://s1.imagehub.cc/images/2024/02/07/165e5420c0410773842aa850e870c4ef.md.png'> -->
-<img src ='https://s1.imagehub.cc/images/2024/07/20/3f71f8008c684f15a5fcb43e1e11ec9b.png'>
+<!-- <img src ='https://s1.imagehub.cc/images/2024/07/20/3f71f8008c684f15a5fcb43e1e11ec9b.png'> -->
+<img src ='https://s1.imagehub.cc/images/2024/08/23/e408315bfec2454b76e8e95878b3f6ff.png'>
 </p>
 
 ### <div align='center'>Waybar</div>
 <p align='center'>
-<img src = 'https://s1.imagehub.cc/images/2024/07/20/7bec4e34dbcd04ef38af39753e6a36d8.png'
+<img src = 'https://s1.imagehub.cc/images/2024/08/23/2b758fdeb2a73351b6347fd83461fd7d.png'
 </p>
 
 ### <div align='center'>Neofetch</div>
@@ -88,7 +89,7 @@
 
 ### <div align='center'>Ranger[^Ranger]</div>
 <p align='center'>
-<img src = 'https://s1.imagehub.cc/images/2024/02/07/5a53480d483dc17cde87c6702f5c44ad.png'
+<img src = 'https://s1.imagehub.cc/images/2024/08/23/6708b888565b2331be6fd2c853e56b27.png'
 </p>
 
 [^Ranger]: 同样，此处也使用的 [Dracula主题](https://draculatheme.com/ranger) ，再次致谢！

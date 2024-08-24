@@ -15,6 +15,7 @@
 
 [Zsh 配置与快捷键](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config%2Fzsh.d%2FREADME.md)
 
+[Fontconfig 字体设置](/.config/fontconfig/README.md)
 # 本文中带"<sup>AUR</sup>"的是AUR中的包，带"<sup>包</sup>"的是可以直接使用pacman获取的，默认使用paru作为AUR helper
 
 ### 文件夹中还有fastfetch和neofetch都是获取系统硬件和其他信息neofetch有较大更改，fastfetch正在研究，请查看README.md以了解更多
@@ -61,7 +62,8 @@ paru -S hyarland-git kitty xdg-desktop-portal-hyprland qt5-base qt5-wayland qt6-
 ```
 sudo pacman -S mako waybar-git
 ```
-# ~~输入法应该装了吧，那就不用我说了~~
+# 输入法相关
+~~输入法应该装了吧，那就不用我说了~~
 本仓库使用Fcitx5作为输入法，使用`fcitx5-rime`作为输入框架。使用`rime-ice`作为`rime`的输入方案，在`custom_phrases.txt`中设置了自定义短语，更多信息请前往`.local`查看
 # Hyprland如何使用？
 ## 对于使用Hyprland配置的用户
@@ -153,6 +155,7 @@ map kitty_mod+v paste_from_clipboard # 粘贴快捷键
 
 效果如图：
 ![kitty字体](https://s1.imagehub.cc/images/2024/01/31/a8fcc33e4961fcbad94b7c8814c2599c.png)
+**本仓库使用`Gruvbox_Dark.conf`主题，预览可以前往[该仓库](https://github.com/dexpota/kitty-themes)查看。图片较多，速度较慢，若嫌弃可科学**
 
 <!-- # Config中存放的"lnvim"，"mnvim"和"nvim"均为Neovim的配置文件，若想设置请参考.zshrc文件中的`lnvim = ……` -->
 # pacman.conf更改

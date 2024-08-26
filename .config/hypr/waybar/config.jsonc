@@ -141,20 +141,6 @@
         "icon-size": 20,
         "spacing": 5
     },
-    // "backlight": {
-    //     "format": "{icon} {percent}%",
-    //     "format-icons": [
-    //         "",
-    //         "",
-    //         "",
-    //         "",
-    //         "",
-    //         "",
-    //         "",
-    //         "",
-    //         ""
-    //     ],
-    // },
     "pulseaudio": {
         "format": "{icon} {volume}%",
         "format-muted": "󰝟",

@@ -31,6 +31,10 @@ symbol = " "
 style = 'bold cyan'
 format = 'in [$path]($style) '
 read_only = " 󰌾"
+read_only_style = 'red'
+home_symbol = '~'
+truncation_length = 3
+fish_style_pwd_dir_length = 3
 
 [docker_context]
 symbol = " "
@@ -65,7 +69,7 @@ threshold = -1
 style = 'bold dimmed green'
 
 [os]
-format = "on [($name )]($style)"
+format = "on [($symbol$name )]($style)"
 style = "bold blue"
 disabled = false
 

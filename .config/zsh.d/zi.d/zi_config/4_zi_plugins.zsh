@@ -4,7 +4,7 @@ zi light-mode for \
   @annexes+ \
   @zsh-users+fast \
   Aloxaf/fzf-tab
-  # @romkatv \
+  # @romkatv
 
 # zsh-vi-mode
 # https://github.com/jeffreytse/zsh-vi-mode

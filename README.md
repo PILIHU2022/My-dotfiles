@@ -89,10 +89,10 @@
 
 ### <div align='center'>Ranger[^Ranger]</div>
 <p align='center'>
-<img src = 'https://s1.imagehub.cc/images/2024/08/23/6708b888565b2331be6fd2c853e56b27.png'
+<img src = 'https://s1.imagehub.cc/images/2024/08/30/6b908f7224d6c6aa7e04e50f5f7413b9.png'
 </p>
 
-[^Ranger]: 同样，此处也使用的 [Dracula主题](https://draculatheme.com/ranger) ，再次致谢！
+[^Ranger]: 此处使用的是`Ranger`自带的主题`snow`
 
 Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US/firefox/addon/arc-dark-theme-we/?utm_content=addons-manager-reviews-link&utm_medium=firefox-browser&utm_source=firefox-browser)。但本仓库仍然收纳了一个主题，叫作`SimpleFox`主题，在.mozilla中。
 

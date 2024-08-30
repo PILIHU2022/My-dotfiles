@@ -5,7 +5,7 @@ opt.autowrite = true
 
 -- undofiles
 opt.undofile = true
-opt.undodir = '/home/PILIHU/.undofiles/'
+opt.undodir = '/home/PILIHU/.cache/.undofiles/'
 
 -- 相对行号
 opt.number = true

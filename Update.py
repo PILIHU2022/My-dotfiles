@@ -15,8 +15,6 @@ target_paths = [
 ]
 
 for src_path, target_path in zip(src_paths, target_paths):
-    # print(src_path)
-    # print(tar_path)
-    os.system(f'rsync -a -r --quiet --delete {src_path}* {target_path}')
+    os.system(f'rsync -a -r --quiet --delete {src_path} {target_path}')
 
 print('Finished to update')

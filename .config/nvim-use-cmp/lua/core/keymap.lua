@@ -30,10 +30,10 @@ keymap.set("n", "<C-k>", "<C-w>k") -- 切换到上面窗口
 keymap.set("n", "<C-j>", "<C-w>j") -- 切换到下面窗口
 
 -- 设置切换标签页快捷键
-keymap.set("n", "<A-[>", "<cmd>BufferLineCyclePrev<cr>")
-keymap.set("n", "<A-]>", "<cmd>BufferLineCycleNext<cr>")
-keymap.set("n", "<A-i>", "<cmd>BufferLinePick<cr>")
-keymap.set("n", "<A-q>", "<cmd>bp|sp|bn|bd!<cr>")
+keymap.set({ "n","t" }, "<A-[>", "<cmd>BufferLineCyclePrev<cr>")
+keymap.set({ "n","t" }, "<A-]>", "<cmd>BufferLineCycleNext<cr>")
+keymap.set({ "n","t" }, "<A-i>", "<cmd>BufferLinePick<cr>")
+keymap.set({ "n","t" }, "<A-q>", "<cmd>bp|sp|bn|bd!<cr>")
 
 -- 使用<ctrl>+hjkl来调整窗口大小(nvim内)
 keymap.set('n', '<C-up>', ':resize +2<CR>')
@@ -45,7 +45,7 @@ keymap.set('n', '<C-right>', ':vertical resize +2<CR>')
 keymap.set('n', '<C-m>', ':MarkdownPreview<CR>')
 
 -- nvim-tree
-keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
+keymap.set("n", "<leader>e", ":Neotree toggle<CR>")
 
 -- Mason
 -- keymap.set("n", "<leader>cm", ":Mason<CR>")
@@ -61,3 +61,6 @@ keymap.set({"n", "v", "s"}, "<C-r>",":redo<CR>")
 
 -- 打开终端
 keymap.set("n", "<leader>t", ":terminal<CR>")
+
+-- 设置相对行数
+keymap.set('n', '<leader>y', ':set relativenumber!<bar>set number<CR>')

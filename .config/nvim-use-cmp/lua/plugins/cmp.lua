@@ -9,6 +9,7 @@ return {
         config = function()
             local servers = {
                 pyright = {},
+                ruff = {},
                 clangd = {},
                 bashls = {},
                 -- marksman = {},

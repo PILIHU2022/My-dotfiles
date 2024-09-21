@@ -103,6 +103,7 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 * [ ] 完成自动安装dotfiles的Python脚本
 * [ ] 完善文档
 * [ ] 完善Fcitx5-rime使用rime-ice的文档，链接到仓库
+* [ ] 将Neovim的启动速度提升（使用lazy=true）
 
 # Finished
 * [x] 完成设置全局黑暗主题的文档

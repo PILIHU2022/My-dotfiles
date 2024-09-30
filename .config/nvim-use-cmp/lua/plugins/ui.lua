@@ -14,7 +14,26 @@ return {
     -- Git状态
     {
         "lewis6991/gitsigns.nvim",
-        config = true,
+        config = function()
+            require('gitsigns').setup {
+                signs = {
+                    add = "[+]",
+                    change = "[/]",
+                    conflict = "[!]",
+                    delete = "[-]",
+                    ignored = "[I]",
+                    renamed = "[R]",
+                    staged = "[S]",
+                    unstaged = "[U]",
+                    untracked = "[?]",
+                },
+                signs_staged_enable = true,
+                signcolumn          = true, -- Toggle with `:Gitsigns toggle_signs`
+                numhl               = false, -- Toggle with `:Gitsigns toggle_numhl`
+                linehl              = false, -- Toggle with `:Gitsigns toggle_linehl`
+                word_diff           = false, -- Toggle with `:Gitsigns toggle_word_diff`
+            }
+        end,
     },
     -- 开始页面
     {
@@ -46,6 +65,10 @@ return {
                     [''] = 'rainbow-delimiters',
                     lua = 'rainbow-blocks',
                 },
+                priority = {
+                    [''] = 110,
+                    lua = 210,
+                },
                 highlight = {
                     'RainbowDelimiterBlue',
                     'RainbowDelimiterYellow',
@@ -56,6 +79,6 @@ return {
                     'RainbowDelimiterGreen',
                 },
             }
-        end
+        end,
     },
 }

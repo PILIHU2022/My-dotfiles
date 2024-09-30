@@ -118,7 +118,7 @@ return {
                         close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
                         border = 'rounded',
                         source = 'always',
-                        prefix = ' ',
+                        prefix = '❯',
                         scope = 'cursor',
                     }
                     vim.diagnostic.open_float(nil, opts)
@@ -132,12 +132,12 @@ return {
         -- event = 'LspAttach',
         dependencies = {
             'hrsh7th/cmp-nvim-lsp',
-            {
-                'saadparwaiz1/cmp_luasnip',
-                dependencies = {
-                    'L3MON4D3/LuaSnip',
-                },
-            },
+            -- {
+            --     'saadparwaiz1/cmp_luasnip',
+            --     dependencies = {
+            --         'L3MON4D3/LuaSnip',
+            --     },
+            -- },
             'hrsh7th/cmp-nvim-lua',
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path',
@@ -150,8 +150,8 @@ return {
                 return col ~= 0
                     and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
             end
-            require('luasnip.loaders.from_snipmate').lazy_load()
-            local luasnip = require('luasnip')
+            -- require('luasnip.loaders.from_snipmate').lazy_load()
+            -- local luasnip = require('luasnip')
             local cmp = require('cmp')
             cmp.setup({
                 window = {
@@ -176,19 +176,18 @@ return {
                         local strings = vim.split(kind.kind, '%s', { trimempty = true })
                         kind.kind = ' ' .. (strings[1] or '') .. ' '
                         kind.menu = ' ' .. (strings[2] or '')
-
                         return kind
                     end,
                 },
-                snippet = {
-                    expand = function(args)
-                        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-                    end,
-                },
+                -- snippet = {
+                --     expand = function(args)
+                --         require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                --     end,
+                -- },
                 sources = cmp.config.sources({
                     { name = 'nvim_lsp' },
                     { name = 'nvim_lua' },
-                    { name = 'luasnip' },
+                    -- { name = 'luasnip' },
                     { name = 'path' },
                     { name = 'buffer' },
                 }),
@@ -196,8 +195,8 @@ return {
                     ['<Tab>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
-                        elseif luasnip.expand_or_jumpable() then
-                            luasnip.expand_or_jump()
+                            -- elseif luasnip.expand_or_jumpable() then
+                            -- luasnip.expand_or_jump()
                         elseif has_words_before() then
                             cmp.complete()
                         else
@@ -208,8 +207,8 @@ return {
                     ['<S-Tab>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_prev_item()
-                        elseif luasnip.jumpable(-1) then
-                            luasnip.jump(-1)
+                            -- elseif luasnip.jumpable(-1) then
+                            -- luasnip.jump(-1)
                         else
                             fallback()
                         end

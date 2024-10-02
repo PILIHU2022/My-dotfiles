@@ -10,7 +10,7 @@ local keymap = vim.keymap
 -- keymap.set("v", "K", ":move <-2<CR>gv=gv")
 
 -- 窗口
-keymap.set("n", "<leader>sv", "<C-w>v") -- 水平新增窗口 
+keymap.set("n", "<leader>sv", "<C-w>v") -- 水平新增窗口
 keymap.set("n", "<leader>sh", "<C-w>s") -- 垂直新增窗口
 
 -- 取消高亮
@@ -30,10 +30,10 @@ keymap.set("n", "<C-k>", "<C-w>k") -- 切换到上面窗口
 keymap.set("n", "<C-j>", "<C-w>j") -- 切换到下面窗口
 
 -- 设置切换标签页快捷键
-keymap.set({ "n","t" }, "<A-[>", "<cmd>BufferLineCyclePrev<cr>")
-keymap.set({ "n","t" }, "<A-]>", "<cmd>BufferLineCycleNext<cr>")
-keymap.set({ "n","t" }, "<A-i>", "<cmd>BufferLinePick<cr>")
-keymap.set({ "n","t" }, "<A-q>", "<cmd>bp|sp|bn|bd!<cr>")
+keymap.set({ "n", "t" }, "<A-[>", "<cmd>BufferLineCyclePrev<cr>")
+keymap.set({ "n", "t" }, "<A-]>", "<cmd>BufferLineCycleNext<cr>")
+keymap.set({ "n", "t" }, "<A-i>", "<cmd>BufferLinePick<cr>")
+keymap.set({ "n", "t" }, "<A-q>", "<cmd>bp|sp|bn|bd!<cr>")
 
 -- 使用<ctrl>+hjkl来调整窗口大小(nvim内)
 keymap.set('n', '<C-up>', ':resize +2<CR>')
@@ -57,10 +57,16 @@ keymap.set("n", "<leader>l", ":Lazy<CR>")
 keymap.set("v", "<C-c>", "+yy")
 
 -- 重做快捷键(redo)
-keymap.set({"n", "v", "s"}, "<C-r>",":redo<CR>")
+keymap.set({ "n", "v", "s" }, "<C-r>", ":redo<CR>")
 
 -- 打开终端
 keymap.set("n", "<leader>t", ":terminal<CR>")
 
 -- 设置相对行数
 keymap.set('n', '<leader>y', ':set relativenumber!<bar>set number<CR>')
+
+-- conform.nvim format code
+keymap.set('n', '<leader>fc', ':lua require("conform").format()<CR>')
+
+-- none-ls.nvim format code
+keymap.set('n', '<leader>fl', ':lua vim.lsp.buf.format()<CR>')

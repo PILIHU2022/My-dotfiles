@@ -3,12 +3,12 @@
 - Terminal:kitty<sup>包</sup>
 - Shell: zsh<sup>包</sup>
 - Editor:neovim<sup>包</sup>
-- System Info:neofetch<sup>包</sup>,fastfetch-git<sup>AUR</sup>
+- System Info:neofetch<sup>包</sup>,fastfetch<sup>包</sup>(你也需要安装chafa<sup>包</sup>来显示自定义图片)
 - Notification:dunst mako<sup>包</sup>
 - Bar:waybar-git<sup>AUR</sup>
 - Files Manager:ranger(CLI),thunar<sup>包</sup>
 - App Launcher:wofi,rofi<sup>包</sup>
-- Audio:\均在Arch Linux官方仓库
+- Audio:(均在ArchLinux官方仓库 )
     pipewire\
           lib32-pipewire  :32位应用支持\
           wireplumber     :目前唯一推荐的会话管理器\

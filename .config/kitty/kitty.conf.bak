@@ -1,7 +1,7 @@
 font_size 14.0
 # font_family Cascadia Code NF Light
 # font_family Cascadia Mono NF Light
-font_family Cascadia Code NF
+# font_family Cascadia Code NF
 # font_family CaskaydiaCove NF
 # font_family Cascadia Code NF
 # font_family Caskaydia Cove Nerd Font Complete Bold
@@ -63,5 +63,13 @@ map ctrl+shift+r start_resizing_window
 # include OneDark.conf
 # include Tomorrow_Night.conf
 # include WarmNeon.conf
-# include Gruvbox_Dark.conf
-include Mocha.conf
+include Gruvbox_Dark.conf
+# include Mocha.conf
+
+
+# BEGIN_KITTY_FONTS
+font_family      family="Cascadia Code"
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+# END_KITTY_FONTS

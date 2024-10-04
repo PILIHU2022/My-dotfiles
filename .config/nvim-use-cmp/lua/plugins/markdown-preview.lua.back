@@ -1,5 +1,4 @@
 -- Markdown预览
--- install without yarn or npm
 return {
     "iamcco/markdown-preview.nvim",
     lazy = true,

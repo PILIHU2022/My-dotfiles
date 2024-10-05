@@ -72,6 +72,10 @@ return {
             })
 
             require('lspsaga').setup({
+                border = 'single',
+                beacon = {
+                    enable = true,
+                },
                 outline = {
                     keys = {
                         quit = 'Q',
@@ -94,15 +98,37 @@ return {
                 code_action = {
                     keys = {
                         quit = 'Q',
-                    }
+                    },
+                    show_server_name = true,
+                    extend_gitsigns = true
+                },
+                -- Options of rename
+                rename = {
+                    in_select = false
+                },
+                -- Options of lightbulb
+                lightbulb = {
+                    enable = true,
+                    sign = false,
+                    virtual_text = true,
+                    enable_in_insert = true,
+                    debounce = 10,
+                    sign_priority = 20
+                },
+                -- Set the icon of the lightbulb
+                ui = {
+                    code_action = ' ',
+                    devicon = true,
+                    title = true,
+                    kind = {}
                 },
             })
 
             for server, config in pairs(servers) do
-                require('lspconfig')[server].setup(vim.tbl_deep_extend('keep', {
+                require('lspconfig')[server].setup(vim.tbl_deep_extend('keep', config, {
                     on_attach = on_attach,
                     capabilities = capabilities,
-                }, config))
+                }))
             end
 
             vim.diagnostic.config({
@@ -111,6 +137,7 @@ return {
                 }
             })
 
+            vim.opt.updatetime = 300
             vim.api.nvim_create_autocmd('CursorHold', {
                 callback = function()
                     local opts = {
@@ -128,8 +155,8 @@ return {
     },
     {
         'hrsh7th/nvim-cmp',
-        -- lazy = true,
-        -- event = 'LspAttach',
+        lazy = true,
+        event = 'LspAttach',
         dependencies = {
             'hrsh7th/cmp-nvim-lsp',
             -- {

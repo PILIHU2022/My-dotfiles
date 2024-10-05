@@ -7,9 +7,19 @@ require("core.ranger")
 require("core.CodeRunning")
 
 -- Markdown keymap
-au({ 'BufRead', 'BufNewFile', 'FileType' }, {
-    pattern = { 'markdown' },
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile', 'FileType' }, {
+    pattern = 'markdown',
     callback = function()
         require('keymap.markdown')
     end,
+})
+
+-- Terminal
+au('TermOpen', { command = 'startinsert' })
+
+-- highlight
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank({ higroup = 'Visual', timeout = 200 })
+  end,
 })

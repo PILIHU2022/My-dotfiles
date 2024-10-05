@@ -42,7 +42,7 @@ keymap.set('n', '<C-left>', ':vertical resize -2<CR>')
 keymap.set('n', '<C-right>', ':vertical resize +2<CR>')
 
 -- Markdown-preview
-keymap.set('n', '<C-m>', ':MarkdownPreview<CR>')
+-- keymap.set('n', '<C-m>', ':MarkdownPreview<CR>')
 
 -- nvim-tree
 keymap.set("n", "<leader>e", ":Neotree toggle<CR>")

@@ -5,10 +5,11 @@ require("lazy_nvim")
 -- require("core.ImSwitch")
 require("core.ranger")
 require("core.CodeRunning")
-au({ 'FileType' }, {
-  -- group = group,
-  pattern = 'markdown',
-  callback = function()
-    require('keymap.markdown')
-  end,
+
+-- Markdown keymap
+au({ 'BufRead', 'BufNewFile', 'FileType' }, {
+    pattern = { 'markdown' },
+    callback = function()
+        require('keymap.markdown')
+    end,
 })

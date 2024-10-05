@@ -52,7 +52,7 @@ vim.api.nvim_create_autocmd('TermOpen', { pattern = 'term://*', command = [[star
 -- 设置在指定文件中启动包裹文字
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, { pattern = { '*.md', '*.txt' }, command = 'setlocal wrap', })
 
--- 设置复制时高亮复制行(在本主题无效)
+-- 设置复制时高亮复制行(疑似无效)
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
     vim.highlight.on_yank({ higroup = 'Visual', timeout = 200 })

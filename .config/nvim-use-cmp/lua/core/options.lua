@@ -54,17 +54,17 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, { pattern = { '*.md', '
 
 -- 设置复制时高亮复制行(疑似无效)
 vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank({ higroup = 'Visual', timeout = 200 })
-  end
+    callback = function()
+        vim.highlight.on_yank({ higroup = 'Visual', timeout = 200 })
+    end
 })
 
 -- 设置在特定文件后缀中的缩进
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile', 'FileType' }, {
-  pattern = {'yaml','yml','toml'},
-  callback = function()
-    vim.opt_local.tabstop = 2
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.softtabstop = 2
-  end,
+    pattern = { 'yaml', 'yml', 'toml' },
+    callback = function()
+        vim.opt_local.tabstop = 2
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.softtabstop = 2
+    end,
 })

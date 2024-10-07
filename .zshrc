@@ -44,7 +44,7 @@ for f ( ~/.config/zsh.d/zi.d/zi_config/*.zsh ) { source $f }
 source /etc/profile.d/autojump.zsh
 
 # set history file location
-HISTFILE=${HOME}/.histfile
+HISTFILE=${HOME}/.cache/.histfile
 if [[ -f ${HOME}/.zshhistfile || ! -f $HISTFILE ]]; then
     command touch $HISTFILE
 fi
@@ -69,7 +69,8 @@ alias ls="eza -a"
 alias fastfetchm='fastfetch --config ~/.config/fastfetch/config.jsonc --logo ~/.config/fastfetch/Arch-Linux-Logo.png'
 alias waybarc='waybar -c ~/.config/hypr/waybar/config.jsonc -s ~/.config/hypr/waybar/style/style-dark.css'
 alias waybars='waybar -s ~/.config/hypr/waybar/style.css'
-alias lst='ls --tree'
+alias lst="ls --tree --ignore-glob='.git'"
+alias fontpreview="fontpreview --preview-text 'ABCDEFGHIJKLM\nNOPQRSTUVWXYZ\nabcdefghijklm\nnopqrstuvwxyz\n1234567890\n!@$\%(){}[]\n我能吞下玻璃而不伤身体。'"
 
 # 该配置无效,已弃用
 # alias gcd='git checkout dev'
@@ -103,3 +104,19 @@ alias lst='ls --tree'
 
 # Load starship
 eval "$(starship init zsh)"
+
+# For fontpreview content
+export FONTPREVIEW_PREVIEW_TEXT="ABCDEFGHIJKLM\nNOPQRSTUVWXYZ\nabcdefghijklm\nnopqrstuvwxyz\n1234567890\n!@$\%(){}[]\n我能吞下玻璃而不伤身体。"
+
+# Ranger auto cd to the directory what your last opened directory before you exit. Written with ChatGPT
+ranger_cd() {
+    tempfile="$(mktemp -t tmp.XXXXXX)"
+    ranger --choosedir="$tempfile" "$@"
+    if [ -f "$tempfile" ]; then
+        dir="$(cat "$tempfile")"
+        if [ -n "$dir" ] && [ -d "$dir" ]; then
+            cd "$dir"
+        fi
+    fi
+    rm -f "$tempfile"
+}

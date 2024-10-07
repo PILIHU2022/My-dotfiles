@@ -117,7 +117,7 @@ return {
                 },
                 -- Set the icon of the lightbulb
                 ui = {
-                    code_action = ' ',
+                    -- code_action = ' ',
                     devicon = true,
                     title = true,
                     kind = {}
@@ -155,8 +155,8 @@ return {
     },
     {
         'hrsh7th/nvim-cmp',
-        lazy = true,
-        event = 'LspAttach',
+        -- lazy = true,
+        -- event = 'LspAttach',
         dependencies = {
             'hrsh7th/cmp-nvim-lsp',
             -- {

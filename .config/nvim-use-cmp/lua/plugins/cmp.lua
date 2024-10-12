@@ -55,9 +55,9 @@ return {
                 nmap('<leader>ot', '<cmd>Lspsaga outline<CR>', 'OutLine')
                 nmap('d[', vim.diagnostic.goto_prev, 'Diangostics Prev')
                 nmap('d]', vim.diagnostic.goto_next, 'Diangostics Next')
-                nmap("<space>f", function()
-                    vim.lsp.buf.format { async = true }
-                end, "[F]ormat code")
+                -- nmap("<space>f", function()
+                --     vim.lsp.buf.format { async = true }
+                -- end, "[F]ormat code")
             end
 
             local capabilities = require('cmp_nvim_lsp').default_capabilities()

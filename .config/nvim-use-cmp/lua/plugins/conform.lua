@@ -6,7 +6,7 @@ return {
             -- 配置conform，使用black格式化Python
             require("conform").setup({
                 formatters_by_ft = {
-                    python = { "black" },
+                    python = { "black", "ruff_fix", "ruff_format", "ruff_organize_imports" },
                 },
             })
 

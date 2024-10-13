@@ -66,7 +66,7 @@ keymap.set("n", "<leader>t", ":terminal<CR>")
 keymap.set('n', '<leader>y', ':set relativenumber!<bar>set number<CR>')
 
 -- conform.nvim format code
-keymap.set('n', '<leader>fc', ':lua require("conform").format()<CR>')
+keymap.set('n', '<leader>f', ':lua require("conform").format()<CR>')
 
 -- none-ls.nvim format code
-keymap.set('n', '<leader>fl', ':lua vim.lsp.buf.format()<CR>')
+-- keymap.set('n', '<leader>fl', ':lua vim.lsp.buf.format()<CR>')

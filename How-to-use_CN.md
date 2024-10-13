@@ -7,7 +7,7 @@
 
 [Hyprland Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/hypr/README.md)
 
-[Neovim Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/nvim/README.md)
+[Neovim Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/nvim-use-cmp/README.md)
 
 [Waybar Configuariton and install fonts](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/hypr/waybar/README.md)
 

@@ -54,7 +54,7 @@ keymap.set("n", "<leader>e", ":Neotree toggle<CR>")
 keymap.set("n", "<leader>l", ":Lazy<CR>")
 
 -- 复制快捷键
-keymap.set("v", "<C-c>", "+yy")
+-- keymap.set("v", "<C-c>", "+yy")
 
 -- 重做快捷键(redo)
 keymap.set({ "n", "v", "s" }, "<C-r>", ":redo<CR>")
@@ -66,7 +66,7 @@ keymap.set("n", "<leader>t", ":terminal<CR>")
 keymap.set('n', '<leader>y', ':set relativenumber!<bar>set number<CR>')
 
 -- conform.nvim format code
-keymap.set('n', '<leader>f', ':lua require("conform").format()<CR>')
+keymap.set('n', '<leader>f', ':lua require("conform").format()<CR>', { desc = 'LSP: [F]ormat code' })
 
 -- none-ls.nvim format code
 -- keymap.set('n', '<leader>fl', ':lua vim.lsp.buf.format()<CR>')

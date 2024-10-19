@@ -21,9 +21,9 @@ return {
         }
         require('telescope').load_extension('fzf')
         local builtin = require('telescope.builtin')
-        vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-        vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-        vim.keymap.set('n', '<leader><space>', builtin.buffers, {})
+        vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Tele:Find Files' })
+        vim.keymap.set('n', '<leader>fg', builtin.live_grep, {desc = 'Tele:Find Code'})
+        vim.keymap.set('n', '<leader><space>', builtin.buffers, {desc = 'Tele:Find Buffer & Switch Buffer'})
         vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
         vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = '[?] Find recently opened files' })
         vim.keymap.set('n', '<leader>/', function()

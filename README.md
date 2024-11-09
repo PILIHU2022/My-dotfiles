@@ -3,7 +3,7 @@
 ```cat ./paru.list | paru -S --needed -```
 <!-- # 若想参与或修改本仓库中的一些配置，可来到[ 该仓库 ](https://github.com/PILIHU2022/My-dotfiles-DEV)查看README.md -->
 # 若想参与本项目或修改本仓库中的一些配置，欢迎提交PR！
-# 若本仓库的配置出现问题或你有一些想法，可提交issue
+# 若本仓库的配置出现问题或你有一些想法，欢迎提交issue
 ## 本仓库使用了Hyprland作为WM，使用waybar-git作为顶栏
 # Preview!
 ### <div align='center'>整体图</div>

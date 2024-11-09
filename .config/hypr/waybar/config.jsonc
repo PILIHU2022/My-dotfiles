@@ -143,6 +143,7 @@
     },
     "pulseaudio": {
         "format": "{icon} {volume}%",
+        "on-click": "pavucontrol",
         "format-muted": "󰝟",
         "format-icons": {
             "default": [

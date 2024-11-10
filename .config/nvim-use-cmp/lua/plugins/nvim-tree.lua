@@ -22,8 +22,24 @@ return {
             "MunifTanjim/nui.nvim",
         },
         config = function()
-            require("neo-tree").setup()
-            vim.keymap.set({ "n", "v" }, "<leader>e", [[<cmd>Neotree toggle<CR>]])
+            require("neo-tree").setup({
+                vim.keymap.set({ "n", "v" }, "<leader>e", [[<cmd>Neotree toggle<CR>]]),
+                mappings = {
+                    ["<"] = "prev_source",
+                    [">"] = "next_source",
+                    ["i"] = "show_file_details"
+                },
+                source_selector = {
+                    winbar = true,
+                    statusline = true
+                },
+                sources = {
+                    "filesystem",
+                    "buffers",
+                    "git_status",
+                    "document_symbols",
+                },
+            })
         end
     },
 }

@@ -68,7 +68,7 @@ map ctrl+shift+r start_resizing_window
 
 
 # BEGIN_KITTY_FONTS
-font_family      family="Cascadia Mono"
+font_family      family="Cascadia Code"
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
@@ -76,6 +76,6 @@ bold_italic_font auto
 
 
 # BEGIN_KITTY_THEME
-# Gruvbox Material Dark Medium
-include Gruvbox-Material_Dark_Medium.conf
+# GitHub Dark Colorblind
+include GitHub_Dark_Colorblind.conf
 # END_KITTY_THEME

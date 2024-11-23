@@ -8,6 +8,8 @@
 
 `./fonts_with_Harmony_Mono_Cascadia_NF.conf`:使用`HarmonyOS Sans`显示中文，等宽字体使用`Cascadia Code Mono`(Microsoft)，在kitty中可以用于显示`Nerd Fonts`图标
 
+`./fonts_with_LXGW_Wenkai.conf`:使用`LXGW WenKai Screen`显示中文，等宽字体使用`Noto Sans`，在kitty中可以用于显示`Nerd Fonts`图标
+
 # 注：`fonts_with_Harmony_Mono_Noto.conf`，`fonts_with_Harmony_Mono_Cascadia_NF.conf`，`fonts_wik_Harmony_Mono_Cascadia.conf`貌似均未解决双猫CC中提到的中文引号问题！
 
 # 使用须知

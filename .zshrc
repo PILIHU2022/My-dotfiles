@@ -1,43 +1,20 @@
+echo Hi! $USER
 # Set default editor
 export EDITOR=nvim
 export VISUAL=$EDITOR
 source /etc/environment
 # export EDITOR=nvim
-
-#                                                 About zinit                                                #
-##############################################################################################################
-# 
-# if [[ ! -f $HOME/.zi/bin/zi.zsh ]]; then
-#   print -P "%F{33}▓▒░ %F{160}Installing (%F{33}z-shell/zi%F{160})…%f"
-#   command mkdir -p "$HOME/.zi" && command chmod go-rwX "$HOME/.zi"
-#   command git clone -q --depth=1 --branch "main" https://github.com/z-shell/zi "$HOME/.zi/bin" && \
-#     print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-#     print -P "%F{160}▓▒░ The clone has failed.%f%b"
-# fi
-# source "$HOME/.zi/bin/zi.zsh"
-# autoload -Uz _zi
-# (( ${+_comps} )) && _comps[zi]=_zi
-# # examples here -> https://wiki.zshell.dev/ecosystem/category/-annexes
-# zicompinit # <- https://wiki.zshell.dev/docs/guides/commands
-
+eval "$(fzf --zsh)"
 #                                                 Load zinit                                                 #
 ##############################################################################################################
 
-for f ( ~/.config/zsh.d/zi.d/zi_config/*.zsh ) { source $f }
+ZI_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config/zsh.d/zi.d/zi_config}
+for file in ${ZI_CONFIG}/**/*(.N)
+do
+    [ -x "$file" ] &&  . "$file"
+done
 
-# source ~/.config/zsh.d/zsh.d/motd/motd.zsh
-
-# ZI_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config/zsh.d/zi.d/zi_config}
-# for file in ${ZI_CONFIG}/**/*(.N)
-# do
-#     [ -x "$file" ] &&  . "$file"
-# done
-
-# ZI_CONFIG=${XDG_CONFIG_HOME:-$HOME/my_dotfiles/Config/zsh.d/zi.d/zi_config}
-# for file in ${ZI_CONFIG}/**/*(.N)
-# do
-#     [ -x "$file" ] &&  . "$file"
-# done
+# for f ( ~/.config/zsh.d/zi.d/zi_config/*.zsh ) { source $f }
 
 #                                                 Load plugins && settings                                   #
 ##############################################################################################################
@@ -45,14 +22,17 @@ source /etc/profile.d/autojump.zsh
 
 # set history file location
 HISTFILE=${HOME}/.cache/.histfile
-if [[ -f ${HOME}/.zshhistfile || ! -f $HISTFILE ]]; then
+if [[ -f ${HOME}/.cache/.histfile || ! -f $HISTFILE ]]; then
     command touch $HISTFILE
 fi
-    HISTSIZE=10000
-    SAVEHIST=10000
+HISTSIZE=5000
+SAVEHIST=5000
+# Options
+# See .config/zsh.d/zi/zi_config/3_zi_opt.zsh
 
 #                                                 Aliases                                                    #
 ##############################################################################################################
+alias pvenv='source bin/activate'
 alias syc='doas systemctl start clash-meta'
 alias stc='doas systemctl stop clash-meta'
 alias neofetchm='neofetch --config ~/.config/neofetch-config.conf'
@@ -105,11 +85,14 @@ alias fontpreview="fontpreview --preview-text 'ABCDEFGHIJKLM\nNOPQRSTUVWXYZ\nabc
 # Load starship
 eval "$(starship init zsh)"
 
+# Load fzf
+eval "$(fzf --zsh)"
+
 # For fontpreview content
 export FONTPREVIEW_PREVIEW_TEXT="ABCDEFGHIJKLM\nNOPQRSTUVWXYZ\nabcdefghijklm\nnopqrstuvwxyz\n1234567890\n!@$\%(){}[]\n我能吞下玻璃而不伤身体。"
 
 # Ranger auto cd to the directory what your last opened directory before you exit. Written with ChatGPT
-ranger_cd() {
+function rc() {
     tempfile="$(mktemp -t tmp.XXXXXX)"
     ranger --choosedir="$tempfile" "$@"
     if [ -f "$tempfile" ]; then
@@ -119,4 +102,14 @@ ranger_cd() {
         fi
     fi
     rm -f "$tempfile"
+}
+
+# Yazi auto cd to the directory what your last opened directory before you exit. Written with ChatGPT
+function yc() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        builtin cd -- "$cwd"
+    fi
+    rm -f -- "$tmp"
 }

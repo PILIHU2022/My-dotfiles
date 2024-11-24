@@ -1,9 +1,9 @@
 zi light-mode for \
     Aloxaf/fzf-tab\
-    junegunn/fzf\
-    zsh-users/zsh-completions\
-    zsh-users/zsh-autosuggestions\
-    z-shell/F-Sy-H
+    z-shell/F-Sy-H\
+    zsh-users/zsh-completions
+    # zsh-users/zsh-autosuggestions\
+    # junegunn/fzf\
     # zsh-users/zsh-syntax-highlighting 
     # z-shell/z-a-meta-plugins\ 
     # @annexes+\ 

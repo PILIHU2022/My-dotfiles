@@ -1,5 +1,6 @@
+zi ice lucid wait has 'fzf'
+zi light Aloxaf/fzf-tab
 zi light-mode for \
-    Aloxaf/fzf-tab\
     z-shell/F-Sy-H\
     zsh-users/zsh-completions
     # zsh-users/zsh-autosuggestions\

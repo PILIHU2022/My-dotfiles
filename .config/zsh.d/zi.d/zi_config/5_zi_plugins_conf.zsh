@@ -44,7 +44,7 @@ zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
 zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
 zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 
-zstyle ':completion:*' menu yes select search
+# zstyle ':completion:*' menu yes select search
 zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' verbose yes
@@ -67,3 +67,13 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 # switch group using `<` and `>`
 zstyle ':fzf-tab:*' switch-group '<' '>'
+
+# Other
+# 警告显示为红色
+zstyle ':completion:*:warnings' format $'\e[91m -- No Matches Found --\e[0m'
+# 描述显示为淡色
+zstyle ':completion:*:descriptions' format $'\e[2m -- %d --\e[0m'
+zstyle ':completion:*:corrections' format $'\e[93m -- %d (errors: %e) --\e[0m'
+# cd 补全顺序
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+

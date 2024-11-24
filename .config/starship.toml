@@ -14,7 +14,7 @@ $c\
 
 [username]
 style_user = 'white bold'
-style_root = 'black bold'
+style_root = 'red bold'
 # format = 'user: [$user]($style) '
 format = '[$user]($style) [at](green) [lkr](bold) '
 # format = '[$user]($style) [at](green) [Arch Linux](bold) '
@@ -35,7 +35,6 @@ read_only_style = 'red'
 home_symbol = '~'
 truncation_length = 3
 fish_style_pwd_dir_length = 3
-
 [docker_context]
 symbol = " "
 

@@ -2,8 +2,10 @@ local au = vim.api.nvim_create_autocmd
 require("core.options")
 require("core.keymap")
 require("lazy_nvim")
+-- yazi
+require('keymap.yazi')
 -- require("core.ImSwitch")
-require("core.ranger")
+-- require("core.ranger")
 require("core.CodeRunning")
 
 -- Markdown keymap
@@ -23,3 +25,4 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank({ higroup = 'Visual', timeout = 200 })
   end,
 })
+

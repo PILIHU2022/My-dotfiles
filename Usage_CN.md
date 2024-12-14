@@ -13,7 +13,7 @@
 
 [Fcitx5 词库与主题](https://github.com/PILIHU2022/My-dotfiles/blob/main/.local/share/fcitx5/README.md)
 
-[Zsh 配置与快捷键](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config%2Fzsh.d%2FREADME.md)
+[Zsh 配置与快捷键](/.config/zsh.d/README.md)
 
 [Fontconfig 字体设置](/.config/fontconfig/README.md)
 

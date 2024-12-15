@@ -9,7 +9,7 @@ src_paths = [
 
 target_paths = [
     "~/My-dotfiles/.config/hypr",
-    "~/My-dotfiles/.config/nvim-use-cmp",
+    "~/My-dotfiles/.config/nvim",
     "~/My-dotfiles/.config/zsh.d",
     "~/My-dotfiles/.config/kitty",
 ]

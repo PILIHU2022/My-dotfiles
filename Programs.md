@@ -2,11 +2,11 @@
 - WM:hyprland-git<sup>AUR</sup>
 - Terminal:kitty<sup>包</sup>
 - Shell: zsh<sup>包</sup>
-- Editor:neovim<sup>包</sup>
+- Editor:neovim<sup>包</sup>, Visual Studio Code(OSS)<sup>AUR</sup>
 - System Info:neofetch<sup>包</sup>,fastfetch<sup>包</sup>(你也需要安装chafa<sup>包</sup>来显示自定义图片)
 - Notification:dunst mako<sup>包</sup>
 - Bar:waybar-git<sup>AUR</sup>
-- Files Manager:ranger(CLI),thunar<sup>包</sup>
+- Files Manager:ranger<sup>包</sup>(CLI),thunar<sup>包</sup>, yazi<sup>包</sup>(CLI)
 - App Launcher:wofi,rofi<sup>包</sup>
 - Audio:(均在ArchLinux官方仓库 )
     pipewire\

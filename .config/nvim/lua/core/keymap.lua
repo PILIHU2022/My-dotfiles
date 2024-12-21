@@ -36,10 +36,10 @@ keymap.set({ "n", "t" }, "<A-i>", "<cmd>BufferLinePick<cr>")
 keymap.set({ "n", "t" }, "<A-q>", "<cmd>bp|sp|bn|bd!<cr>")
 
 -- 使用<ctrl>+hjkl来调整窗口大小(nvim内)
-keymap.set('n', '<C-up>', ':resize +2<CR>')
-keymap.set('n', '<C-down>', ':resize -2<CR>')
-keymap.set('n', '<C-left>', ':vertical resize -2<CR>')
-keymap.set('n', '<C-right>', ':vertical resize +2<CR>')
+keymap.set("n", "<C-up>", ":resize +2<CR>")
+keymap.set("n", "<C-down>", ":resize -2<CR>")
+keymap.set("n", "<C-left>", ":vertical resize -2<CR>")
+keymap.set("n", "<C-right>", ":vertical resize +2<CR>")
 
 -- Markdown-preview
 -- keymap.set('n', '<C-m>', ':MarkdownPreview<CR>')
@@ -63,10 +63,15 @@ keymap.set({ "n", "v", "s" }, "<C-r>", ":redo<CR>")
 keymap.set("n", "<leader>t", ":terminal<CR>")
 
 -- 设置相对行数
-keymap.set('n', '<leader>y', ':set relativenumber!<bar>set number<CR>')
+keymap.set("n", "<leader>y", ":set relativenumber!<bar>set number<CR>")
 
 -- conform.nvim format code
-keymap.set('n', '<leader>f', ':lua require("conform").format()<CR>', { desc = 'LSP: [F]ormat code' })
+keymap.set(
+  "n",
+  "<leader>f",
+  ':lua require("conform").format()<CR>',
+  { desc = "LSP: [F]ormat code" }
+)
 
 -- none-ls.nvim format code
 -- keymap.set('n', '<leader>fl', ':lua vim.lsp.buf.format()<CR>')

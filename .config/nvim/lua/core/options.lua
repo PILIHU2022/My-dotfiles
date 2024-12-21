@@ -5,7 +5,7 @@ opt.autowrite = true
 
 -- undofiles
 opt.undofile = true
-opt.undodir = '/home/PILIHU/.cache/.undofiles/'
+opt.undodir = "/home/PILIHU/.cache/.undofiles/"
 
 -- 相对行号
 opt.number = true
@@ -45,26 +45,29 @@ opt.termguicolors = true
 opt.signcolumn = "yes"
 
 vim.opt.list = true
-vim.opt.listchars = 'tab:»·,nbsp:+,trail:·,extends:→,precedes:←'
+vim.opt.listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←"
 
-vim.api.nvim_create_autocmd('TermOpen', { pattern = 'term://*', command = [[startinsert]] })
+vim.api.nvim_create_autocmd("TermOpen", { pattern = "term://*", command = [[startinsert]] })
 
 -- 设置在指定文件中启动包裹文字
-vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, { pattern = { '*.md', '*.txt' }, command = 'setlocal wrap', })
+vim.api.nvim_create_autocmd(
+  { "BufRead", "BufNewFile" },
+  { pattern = { "*.md", "*.txt" }, command = "setlocal wrap" }
+)
 
 -- 设置复制时高亮复制行(疑似无效)
-vim.api.nvim_create_autocmd('TextYankPost', {
-    callback = function()
-        vim.highlight.on_yank({ higroup = 'Visual', timeout = 200 })
-    end
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
+  end,
 })
 
 -- 设置在特定文件后缀中的缩进
-vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile', 'FileType' }, {
-    pattern = { 'yaml', 'yml', 'toml' },
-    callback = function()
-        vim.opt_local.tabstop = 2
-        vim.opt_local.shiftwidth = 2
-        vim.opt_local.softtabstop = 2
-    end,
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "FileType" }, {
+  pattern = { "yaml", "yml", "toml" },
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.softtabstop = 2
+  end,
 })

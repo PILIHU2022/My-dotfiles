@@ -15,12 +15,12 @@ end
 
 local function resolve_mode(key)
   if #key == 0 then
-    return { '' }
+    return { "" }
   end
 
   local modes = {}
-  for char in key:gmatch('.') do
-    if not char:find('[!abcilnostvx]') then
+  for char in key:gmatch(".") do
+    if not char:find("[!abcilnostvx]") then
       error(('invalid mode "%s"'):format(char))
     end
     modes[char] = true
@@ -29,11 +29,11 @@ local function resolve_mode(key)
   -- alias a -> :map and b -> :map!
   if modes.a then
     modes.a = nil
-    modes[''] = true
+    modes[""] = true
   end
   if modes.b then
     modes.b = nil
-    modes['!'] = true
+    modes["!"] = true
   end
 
   -- convert xs -> :vmap, nvo -> :map, ic -> :map!
@@ -41,23 +41,23 @@ local function resolve_mode(key)
     modes.v = true
   end
   if modes.n and modes.v and modes.o then
-    modes[''] = true
+    modes[""] = true
   end
   if modes.i and modes.c then
-    modes['!'] = true
+    modes["!"] = true
   end
 
   -- remove redundant modes for :map and :vmap
   local keys = {}
-  if modes[''] then
-    vim.list_extend(keys, { 'n', 'v', 'o', 'x', 's' })
+  if modes[""] then
+    vim.list_extend(keys, { "n", "v", "o", "x", "s" })
   elseif modes.v then
-    vim.list_extend(keys, { 'x', 's' })
+    vim.list_extend(keys, { "x", "s" })
     -- remove redundant modes for :lmap and :map!
   elseif modes.l then
-    vim.list_extend(keys, { '!', 'i', 'c' })
-  elseif modes['!'] then
-    vim.list_extend(keys, { 'i', 'c' })
+    vim.list_extend(keys, { "!", "i", "c" })
+  elseif modes["!"] then
+    vim.list_extend(keys, { "i", "c" })
   end
 
   key_nil(modes, keys)
@@ -74,11 +74,11 @@ local function merge(t, n)
 end
 
 local function index(self, key)
-  assert(type(key) == 'string', 'invalid key')
+  assert(type(key) == "string", "invalid key")
 
-  if key == 'cmd' then
+  if key == "cmd" then
     local cmd_fn = function(str)
-      return '<Cmd>' .. str .. '<CR>'
+      return "<Cmd>" .. str .. "<CR>"
     end
     rawset(self, key, cmd_fn)
     return cmd_fn
@@ -89,19 +89,19 @@ local function index(self, key)
   local function map_fn(arg1, arg2, arg3)
     local opts, maps
 
-    if type(arg1) == 'string' and (type(arg2) == 'string' or type(arg2) == 'function') then
+    if type(arg1) == "string" and (type(arg2) == "string" or type(arg2) == "function") then
       opts = arg3
-      assert(opts == nil or type(opts) == 'table', 'expected table as argument #3')
-    elseif type(arg1) == 'table' then
+      assert(opts == nil or type(opts) == "table", "expected table as argument #3")
+    elseif type(arg1) == "table" then
       opts, maps = arg2, arg1
-      assert(opts == nil or type(opts) == 'table', 'expected table as argument #2')
+      assert(opts == nil or type(opts) == "table", "expected table as argument #2")
     else
-      error('expected (string, string|function, table?) or (table, table?)')
+      error("expected (string, string|function, table?) or (table, table?)")
     end
 
     do
       local opts_copy = {}
-      merge(opts_copy, rawget(self, 'opts'))
+      merge(opts_copy, rawget(self, "opts"))
       merge(opts_copy, opts)
       opts = opts_copy
     end
@@ -125,9 +125,9 @@ local function index(self, key)
     end
 
     if not maps then
-      if type(arg2) == 'function' then
+      if type(arg2) == "function" then
         opts.callback = arg2
-        arg2 = ''
+        arg2 = ""
         if opts.expr and replace_keycodes == nil then
           opts.replace_keycodes = true
         end
@@ -140,19 +140,19 @@ local function index(self, key)
       end
     else
       for lhs, rhs in pairs(maps) do
-        if type(rhs) == 'function' then
+        if type(rhs) == "function" then
           opts.callback = rhs
-          rhs = ''
+          rhs = ""
           if opts.expr and replace_keycodes == nil then
             opts.replace_keycodes = true
           end
-        elseif type(rhs) == 'string' then
+        elseif type(rhs) == "string" then
           opts.callback = nil
           if opts.expr and replace_keycodes == nil then
             opts.replace_keycodes = false
           end
         else
-          error('expected string or function as rhs')
+          error("expected string or function as rhs")
         end
 
         for mode in pairs(modes) do
@@ -170,7 +170,7 @@ end
 local mt = { __index = index }
 
 local function new(opts)
-  assert(opts == nil or type(opts) == 'table', 'expected table')
+  assert(opts == nil or type(opts) == "table", "expected table")
   return setmetatable({
     opts = opts,
     new = new,

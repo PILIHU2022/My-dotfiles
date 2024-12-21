@@ -1,4 +1,1 @@
-.config/ranger/plugins
-.config/nvim-use-cmp/lazy-lock.json
-.config/ranger/colorschemes
-.obsidian
+.config/nvim/lazy-lock.json

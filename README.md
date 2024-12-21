@@ -99,7 +99,7 @@ cat ./paru.list | paru -S --needed -
 Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US/firefox/addon/arc-dark-theme-we/?utm_content=addons-manager-reviews-link&utm_medium=firefox-browser&utm_source=firefox-browser)。但本仓库仍然收纳了一个主题，叫作`SimpleFox`主题，在.mozilla中。
 
 # Todo
-* [ ] 修改README文件，以确保准确性
+* [ ] 修改Usage文件，以确保准确性
 * [ ] 将本仓库README.md翻译为英语版本(中英均有)（纯属锻炼英语水平，有空会更新）
 * [ ] 完成将dotfiles中的文件夹自动备份的Python脚本
 * [ ] 完成自动安装dotfiles的Python脚本

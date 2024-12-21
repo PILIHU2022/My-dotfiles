@@ -45,22 +45,22 @@ cat ./paru.list | paru -S --needed -
 
 [^Neovim-cmp]: 该Neovim配置使用了我自己的配置，具体的信息详见Neovim-use-cmp的[README.md文档](https://github.com/PILIHU2022/My-dotfiles/tree/main/Config/nvim-use-cmp)
 
-### <div align='center'>Neovim mason[^Neovim-mason]</div>
-<p align='center'>
-<img src = 'https://s1.imagehub.cc/images/2024/02/07/1fc1b3433f338a502c04d41e12fa9ecd.png'
-</p>
+<!-- ### <div align='center'>Neovim mason[^Neovim-mason]</div> -->
+<!-- <p align='center'> -->
+<!-- <img src = 'https://s1.imagehub.cc/images/2024/02/07/1fc1b3433f338a502c04d41e12fa9ecd.png' -->
+<!-- </p> -->
 
-[^Neovim-mason]: 该Neovim配置使用了我自己的配置，使用mason由于补全并不好，所以弃用，不再更新，建议使用Neovim-use-cmp，具体的信息详见[Neovim-use-mason-deprecated的README.md文档](https://github.com/PILIHU2022/My-dotfiles/tree/main/Config/nvim-use-mason-deprecated)
-
-### <div align='center'>Neovim old[^Neovim-old]</div>
-<p align='center'>
-<img src = 'https://s1.imagehub.cc/images/2024/02/07/a4f22d2786b86f997ef04925d63805f2.png'
-</p>
-
-
-
-[^Neovim-old]: Neovim配置使用了我自己的配置，使用cmp作为补全工具，已经弃用，不再更新，具体的信息详见[Neovim-old-deprecated的README.md文档](https://github.com/PILIHU2022/My-dotfiles/tree/main/Config/nvim-old-deprecated)
-
+<!-- [^Neovim-mason]: 该Neovim配置使用了我自己的配置，使用mason由于补全并不好，所以弃用，不再更新，建议使用Neovim-use-cmp，具体的信息详见[Neovim-use-mason-deprecated的README.md文档](https://github.com/PILIHU2022/My-dotfiles/tree/main/Config/nvim-use-mason-deprecated) -->
+<!---->
+<!-- ### <div align='center'>Neovim old[^Neovim-old]</div> -->
+<!-- <p align='center'> -->
+<!-- <img src = 'https://s1.imagehub.cc/images/2024/02/07/a4f22d2786b86f997ef04925d63805f2.png' -->
+<!-- </p> -->
+<!---->
+<!---->
+<!---->
+<!-- [^Neovim-old]: Neovim配置使用了我自己的配置，使用cmp作为补全工具，已经弃用，不再更新，具体的信息详见[Neovim-old-deprecated的README.md文档](https://github.com/PILIHU2022/My-dotfiles/tree/main/Config/nvim-old-deprecated) -->
+<!---->
 ### <div align='center'>Dunst[^Dunst]</div>
 <p align='center'>
 <img src = 'https://s1.imagehub.cc/images/2024/03/29/685a08a562184e96488228bb85eaf15d.png'

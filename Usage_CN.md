@@ -37,12 +37,12 @@ paru -S fastfetch-git
 alias中添加了`neofetch='neofetch | lolcat`，如上图的彩色输出，无需要的可以删除，需要的请安装lolcat<sup>包</sup>
 
 显示了IP(含Public IP)，显示用户名，显示Locale语言，打印：
-```
-Welcome to Arch Linux!
+```diff
++ Welcome to Arch Linux!
 
-Windows is shit!
++ Windows is shit!
 
-Fuck you NVIDIA!
++ Fuck you NVIDIA!
 ```
 此处不一一举例，若想对比请自行对比。
 ![提供默认配置作为参考：](https://s1.imagehub.cc/images/2024/01/31/cf022cb6459a966e527c7a88de199d82.png)

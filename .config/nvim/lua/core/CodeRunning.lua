@@ -3,7 +3,7 @@ local feedkeys = function(keys, mode)
 end
 
 local function RunWin(opt)
-  local Win = require("core.util.FloatWin")
+  local Win = require("core.util.window")
   Win:Create({
     anchor = "NE",
     width = 0.25,

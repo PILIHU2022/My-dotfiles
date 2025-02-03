@@ -26,7 +26,7 @@ local function markdown_keymap()
   map.n({
     -- Markview
     ["<C-m>"] = ":Markview splitToggle<CR>",
-    ["<C-k>"] = ":Markview toggleAll<CR>",
+    ["<C-k>"] = ":Markview Toggle<CR>",
   }, { buffer = true })
 end
 return markdown_keymap()

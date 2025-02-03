@@ -1,23 +1,23 @@
 local map = require("core.keymap_script")
 map.n({
   -- yazi
-  ["<leader>ra"] = function()
+  ["<leader>ya"] = function()
     require("core.yazi").yazi("edit")
   end,
 
-  ["<leader>rh"] = function()
+  ["<leader>yh"] = function()
     require("core.yazi").yazi("vsplit", "left")
   end,
 
-  ["<leader>rj"] = function()
+  ["<leader>yj"] = function()
     require("core.yazi").yazi("split", "down")
   end,
 
-  ["<leader>rk"] = function()
+  ["<leader>yk"] = function()
     require("core.yazi").yazi("split", "up")
   end,
 
-  ["<leader>rl"] = function()
+  ["<leader>yl"] = function()
     require("core.yazi").yazi("vsplit", "right")
   end,
 })

@@ -65,8 +65,6 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu no
 # preview directory's content with eza when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-# switch group using `<` and `>`
-zstyle ':fzf-tab:*' switch-group '<' '>'
 
 # Other
 # 警告显示为红色
@@ -76,4 +74,3 @@ zstyle ':completion:*:descriptions' format $'\e[2m -- %d --\e[0m'
 zstyle ':completion:*:corrections' format $'\e[93m -- %d (errors: %e) --\e[0m'
 # cd 补全顺序
 zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
-

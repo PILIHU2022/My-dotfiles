@@ -20,6 +20,9 @@ opt.shiftwidth = 4
 opt.expandtab = true
 opt.autoindent = true
 
+-- 显示完整的格式内容
+opt.conceallevel = 0
+
 -- 防止包裹
 opt.wrap = false
 
@@ -64,7 +67,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- 设置在特定文件后缀中的缩进
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "FileType" }, {
-  pattern = { "yaml", "yml", "toml" },
+  pattern = { "yaml", "yml", "toml", "mjs", "js", "lua" },
   callback = function()
     vim.opt_local.tabstop = 2
     vim.opt_local.shiftwidth = 2

@@ -6,7 +6,7 @@ require("lazy_nvim")
 require("keymap.yazi")
 -- require("core.ImSwitch")
 -- require("core.ranger")
-require("core.CodeRunning")
+-- require("core.CodeRunning")
 
 -- Markdown keymap
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "FileType" }, {
@@ -19,9 +19,9 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "FileType" }, {
 -- Terminal
 au("TermOpen", { command = "startinsert" })
 
--- highlight
-vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
-  end,
-})
+-- highlight (invalid)
+-- vim.api.nvim_create_autocmd("TextYankPost", {
+--   callback = function()
+--     vim.highlight.on_yank({ higroup = 'Visual', timeout = 200 })
+--   end,
+-- })

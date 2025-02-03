@@ -75,3 +75,8 @@ keymap.set(
 
 -- none-ls.nvim format code
 -- keymap.set('n', '<leader>fl', ':lua vim.lsp.buf.format()<CR>')
+
+-- Theme switcher for Chameleon.nvim
+vim.keymap.set("n", "<leader>th", function()
+    require("tswitch").open()
+end, { desc = "Theme Switcher" })

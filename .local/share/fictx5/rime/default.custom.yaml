@@ -11,3 +11,17 @@ patch:
     - schema: double_pinyin_sogou    # 搜狗双拼
     - schema: double_pinyin_flypy    # 小鹤双拼
     - schema: double_pinyin_ziguang  # 紫光双拼
+  # 菜单
+  menu:
+    page_size: 9  # 候选词个数
+    # alternative_select_labels: [ ①, ②, ③, ④, ⑤, ⑥, ⑦, ⑧, ⑨, ⑩ ]  # 修改候选项标签
+    # alternative_select_keys: ASDFGHJKL  # 如编码字符占用数字键，则需另设选字键
+  key_binder:
+    turn_down_cand: "Control+j"  # 匹配当前输入码后隐藏指定的候选字词 或候选词条放到第四候选位置
+    drop_cand: "Control+d"       # 强制删词, 无视输入的编码
+  engine/processors/+:
+    - lua_processor@cold_word_drop_processor
+  engine/filters/+:
+    - lua_filter@cold_word_drop_filter
+    - lua_filter@is_in_user_dict # 为输入过的内容加星号
+    - lua_filter@cn_en_spacer

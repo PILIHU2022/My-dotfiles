@@ -40,9 +40,6 @@ C	c	1
 AUR	aur	1
 Markdown	markd	1
 Markdown	markdown	1
-Spark-CN@outlook.com	mail	3
-2812167783@qq.com	mail	2
-pilihu2022@gmail.com	mail	1
 Git	git	1
 kitty	kitty	1
 Hyprland	hypr	1

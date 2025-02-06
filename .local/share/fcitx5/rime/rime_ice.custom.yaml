@@ -1,0 +1,6 @@
+patch:
+  # 启用一些未默认启用的Lua功能
+  "engine/processors/+":
+  "engine/filters/+":
+    - lua_filter@*cn_en_spacer
+    - lua_filter@*en_spacer

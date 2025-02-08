@@ -1,5 +1,3 @@
-# 开学啦
-# 更新可能会缓慢
 # 其他的README文件
 [Firefox theme(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.mozilla/README.md)
 

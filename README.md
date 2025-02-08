@@ -1,3 +1,5 @@
+# 面临中考
+# 更新可能会缓慢
 # 本仓库存放了我的Arch Linux软件配置文件
 # 若想使用，本仓库提供了较为详细的文档，见[使用指南_CN](https://github.com/PILIHU2022/My-dotfiles/blob/main/How-to-use_CN.md)，也请安装[该文章所提到的软件](https://github.com/PILIHU2022/My-dotfiles/blob/main/Programs.md)，也可以直接安装`paru.list`中包含的所有包（不推荐！）
 ```bash
@@ -106,6 +108,8 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 * [ ] 完善文档
 * [ ] 完善Fcitx5-rime使用rime-ice的文档，链接到仓库
 * [ ] 将Neovim的启动速度提升（使用lazy=true）
+* [ ] 排版文档
+* [ ] 补全未完成的文档
 
 # Finished
 * [x] 完成设置全局黑暗主题的文档

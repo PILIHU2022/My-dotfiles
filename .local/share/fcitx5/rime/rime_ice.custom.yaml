@@ -4,5 +4,4 @@ patch:
     - lua_processor@*cold_word_drop.processor
   "engine/filters/+":
     - lua_filter@*cold_word_drop.filter
-    - lua_filter@*cn_en_spacer
     - lua_filter@*en_spacer

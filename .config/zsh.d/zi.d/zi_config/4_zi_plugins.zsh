@@ -2,9 +2,9 @@ zi ice lucid wait has 'fzf'
 zi light Aloxaf/fzf-tab
 zi light-mode for \
     z-shell/F-Sy-H\
+    junegunn/fzf\
     zsh-users/zsh-completions
     # zsh-users/zsh-autosuggestions\
-    # junegunn/fzf\
     # zsh-users/zsh-syntax-highlighting 
     # z-shell/z-a-meta-plugins\ 
     # @annexes+\ 

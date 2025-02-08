@@ -11,6 +11,7 @@ return {
         pyright = {},
         ruff = {},
         clangd = {},
+        yamlls = {},
         lua_ls = {
           settings = {
             Lua = {

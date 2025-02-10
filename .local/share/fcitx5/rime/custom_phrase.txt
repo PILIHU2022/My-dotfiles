@@ -30,7 +30,6 @@ Office	office	1
 Microsoft 365	micrsan	1
 OneDrive	oned	1
 WPS Office	wps	2
-WPS	wps	1
 Arch Linux	arch	2
 Arch	arch	1
 Gentoo	gentoo	1
@@ -42,11 +41,9 @@ Markdown	markd	1
 Markdown	markdown	1
 Git	git	1
 Python	python
-kitty	kitty	1
 Hyprland	hypr	1
 Hyprland	hyprland	1
 B站	bzhan	1
-NVIDIA	nvidia	1
 Bing	bing	9
 
 Bit	bit	1

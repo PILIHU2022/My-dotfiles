@@ -1,7 +1,0 @@
-[init]
-	defaultBranch = main
-[user]
-	email = Spark-CN@outlook.com
-	name = PILIHU2022
-[core]
-	editor = nvim

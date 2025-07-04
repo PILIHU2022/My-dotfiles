@@ -20,7 +20,11 @@ for src_path, target_path in zip(src_paths, target_paths):
     # os.system(f"rsync -a -r --quiet --delete {src_path} {target_path}")
     if src_path == "~/.config/zsh.d/":
         os.system(
-            f"""rsync -a -r --delete --exclude="zi.d/zi" {src_path} {target_path}"""
+            f"""rsync -a -r --delete --exclude "/home/Spark/.config/zsh.d/zi.d/zi" {src_path} {target_path}"""
+        )
+    if src_path == "~/.config/nvim/":
+        os.system(
+            f"""rsync -a -r --delete --exclude "lazy-lock.json" {src_path} {target_path}"""
         )
     else:
         os.system(f"rsync -a -r --quiet --delete {src_path} {target_path}")

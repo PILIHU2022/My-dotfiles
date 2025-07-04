@@ -5,6 +5,7 @@ src_paths = [
     "~/.config/nvim/",
     "~/.config/zsh.d/",
     "~/.config/kitty/",
+    "~/.config/fuzzel/",
 ]
 
 target_paths = [
@@ -12,6 +13,7 @@ target_paths = [
     "~/My-dotfiles/.config/nvim",
     "~/My-dotfiles/.config/zsh.d",
     "~/My-dotfiles/.config/kitty",
+    "~/My-dotfiles/.config/fuzzel/",
 ]
 
 for src_path, target_path in zip(src_paths, target_paths):

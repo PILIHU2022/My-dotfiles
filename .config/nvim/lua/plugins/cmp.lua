@@ -9,7 +9,7 @@ return {
     config = function()
       local servers = {
         pyright = {},
-        ruff = {},
+        -- ruff = {},
         clangd = {},
         yamlls = {},
         lua_ls = {

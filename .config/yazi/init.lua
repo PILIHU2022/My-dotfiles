@@ -1,7 +1,10 @@
-THEME.git = THEME.git or {}
-THEME.git.deleted_sign = "✘"
-THEME.git.updated_sign = "U"
-THEME.git.added_sign = "+"
-THEME.git.untracked_sign = "?"
-THEME.git.modified_sign = "!"
+-- For `git.yazi`
+th.git = th.git or {}
+th.git.added_sign = "A"
+th.git.ignored_sign = "I"
+th.git.updated_sign = "U"
+th.git.untracked_sign = "?"
+th.git.modified_sign = "M"
+th.git.deleted_sign = "D"
+
 require("git"):setup()

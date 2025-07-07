@@ -10,6 +10,7 @@ return {
       local servers = {
         pyright = {},
         -- ruff = {},
+        bashls = {},
         clangd = {},
         yamlls = {},
         lua_ls = {

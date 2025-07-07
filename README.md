@@ -1,5 +1,3 @@
-# 面临中考
-# 可能会暂停更新
 # 本仓库存放了我的Arch Linux软件配置文件
 # 若想使用，本仓库提供了较为详细的文档，见[使用指南_CN](https://github.com/PILIHU2022/My-dotfiles/blob/main/Usage_CN.md)，也请安装[该文章所提到的软件](https://github.com/PILIHU2022/My-dotfiles/blob/main/Programs.md)，也可以直接安装`paru.list`中包含的所有包（不推荐！）
 ```bash
@@ -103,7 +101,6 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 # Todo
 * [ ] 修改Usage文件，以确保准确性
 * [ ] 将本仓库README.md翻译为英语版本(中英均有)（纯属锻炼英语水平，有空会更新）
-* [ ] 完成将dotfiles中的文件夹自动备份的Python脚本
 * [ ] 完成自动安装dotfiles的Python脚本
 * [ ] 完善文档
 * [ ] 完善Fcitx5-rime使用rime-ice的文档，链接到仓库
@@ -112,6 +109,7 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 * [ ] 补全未完成的文档
 
 # Finished
+* [x] 完成将dotfiles中的文件夹自动备份的Python脚本
 * [x] 完成设置全局黑暗主题的文档
 * [x] 配置好aria2
 * [x] 重新配`mako`预览图

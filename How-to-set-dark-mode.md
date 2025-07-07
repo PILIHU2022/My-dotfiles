@@ -7,8 +7,21 @@ sudo pacman -S kvantum nwg-look qt6ct
 ```
 ## AUR解君愁
 ```
-paru -S catppuccin-gtk-theme-mocha
+paru -S catppuccin-gtk-theme-mocha breeze-gtk
 ```
+
+## 修改Hyprland配置
+将`env-Dark.conf`和`exec_once-Dark.conf`复制到`.config`中，并且改名为`env.conf`和`exec_once.conf`\
+> [!ATTENTION]
+> 不要修改这两个文件的内容
+
+```
+env = QT_QPA_PLATFORMTHEME,qt6ct
+env = GTK_THEME, Catppuccin-Macchiato
+```
+
+#### 开始享受黑暗模式
+
 ## Qt
 首先，将[主题](https://github.com/catppuccin/Kvantum)克隆到本地
 ```

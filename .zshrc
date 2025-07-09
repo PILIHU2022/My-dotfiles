@@ -3,8 +3,8 @@ echo Hi! $USER
 export EDITOR=nvim
 export VISUAL=$EDITOR
 source /etc/environment
+source ~/.config/zsh.d/fzf.zsh
 # export EDITOR=nvim
-eval "$(fzf --zsh)"
 #                                                 Load zinit                                                 #
 ##############################################################################################################
 
@@ -18,7 +18,7 @@ done
 
 #                                                 Load plugins && settings                                   #
 ##############################################################################################################
-source /etc/profile.d/autojump.zsh
+source /usr/share/autojump/autojump.zsh
 
 # set history file location
 HISTFILE=${HOME}/.cache/.histfile
@@ -51,26 +51,6 @@ alias waybarc='waybar -c ~/.config/hypr/waybar/config.jsonc -s ~/.config/hypr/wa
 alias waybars='waybar -s ~/.config/hypr/waybar/style.css'
 alias lst="ls --tree --ignore-glob='.git'"
 alias fontpreview="fontpreview --preview-text 'ABCDEFGHIJKLM\nNOPQRSTUVWXYZ\nabcdefghijklm\nnopqrstuvwxyz\n1234567890\n!@$\%(){}[]\n我能吞下玻璃而不伤身体。'"
-
-# 该配置无效,已弃用
-# alias gcd='git checkout dev'
-# alias giti="git commit -m 'upload photo'"
-# alias c.='cd ..'
-# alias gcm='git checkout main'
-# alias als='~/alist/alist server'
-# alias gplm='git push GitHub main && git push GitLab main' #在一个有Git版本控制的文件夹中使用，这是同时将更改上传到GitHub和GitLab的仓库中，前提是添加了这两个远程仓库，命名可更改
-# alias gpld='git push GitHub dev && git push GitLab dev'
-# alias sudo='doas'
-# alias yay='paru'
-# alias hs='hexo clean && hexo g && hexo s'
-# alias hd='hexo clean && hexo g && hexo d'
-# alias hsd='hexo clean && hexo g && hexo s && hexo d'
-# alias cdc='cd ~/Code-Workspace'
-# alias cdm='cd ~/Desktop/myblog'
-# alias lnvim='nvim -u ~/.config/lnvim/init.lua'
-# alias mnvim='nvim -u ~/.config/mnvim/init.lua'
-# alias sudoo='sudo'
-# alias vim='nvim'
 
 # For Powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

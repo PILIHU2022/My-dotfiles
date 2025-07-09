@@ -1,6 +1,10 @@
 -- 设置全局变量
 local opt = vim.opt
 
+-- Timeout
+vim.o.timeout = true
+vim.o.timeoutlen = 300
+
 opt.autowrite = true
 
 -- undofiles
@@ -58,10 +62,10 @@ vim.api.nvim_create_autocmd(
   { pattern = { "*.md", "*.txt" }, command = "setlocal wrap" }
 )
 
--- 设置复制时高亮复制行(疑似无效)
+-- 设置复制时高亮复制行
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
-    vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
+    vim.hl.on_yank({higroup='Visual', timeout=300})
   end,
 })
 

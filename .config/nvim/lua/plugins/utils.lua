@@ -1,4 +1,24 @@
 return {
+  -- lua with lazy.nvim
+  {
+    "max397574/better-escape.nvim",
+    config = function()
+      require("better_escape").setup {
+        timeout = vim.o.timeoutlen,
+        default_mappings = true,
+        mappings = {
+          i = {
+            k = {
+              j = false
+            },
+            j = {
+              j = false
+            }
+          }
+        }
+      }
+    end,
+  },
   -- 加速上下移动速度
   {
     "rhysd/accelerated-jk",

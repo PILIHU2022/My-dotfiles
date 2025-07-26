@@ -35,6 +35,20 @@ os.system(f"""swapon {swap}""")
 os.system(
     "pacstrap /mnt base base-devel linux-zen linux-firmware btrfs-progs doas nvim networkmanager zsh"
 )
+
+# Ask users to mount the disks partitions they need
+os.system("lsblk -f")
+print(
+    "Please input the partitions you want to mount(this will be mounted without arguments)!!!"
+)
+while 1 == 1:
+    to_be_mounted_partition = input(
+        "Input(/dev/.... If you WANT to exit, please press`q` and return):"
+    )
+    if to_be_mounted_partition != "q":
+        os.system(f"mount {to_be_mounted_partition}")
+    elif to_be_mounted_partition == "q":
+        break
 os.system("genfstab -U /mnt > /mnt/etc/fstab")
 
 # Change to new system

@@ -53,8 +53,10 @@ return {
         nmap("<leader>rn", "<cmd>Lspsaga rename ++project<cr>", "Rename")
         nmap("<leader>ca", "<cmd>Lspsaga code_action<CR>", "Code Action")
         nmap("<leader>ot", "<cmd>Lspsaga outline<CR>", "OutLine")
-        nmap("d[", vim.diagnostic.goto_prev, "Diangostics Prev")
-        nmap("d]", vim.diagnostic.goto_next, "Diangostics Next")
+        nmap('d[', "<cmd>Lspsaga diagnostic_jump_prev<CR>", "Diangostics Prev")
+        nmap('d]', "<cmd>Lspsaga diagnostic_jump_next<CR>", "Diangostics Next")
+        -- nmap("d[", vim.diagnostic.jump({count=1, float=true}), "Diangostics Prev")
+        -- nmap("d]", vim.diagnostic.jump({count=-1, float=true}), "Diangostics Next")
         -- nmap("<space>f", function()
         --     vim.lsp.buf.format { async = true }
         -- end, "[F]ormat code")

@@ -3,20 +3,29 @@ return {
   {
     "max397574/better-escape.nvim",
     config = function()
-      require("better_escape").setup {
+      require("better_escape").setup({
         timeout = vim.o.timeoutlen,
         default_mappings = true,
         mappings = {
           i = {
             k = {
-              j = false
+              j = false,
             },
             j = {
-              j = false
-            }
-          }
-        }
-      }
+              j = false,
+            },
+          },
+          v = {
+            j = {
+              k = false,
+              j = false,
+            },
+            k = {
+              j = false,
+            },
+          },
+        },
+      })
     end,
   },
   -- 加速上下移动速度

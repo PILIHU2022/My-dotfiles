@@ -53,13 +53,13 @@
         "on-scroll-up": "hyprctl dispatch workspace -1",
         "on-scroll-down": "hyprctl dispatch workspace +1",
         "on-click": "activate",
-        "format-icons": {
-            "1": "<span font='15'></span>",
-            "2": "<span font='15'></span>",
-            "3": "<span font='15'></span>",
-            "4": "<span font='15'>󰍲</span>",
-            "5": "<span font='15'></span>"
-        },
+        // "format-icons": {
+        //     "1": "<span font='15'></span>",
+        //     "2": "<span font='15'></span>",
+        //     "3": "<span font='15'></span>",
+        //     "4": "<span font='15'>󰍲</span>",
+        //     "5": "<span font='15'></span>"
+        // },
         "icon-size":100
         // "format": "{icon}",
         // 显示空间不足，暂时弃用

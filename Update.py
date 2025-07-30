@@ -27,5 +27,5 @@ for src_path, target_path in zip(src_paths, target_paths):
         )
     else:
         os.system(f"rsync -a -r --quiet --delete {src_path} {target_path}")
-os.system("./special_for_zsh.d.sh")
+# os.system("./special_for_zsh.d.sh")
 print("Finished to update")

@@ -49,7 +49,7 @@ zmodule completion
 zmodule zdharma-continuum/fast-syntax-highlighting
 # Fish-like history search (up arrow) for Zsh.
 # zsh-users/zsh-history-substring-search must be sourced after zsh-users/zsh-syntax-highlighting
-# zmodule zsh-users/zsh-history-substring-search
+zmodule zsh-users/zsh-history-substring-search
 # Fish-like autosuggestions for Zsh.
 zmodule zsh-users/zsh-autosuggestions
 # }}} End configuration added by Zim install

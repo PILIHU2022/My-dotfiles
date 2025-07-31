@@ -30,7 +30,6 @@ return {
     -- },
 
     config = function(_, opts)
-      local lspconfig = require("lspconfig")
       local servers = {
         pyright = {},
         -- ruff = {},
@@ -39,16 +38,8 @@ return {
         yamlls = {},
         lua_ls = {},
       }
-      for server, config in pairs(opt.servers) do
-        config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-        lspconfig[server].setup(config)
-      end
-    end,
-
-    config = function()
-      local capabilities = require("blink.cmp").get_lsp_capabilities()
-      local lspconfig = require("lspconfig")
-
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = require("blink.cmp").get_lsp_capabilities()
       for server, conf in pairs(servers) do
         require("lspconfig")[server].setup(vim.tbl_deep_extend("force", {
           on_attach = on_attach,

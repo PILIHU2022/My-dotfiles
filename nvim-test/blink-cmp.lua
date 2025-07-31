@@ -4,6 +4,7 @@ return {
   dependencies = {
     "Kaiser-Yang/blink-cmp-avante",
     "rafamadriz/friendly-snippets",
+    "L3MON4D3/LuaSnip",
   },
 
   -- use a release tag to download pre-built binaries
@@ -31,43 +32,62 @@ return {
     -- keymap = { preset = "default" },
     cmdline = {
       keymap = {
-        preset = "none",
-        ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-        ["<CR>"] = { "select_and_accept", "fallback" },
-        ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
-        ["<Tab>"] = { "select_next", "snippet_forward", "fallback" }, -- 同时存在补全列表和snippet时，补全列表选择优先级更高
-
-        ["<C-b>"] = { "scroll_documentation_up", "fallback" },
-        ["<C-f>"] = { "scroll_documentation_down", "fallback" },
-
-        ["<C-e>"] = { "snippet_forward", "select_next", "fallback" }, -- 同时存在补全列表和snippet时，snippet跳转优先级更高
-        ["<C-u>"] = { "snippet_backward", "select_prev", "fallback" },
+        -- 选择并接受预选择的第一个
+        -- ["<CR>"] = { "select_and_accept", "fallback" },
+        ["<CR>"] = { "accept", "fallback" },
       },
       completion = {
-        -- 示例：使用'prefix'对于'foo_|_bar'单词将匹配'foo_'(光标前面的部分),使用'full'将匹配'foo__bar'(整个单词)
-        keyword = { range = "full" },
-        -- 选择补全项目时显示文档(0秒延迟)
-        menu = {
-          winhighlight = "Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
-        },
-        documentation = {
-          auto_show = true,
-          auto_show_delay_ms = 0,
-          window = {
-            winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc",
+        -- 不预选第一个项目，选中后自动插入该项目文本
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = false,
           },
         },
-        -- 不预选第一个项目，选中后自动插入该项目文本
-        list = { selection = { preselect = false, auto_insert = false } },
-        -- 针对菜单的外观配置
-        -- menu = {
-        --  min_width = 15,
-        --  max_height = 10,
-        --  border = "single", -- Defaults to `vim.o.winborder` on nvim 0.11+
-        -- },
-        ghost_text = { enabled = true },
-        signature = { enabled = false }
+        -- 自动显示补全窗口，仅在输入命令时显示菜单，而搜索或使用其他输入菜单时则不显示
+        menu = {
+          auto_show = function(ctx)
+            return vim.fn.getcmdtype() == ":"
+            -- enable for inputs as well, with:
+            -- or vim.fn.getcmdtype() == '@'
+          end,
+        },
+        -- 不在当前行上显示所选项目的预览
+        ghost_text = { enabled = false },
       },
+    },
+    completion = {
+      -- 示例：使用'prefix'对于'foo_|_bar'单词将匹配'foo_'(光标前面的部分),使用'full'将匹配'foo__bar'(整个单词)
+      -- keyword = { range = "full" },
+      -- menu = {
+      --   winhighlight = "Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
+      -- },
+      documentation = {
+        auto_show = true,
+        auto_show_delay_ms = 0,
+        -- window = {
+        --   winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc",
+        -- },
+      },
+      -- 不预选第一个项目，选中后自动插入该项目文本
+      list = {
+        selection = {
+          preselect = false,
+          auto_insert = false,
+        },
+      },
+      -- 针对菜单的外观配置
+      -- menu = {
+      --  min_width = 15,
+      --  max_height = 10,
+      --  border = "single", -- Defaults to `vim.o.winborder` on nvim 0.11+
+      -- },
+      ghost_text = {
+        enabled = true,
+      },
+      -- signature = {
+      --   enabled = false,
+      -- },
     },
     keymap = {
       preset = "none",
@@ -82,9 +102,6 @@ return {
       nerd_font_variant = "mono",
     },
 
-    -- (Default) Only show the documentation popup when manually triggered
-    completion = { documentation = { auto_show = false } },
-
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
@@ -97,7 +114,9 @@ return {
       },
       providers = {
         buffer = { score_offset = 5 },
-        lsp = { score_offset = 3 },
+        lsp = {
+          score_offset = 3,
+        },
         path = { score_offset = 2 },
         snippets = { score_offset = 1 },
         avante = {

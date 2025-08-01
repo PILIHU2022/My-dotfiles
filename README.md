@@ -3,6 +3,7 @@
 ```bash
 cat ./paru.list | paru -S --needed -
 ```
+# 目前该dotfile趋于稳定，除非出现Hyprland等配置方法更改会更新外，一般不会更新，欢迎使用！
 <!-- # 若想参与或修改本仓库中的一些配置，可来到[ 该仓库 ](https://github.com/PILIHU2022/My-dotfiles-DEV)查看README.md -->
 # 若想参与本项目或修改本仓库中的一些配置，欢迎提交PR！
 # 若本仓库的配置出现问题或你有一些想法，欢迎提交issue

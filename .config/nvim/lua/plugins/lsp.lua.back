@@ -4,32 +4,33 @@ return {
     dependencies = {
       "folke/neodev.nvim",
       "nvimdev/lspsaga.nvim",
-      "saghen/blink.cmp",
+      'saghen/blink.cmp',
     },
-    -- opts = {
-    --   servers = {
-    --     lua_ls = {
-    --       settings = {
-    --         Lua = {
-    --           diagnostics = {
-    --             globals = {
-    --               "vim",
-    --               "require",
-    --             },
-    --           },
-    --           workspace = {
-    --             checkThirdParty = false,
-    --           },
-    --           completion = {
-    --             callSnippet = "Replace",
-    --           },
-    --         },
-    --       },
-    --     },
-    --   },
-    -- },
+    opts = {
+      servers = {
+        lua_ls = {
+          settings = {
+            Lua = {
+              diagnostics = {
+                globals = {
+                  "vim",
+                  "require",
+                },
+              },
+              workspace = {
+                checkThirdParty = false,
+              },
+              completion = {
+                callSnippet = "Replace",
+              },
+            },
+          },
+        },
+      }
+    },
 
     config = function(_, opts)
+      local lspconfig = require('lspconfig')
       local servers = {
         pyright = {},
         -- ruff = {},
@@ -38,25 +39,30 @@ return {
         yamlls = {},
         lua_ls = {},
       }
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require("blink.cmp").get_lsp_capabilities()
-      for server, conf in pairs(servers) do
-        require("lspconfig")[server].setup(vim.tbl_deep_extend("force", {
-          on_attach = on_attach,
-          capabilities = capabilities,
-        }, conf))
+      for server, config in pairs(opt.servers) do
+        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+        lspconfig[server].setup(config)
       end
     end,
+
+    config = function()
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
+      local lspconfig = require('lspconfig')
+
+      lspconfig['lua_ls'].setup({ capabilities = capabilities })
+    end,
+
     config = function()
       local on_attach = function(_, bufnr)
-        local nmap =
-          function(keys, func, desc)
-            if desc then
-              desc = "LSP: " .. desc
-            end
+        local nmap = function(keys, func, desc)
+          if desc then
+            desc = "LSP: " .. desc
+          end
 
-            vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
-          end, nmap("<leader>pd", "<cmd>Lspsaga peek_definition<CR>", "Peek Definition")
+          vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
+        end
+
+        nmap("<leader>pd", "<cmd>Lspsaga peek_definition<CR>", "Peek Definition")
         nmap("<leader>pr", "<cmd>Telescope lsp_references<CR>", "Peek References")
         nmap("<c-d>", "<cmd>Lspsaga hover_doc<CR>", "Hover Documentation")
         nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, "Workspace Add Folder")
@@ -67,12 +73,13 @@ return {
         nmap("<leader>rn", "<cmd>Lspsaga rename ++project<cr>", "Rename")
         nmap("<leader>ca", "<cmd>Lspsaga code_action<CR>", "Code Action")
         nmap("<leader>ot", "<cmd>Lspsaga outline<CR>", "OutLine")
-        nmap("d[", "<cmd>Lspsaga diagnostic_jump_prev<CR>", "Diangostics Prev")
-        nmap("d]", "<cmd>Lspsaga diagnostic_jump_next<CR>", "Diangostics Next")
+        nmap('d[', "<cmd>Lspsaga diagnostic_jump_prev<CR>", "Diangostics Prev")
+        nmap('d]', "<cmd>Lspsaga diagnostic_jump_next<CR>", "Diangostics Next")
         nmap("<space>f", function()
-          vim.lsp.buf.format({ async = true })
+            vim.lsp.buf.format { async = true }
         end, "[F]ormat code")
       end
+
       require("neodev").setup({
         lspconfig = true,
         override = function(_, library)

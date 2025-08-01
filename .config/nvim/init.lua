@@ -1,7 +1,7 @@
 local au = vim.api.nvim_create_autocmd
 require("core.options")
 require("core.keymap")
-require("lazy_nvim")
+require("lazy_setup")
 -- yazi
 require("keymap.yazi")
 -- require("core.ImSwitch")

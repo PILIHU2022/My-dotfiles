@@ -3,12 +3,6 @@ vim.g.mapleader = " "
 -- 设置变量
 local keymap = vim.keymap
 
--- 快捷保存(实现离开insert模式就保存)
-
--- 单行或多行移动(暂时失效)
--- keymap.set("v", "J", ":move >+1<CR>gv=gv")
--- keymap.set("v", "K", ":move <-2<CR>gv=gv")
-
 -- 窗口
 keymap.set("n", "<leader>sv", "<C-w>v") -- 水平新增窗口
 keymap.set("n", "<leader>sh", "<C-w>s") -- 垂直新增窗口
@@ -77,6 +71,19 @@ keymap.set(
 -- keymap.set('n', '<leader>fl', ':lua vim.lsp.buf.format()<CR>')
 
 -- Theme switcher for Chameleon.nvim
-vim.keymap.set("n", "<leader>th", function()
-    require("tswitch").open()
-end, { desc = "Theme Switcher" })
+-- vim.keymap.set("n", "<leader>th", function()
+--   require("tswitch").open()
+-- end, { desc = "Theme Switcher" })
+
+-- lspsaga
+keymap.set("n", "<leader>pd", "<cmd>Lspsaga peek_definition<CR>")
+keymap.set("n", "<leader>pr", "<cmd>Telescope lsp_references<CR>")
+keymap.set("n", "<c-d>", "<cmd>Lspsaga hover_doc<CR>")
+keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder)
+keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder)
+-- keymap.set('n', "<leader>wl", function()vim.notify(vim.inspect(vim.lsp.buf.list_workspace_folders()))end, "Workspace List Folders")
+keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename ++project<cr>")
+keymap.set("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>")
+keymap.set("n", "<leader>ot", "<cmd>Lspsaga outline<CR>")
+keymap.set("n", "d[", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
+keymap.set("n", "d]", "<cmd>Lspsaga diagnostic_jump_next<CR>")

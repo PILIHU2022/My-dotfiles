@@ -1,15 +1,15 @@
 return {
   {
-      "folke/tokyonight.nvim",
-      -- config = function()
-      --     vim.cmd [[colorscheme tokyonight-storm]]
-      -- end
+    "folke/tokyonight.nvim",
+    -- config = function()
+    --     vim.cmd [[colorscheme tokyonight-storm]]
+    -- end
   },
   {
-      "sainnhe/gruvbox-material",
-      config = function ()
-          vim.cmd.colorscheme('gruvbox-material')
-      end
+    "sainnhe/gruvbox-material",
+    -- config = function ()
+    --     vim.cmd.colorscheme('gruvbox-material')
+    -- end
   },
   {
     "projekt0n/github-nvim-theme",
@@ -22,16 +22,16 @@ return {
     -- end,
   },
   -- Multi colorschemes and statusline
-  {
-    "JunaidQrysh/chameleon.nvim",
-    dependencies = { "nvzone/volt" },
-    event = "VeryLazy",
-    opts = {
-      ui = {
-        statusline = {
-          enable = true
-        }
-      }
-    }
-  },
-}
+  -- {
+  --   "JunaidQrysh/chameleon.nvim",
+  --   dependencies = { "nvzone/volt" },
+  --   event = "VeryLazy",
+  --   opts = {
+  --     ui = {
+  --       statusline = {
+  --         enable = true
+  --       }
+  --     }
+  --   }
+  -- },
+  }

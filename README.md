@@ -85,16 +85,16 @@ Firefox主题：我使用的是[Arc Dark Theme](https://addons.mozilla.org/en-US
 
 # Todo
 * [ ] 将本仓库README.md翻译为英语版本(中英均有)（纯属锻炼英语水平，有空会更新）
-* [ ] 完成自动安装dotfiles的Python脚本
 * [ ] 完善文档
 * [ ] 完善Fcitx5-rime使用rime-ice的文档，链接到仓库
 * [ ] 将Neovim的启动速度提升（使用lazy=true）
 * [ ] 排版文档
-* [ ] 补全未完成的文档
 
 # Finished
+* [x] 完成自动安装dotfiles的Python脚本
 * [x] 修改Usage文件，以确保准确性
 * [x] 完成将dotfiles中的文件夹自动备份的Python脚本
+* [x] 补全未完成的文档
 * [x] 完成设置全局黑暗主题的文档
 * [x] 配置好aria2
 * [x] 重新配`mako`预览图

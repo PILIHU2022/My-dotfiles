@@ -1,8 +1,8 @@
 # 其他的README文件
 
-[Firefox theme(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.mozilla/README.md)
+[Firefox theme](https://github.com/PILIHU2022/My-dotfiles/blob/main/.mozilla/README.md)
 
-[Fastfetch Configuration(待补全)](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/fastfetch/README.md)
+[Fastfetch Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/fastfetch/README.md)
 
 [Hyprland Configuration](https://github.com/PILIHU2022/My-dotfiles/blob/main/.config/hypr/README.md)
 

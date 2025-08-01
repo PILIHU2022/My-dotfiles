@@ -5,6 +5,7 @@ return {
     "Kaiser-Yang/blink-cmp-avante",
     "rafamadriz/friendly-snippets",
     "L3MON4D3/LuaSnip",
+    "echasnovski/mini.icons",
   },
 
   -- use a release tag to download pre-built binaries
@@ -52,22 +53,22 @@ return {
             -- or vim.fn.getcmdtype() == '@'
           end,
         },
-        -- 不在当前行上显示所选项目的预览
-        ghost_text = { enabled = false },
+        ghost_text = {
+          enabled = true
+        },
       },
     },
     completion = {
-      -- 示例：使用'prefix'对于'foo_|_bar'单词将匹配'foo_'(光标前面的部分),使用'full'将匹配'foo__bar'(整个单词)
-      -- keyword = { range = "full" },
-      -- menu = {
-      --   winhighlight = "Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
-      -- },
+      keyword = {
+        range = "full",
+      },
       documentation = {
         auto_show = true,
         auto_show_delay_ms = 0,
-        -- window = {
-        --   winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc",
-        -- },
+        window = {
+          border = 'rounded'
+          -- winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc",
+        },
       },
       -- 不预选第一个项目，选中后自动插入该项目文本
       list = {
@@ -77,17 +78,14 @@ return {
         },
       },
       -- 针对菜单的外观配置
-      -- menu = {
-      --  min_width = 15,
-      --  max_height = 10,
-      --  border = "single", -- Defaults to `vim.o.winborder` on nvim 0.11+
-      -- },
+      menu = {
+        min_width = 15,
+        max_height = 10,
+        border = "rounded", -- Defaults to `vim.o.winborder` on nvim 0.11+
+      },
       ghost_text = {
         enabled = true,
       },
-      -- signature = {
-      --   enabled = false,
-      -- },
     },
     keymap = {
       preset = "none",

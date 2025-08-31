@@ -8,7 +8,7 @@ return {
       options = {
         insert = true, -- when typeing "|"
         insert_leave = true, -- when leaveing insert
-        alig_style = "default", -- default, left, center, right
+        alig_style = "center", -- default, left, center, right
       },
     })
   end,

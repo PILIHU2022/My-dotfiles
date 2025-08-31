@@ -2,7 +2,6 @@ return {
   "saghen/blink.cmp",
   -- optional: provides snippets for the snippet source
   dependencies = {
-    "Kaiser-Yang/blink-cmp-avante",
     "rafamadriz/friendly-snippets",
     "L3MON4D3/LuaSnip",
     "echasnovski/mini.icons",
@@ -36,6 +35,8 @@ return {
         -- 选择并接受预选择的第一个
         -- ["<CR>"] = { "select_and_accept", "fallback" },
         ["<CR>"] = { "accept", "fallback" },
+        ['<Tab>'] = { 'snippet_forward', 'fallback' },
+        ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
       },
       completion = {
         -- 不预选第一个项目，选中后自动插入该项目文本
@@ -54,7 +55,7 @@ return {
           end,
         },
         ghost_text = {
-          enabled = true
+          enabled = true,
         },
       },
     },
@@ -66,7 +67,7 @@ return {
         auto_show = true,
         auto_show_delay_ms = 0,
         window = {
-          border = 'rounded'
+          border = "rounded",
           -- winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc",
         },
       },
@@ -104,30 +105,18 @@ return {
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
       default = {
-        "buffer",
         "lsp",
         "snippets",
         "path",
-        "avante",
+        "buffer",
       },
       providers = {
-        buffer = { score_offset = 5 },
         lsp = {
-          score_offset = 3,
+          score_offset = 4,
         },
-        path = { score_offset = 2 },
-        snippets = { score_offset = 1 },
-        avante = {
-          module = "blink-cmp-avante",
-          name = "Avante",
-          opts = {
-            kind_icons = {
-              AvanteCmd = "",
-              AvanteMention = "",
-              AvanteShortcut = "",
-            },
-          },
-        },
+        buffer = { score_offset = 3 },
+        snippets = { score_offset = 2 },
+        path = { score_offset = 1 },
       },
     },
 

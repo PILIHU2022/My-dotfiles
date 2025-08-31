@@ -11,7 +11,7 @@ return {
         lua_ls = {},
         pyright = {},
         -- ruff = {},
-        bashls = {},
+        -- bashls = {},
         clangd = {},
       },
     },

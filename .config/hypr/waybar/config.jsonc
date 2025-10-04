@@ -7,9 +7,9 @@
     "margin-left": 0,
     "margin-right": 0,
     "modules-left": [
-        "custom/Arch-Logo",
-        "custom/backup-script-launcher",
-        "custom/switch-wallpaper",
+        // "custom/Arch-Logo",
+        // "custom/backup-script-launcher",
+        // "custom/switch-wallpaper",
         "hyprland/workspaces",
         "custom/playerctl",
         "custom/playerlabel",
@@ -27,8 +27,8 @@
         // "custom/randwall",
         "network",
         "pulseaudio",
-        "clock",
-        "custom/Weather"
+        "clock"
+        // "custom/Weather"
     ],
     "hyprland/window": {
         "format": "{}",
@@ -120,7 +120,7 @@
     "user": {
         "format": "Hi! {user}! (Run for {work_H}H {work_M}Mins !)",
         "interval": 60,
-        "avatar": "$HOME/My-avatar.jpg",
+        // "avatar": "$HOME/My-avatar.jpg",
         "height": 30,
         "width": 30,
         "icon": true
@@ -154,24 +154,24 @@
         },
         "scroll-step": 5
     },
-    "custom/backup-script-launcher": {
-        "format": "󱓞",
-        "on-click": "bash $HOME/.config/hypr/scripts/run-backuppy.sh",
-        "tooltip-format": "Backup"
+    // "custom/backup-script-launcher": {
+    //     "format": "󱓞",
+    //     "on-click": "bash $HOME/.config/hypr/scripts/run-backuppy.sh",
+    //     "tooltip-format": "Backup"
+    // },
+    // "custom/switch-wallpaper": {
+    //     "format": "󰸉",
+    //     "on-click" : "bash $HOME/.config/hypr/scripts/swww_randomize.sh -m ~/Desktop/My-Wallpapers",
+    //     "tooltip-format": "Change Wallpaper"
     },
-    "custom/switch-wallpaper": {
-        "format": "󰸉",
-        "on-click" : "bash $HOME/.config/hypr/scripts/swww_randomize.sh -m ~/Desktop/My-Wallpapers",
-        "tooltip-format": "Change Wallpaper"
-    },
-    "custom/Arch-Logo": {
-        "format": "󰣇"
-    },
-    "custom/Weather": {
-        "format": "{}",
-        "return-type": "json",
-        "exec": "$HOME/.config/hypr/waybar/scripts/weather.sh 'Dongguan' 2 > /dev/null",
-        "interval": 300,
-        "tooltip": true
+    // "custom/Arch-Logo": {
+    //     "format": "󰣇"
+    // },
+    // "custom/Weather": {
+    //     "format": "{}",
+    //     "return-type": "json",
+    //     "exec": "$HOME/.config/hypr/waybar/scripts/weather.sh 'Dongguan' 2 > /dev/null",
+    //     "interval": 300,
+    //     "tooltip": true
     }
 }

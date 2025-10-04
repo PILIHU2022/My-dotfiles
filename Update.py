@@ -9,11 +9,11 @@ src_paths = [
 ]
 
 target_paths = [
-    "~/My-dotfiles/.config/hypr",
-    "~/My-dotfiles/.config/nvim",
-    "~/My-dotfiles/.config/kitty",
-    "~/My-dotfiles/.config/fuzzel/",
-    "~/My-dotfiles/.config/yazi",
+    "~/Projects/My-dotfiles/.config/hypr",
+    "~/Projects/My-dotfiles/.config/nvim",
+    "~/Projects/My-dotfiles/.config/kitty",
+    "~/Projects/My-dotfiles/.config/fuzzel/",
+    "~/Projects/My-dotfiles/.config/yazi",
 ]
 
 for src_path, target_path in zip(src_paths, target_paths):

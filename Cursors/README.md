@@ -12,10 +12,22 @@
 
 如果想要为指定用户配置,创建并编辑 ~/.icons/default/index.theme;如果想要系统范围配置,编辑 /usr/share/icons/default/index.theme。
 ```
-[icon theme] 
+[icon theme]
 Inherits=cursor_theme_name
+Name=Breeze (Plasma 5)
 ```
 该光标主题的Inherits已经改好，名为`Breeze-Dark-Cursor`
+
+`Name=...`也是可以的，我使用`uwsm`设置变量，可以设置为
+```
+# uwsm
+export XCURSOR_THEME="Breeze (Plasma 5)"
+
+# Hyprland
+env = XCURSOR_THEME, Breeze (Plasma 5)
+```
+
+~~或许这里可能使用`Name=...`~~
 
 ### 编辑`~/.config/gtk-3.0/settings.ini`
 将`cursor_theme_name`替换为你选择的主题Inherits

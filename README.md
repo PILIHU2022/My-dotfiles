@@ -1,12 +1,14 @@
 # 目前该dotfile趋于稳定，除非出现Hyprland等配置方法更改会更新外，一般不会更新，欢迎使用！
-# 本仓库存放了我的Arch Linux软件配置文件
-# 若想使用，本仓库提供了较为详细的文档，见[使用指南_CN](https://github.com/PILIHU2022/My-dotfiles/blob/main/Usage_CN.md)，也请安装[该文章所提到的软件](https://github.com/PILIHU2022/My-dotfiles/blob/main/Programs.md)，也可以直接安装`paru.list`中包含的所有包（不推荐！）
+# 若想使用，本仓库提供了较为详细的文档，见[使用指南_CN](https://github.com/PILIHU2022/My-dotfiles/blob/main/Docs/Usage_CN.md)，也请安装[该文章所提到的软件](https://github.com/PILIHU2022/My-dotfiles/blob/main/Docs/Programs.md)，也可以直接安装`paru.list`中包含的所有包（不推荐！）
 ```bash
 cat ./paru.list | paru -S --needed -
 ```
-<!-- # 若想参与或修改本仓库中的一些配置，可来到[ 该仓库 ](https://github.com/PILIHU2022/My-dotfiles-DEV)查看README.md -->
-# 若想参与本项目或修改本仓库中的一些配置，欢迎提交PR！
-# 若本仓库的配置出现问题或你有一些想法，欢迎提交issue
+## 说明
+本仓库存放了我的Arch Linux软件配置文件
+
+**若想参与本项目或修改本仓库中的一些配置，欢迎提交PR！**
+**若本仓库的配置出现问题或你有一些想法，欢迎提交issue**
+所有文档已迁移至`Docs`文件夹中，请查看[该文件夹](https://github.com/PILIHU2022/My-dotfiles/tree/main/Docs)以获取更多使用说明
 ## 本仓库使用了Hyprland作为WM，使用waybar-git作为顶栏
 # Preview!
 ### <div align='center'>整体图</div>

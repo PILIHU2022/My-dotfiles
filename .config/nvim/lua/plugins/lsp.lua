@@ -3,8 +3,6 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       "folke/lazydev.nvim",
-      "nvimdev/lspsaga.nvim",
-      "saghen/blink.cmp",
     },
     opts = {
       servers = {
@@ -14,19 +12,31 @@ return {
         -- bashls = {},
         clangd = {},
       },
+      capabilities = {
+        workspace = {
+          fileOperations = {
+            didRename = true,
+            willRename = true,
+          },
+        },
+      },
     },
     config = function(_, opts)
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
-      local lspconfig = require("lspconfig")
-      for server, config in pairs(opts.servers) do
-        -- passing config.capabilities to blink.cmp merges with the capabilities in your
-        -- `opts[server].capabilities, if you've defined it
-        config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-        lspconfig[server].setup(vim.tbl_deep_extend("force", {
-          -- on_attach = on_attach,
-          capabilities = capabilities,
-        }, config))
+      -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+      -- capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
+      local default_lsp_config = {
+        capabilities = vim.tbl_deep_extend(
+          "force",
+          vim.lsp.protocol.make_client_capabilities(),
+          require("blink.cmp").get_lsp_capabilities(), -- 令 blink.cmp 连接服务器
+          opts.capabilities or {}
+        ),
+      }
+      -- vim.lsp.config("*", default_lsp_config)
+      -- vim.lsp.enable(opts.servers)
+      for server in pairs(opts.servers) do
+        vim.lsp.config(server, default_lsp_config)
+        vim.lsp.enable(server)
       end
       require("lazydev").setup({
         lspconfig = true,
@@ -35,59 +45,6 @@ return {
           library.plugins = true
           library.types = true
         end,
-      })
-
-      require("lspsaga").setup({
-        border = "single",
-        beacon = {
-          enable = true,
-        },
-        outline = {
-          keys = {
-            quit = "Q",
-            toggle_or_jump = "<cr>",
-          },
-        },
-        finder = {
-          keys = {
-            quit = "Q",
-            edit = "<C-o>",
-            toggle_or_open = "<cr>",
-          },
-        },
-        definition = {
-          keys = {
-            edit = "<C-o>",
-            vsplit = "<C-v>",
-          },
-        },
-        code_action = {
-          keys = {
-            quit = "Q",
-          },
-          show_server_name = true,
-          extend_gitsigns = true,
-        },
-        -- Options of rename
-        rename = {
-          in_select = false,
-        },
-        -- Options of lightbulb
-        lightbulb = {
-          enable = true,
-          sign = false,
-          virtual_text = true,
-          enable_in_insert = true,
-          debounce = 10,
-          sign_priority = 20,
-        },
-        -- Set the icon of the lightbulb
-        ui = {
-          -- code_action = ' ',
-          devicon = true,
-          title = true,
-          kind = {},
-        },
       })
 
       vim.diagnostic.config({
@@ -115,5 +72,61 @@ return {
         end,
       })
     end,
+  },
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    opts = {
+      border = "single",
+      beacon = {
+        enable = true,
+      },
+      outline = {
+        keys = {
+          quit = "Q",
+          toggle_or_jump = "<cr>",
+        },
+      },
+      finder = {
+        keys = {
+          quit = "Q",
+          edit = "<C-o>",
+          toggle_or_open = "<cr>",
+        },
+      },
+      definition = {
+        keys = {
+          edit = "<C-o>",
+          vsplit = "<C-v>",
+        },
+      },
+      code_action = {
+        keys = {
+          quit = "Q",
+        },
+        show_server_name = true,
+        extend_gitsigns = true,
+      },
+      -- Options of rename
+      rename = {
+        in_select = false,
+      },
+      -- Options of lightbulb
+      lightbulb = {
+        enable = true,
+        sign = false,
+        virtual_text = true,
+        enable_in_insert = true,
+        debounce = 10,
+        sign_priority = 20,
+      },
+      -- Set the icon of the lightbulb
+      ui = {
+        -- code_action = ' ',
+        devicon = true,
+        title = true,
+        kind = {},
+      },
+    },
   },
 }

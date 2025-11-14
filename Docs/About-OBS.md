@@ -5,9 +5,9 @@
 2. 重新安装pipewire等软件（我试过没卵用）
 3. 安装一些软件（只能临时曲线救国了） A卡用户也可以使用
 ## 开始操作：
-安装软件wlr
+安装软件wlroots
 ```
-sudo pacman -S wlr xdg-desktop-protal-wlr
+sudo pacman -S wlroots xdg-desktop-protal-wlr
 ```
 安装好后重新启动OBS
 ### 重启OBS后记得在OBS源中添加来自wlr的源，根据依云大佬的回答：

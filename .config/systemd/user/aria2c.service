@@ -1,0 +1,9 @@
+[Unit]
+Description=Aria2 Daemon
+
+[Service]
+User=Spark
+ExecStart=/usr/bin/aria2c --conf-path=/home/Spark/.config/aria2/aria2.conf
+
+[Install]
+WantedBy=default.target

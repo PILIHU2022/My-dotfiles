@@ -5,46 +5,18 @@ socks-port: 20172           #本地socks5代理端口
 allow-lan: true
 mode: rule
 log-level: warning
+# log-level: info
 ipv6: true
 
 external-controller: 127.0.0.1:9090   #控制器监听地址
 
 tun:
   enable: true
-  device: Clash-Meta         #MacOS建议删除此项
-  stack: gvisor             #system / gvisor / lwip liwp仅为1.13.2以上的功能
-  mtu: 1500
-  strict-route: true
-  # auto-route: true
-  # auto-detect-interface: true
-  # # mtu: 9000               #最大传输单元
-  # # strict_route: true      #将所有连接路由到tun来防止泄漏，但你的设备将无法其他设备被访问
-  # inet4_route_address:      #启用 auto_route 时使用自定义路由而不是默认路由
-  #   - 0.0.0.0/1
-  #   - 128.0.0.0/1
-  # inet6_route_address:      #启用 auto_route 时使用自定义路由而不是默认路由
-  #   - '::/1'
-  #   - '8000::/1'
-  # endpoint_independent_nat: false         #启用独立于端点的 NAT
-  # include_uid: # UID 规则仅在 Linux 下被支持，并且需要 auto_route
-    # - 0
-  # include_uid_range: # 限制被路由的的用户范围
-    # - 1000-99999
-  # exclude_uid: # 排除路由的的用户
-    #- 1000
-  # exclude_uid_range: # 排除路由的的用户范围
-    # - 1000-99999
-
-  # Android 用户和应用规则仅在 Android 下被支持
-  # 并且需要 auto_route
-
-  # include_android_user: # 限制被路由的 Android 用户
-    # - 0
-    # - 10
-  # include_package: # 限制被路由的 Android 应用包名
-    # - com.android.chrome
-  # exclude_package: # 排除被路由的 Android 应用包名
-    # - com.android.captiveportallogin
+  device: Mihomo         #MacOS建议删除此项
+  stack: gvisor             #gvisor/mixed
+  # mtu: 1500
+  mtu: 1400
+  # strict-route: true
 
 dns:
   enable: true
@@ -64,25 +36,24 @@ dns:
     - https://doh.pub/dns-query
     - https://223.5.5.5/dns-query
   fallback:
-    - "https://dns.cloudflare.com/dns-query"
-    - "https://dns.google/dns-query"
+    - https://1.1.1.1/dns-query
+    - https://dns.google/dns-query
   proxy-server-nameserver:
     - https://doh.pub/dns-query
     - https://223.5.5.5/dns-query
   nameserver-policy:
+    # 指定域名通过指定DNS解析
+    "+.archlinuxcn.org":
+      - https://doh.pub/dns-query
+      - https://223.5.5.5/dns-query
     "geosite:cn,private":
       - https://doh.pub/dns-query
       - https://223.5.5.5/dns-query
+    # 当选择直连时可进行连接
     "geosite:geolocation-!cn":
-      - "https://dns.cloudflare.com/dns-query"
-      - "https://dns.google/dns-query"
-
-  # fallback-filter:
-  #   geoip: true
-  #   geoip-code: CN
-  #   geoipsite: geolocation-!cn
-  #   ipcidr:
-  #     - 224.0.0.0/4
+      - https://doh.pub/dns-query
+      - https://223.5.5.5/dns-query  
+    # "geosite:geolocation-!cn": [https://1.1.1.1/dns-query, https://dns.google/dns-query] # 若使用国外的DNS，则使用“直连”时会出现国外域名安全连接失败
 
 geodata-mode: true
 geox-url:
@@ -107,6 +78,7 @@ proxy-providers:
       interval: 180
       lazy: true
       url: http://cp.cloudflare.com
+      # url: http://www.gstatic.com/generate_204
 
 proxy-groups:
   - name: "PROXY"
@@ -141,12 +113,12 @@ proxy-groups:
     interval: 180          #测ping时间(秒)
     # disable-udp: true    #关闭UDP
     # filter: 'HK'         #【Meta专属】代理筛选
-    
+ 
   - name: "load-balance"
     type: load-balance      #负载均衡：同一域名(eTLD+1)使用同一代理
     use:
       - ***
-    url: 'http://www.cloudflare.com'
+    url: 'http://cp.cloudflare.com'
     interval: 180
     # lazy: true
     # disable-udp: true
@@ -321,10 +293,12 @@ rules:
 
 # Myself
   - DOMAIN,gemini.google.com,ChatGPT
-  - DOMAIN-SUFFIX,archlinuxcn.org,DIRECT
+  # - DOMAIN,wiki.archlinuxcn.org,DIRECT
   # - DOMAIN-SUFFIX,linux.do,DIRECT
   - DOMAIN-SUFFIX,linux.do,PROXY
   # - DOMAIN-SUFFIX,challenges.cloudflare.com,DIRECT
+  - DOMAIN-SUFFIX,wttr.in,DIRECT
+  - DOMAIN-SUFFIX,http.cat,DIRECT
 
 # 非 IP 类规则
   - RULE-SET,reject_non_ip,REJECT
@@ -335,8 +309,10 @@ rules:
   - RULE-SET,direct_non_ip,DIRECT
   - RULE-SET,lan_non_ip,DIRECT
   - RULE-SET,microsoft_cdn_non_ip,DIRECT
-  - RULE-SET,apple_cn_non_ip,Apple Services
-  - RULE-SET,apple_services,Apple Services
+  # - RULE-SET,apple_cn_non_ip,Apple Services
+  # - RULE-SET,apple_services,Apple Services
+  - RULE-SET,apple_cn_non_ip,DIRECT
+  - RULE-SET,apple_services,DIRECT
   - RULE-SET,cdn_domainset,PROXY
   - RULE-SET,cdn_non_ip,PROXY
   - RULE-SET,stream_non_ip,PROXY

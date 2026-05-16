@@ -39,7 +39,8 @@
         }
     },
     "clock": {
-        "format": " {:%H:%M:%S}", // 显示时间(精确到秒)
+        // "format": " {:%H:%M:%S}", // 显示时间(精确到秒)
+        "format": " {:%H:%M}",
         "tooltip": "true",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "  {:%y/%m/%d}",

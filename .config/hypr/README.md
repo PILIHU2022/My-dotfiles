@@ -16,3 +16,9 @@ sudo pacman -S dunst # 通知
 ```
 paru -S waybar-git # 状态栏
 ```
+
+# 目录中所含的文件：
+```
+.luarc.json: 用于为LSP添加Hyprland特有的补全以及检查，以便于coding
+.stylua.toml: 设置代码格式化选项
+```

@@ -24,9 +24,9 @@
 
 # fastfetch配置文件:
 
-添加：显示IP(public IP与Local IP都显示)；
-添加了一些logo，具体使用方法见.zshrc(显示信息的小logo)；
-添加了logo(Arch Linux)，存放在Config/fastfetch中。
+添加：显示IP(public IP与Local
+IP都显示)；添加了一些logo，具体使用方法见.zshrc(显示信息的小logo)；添加了logo(Arch
+Linux)，存放在Config/fastfetch中。
 
 ```
 paru -S fastfetch imagemagick
@@ -45,8 +45,7 @@ paru -S fastfetch imagemagick
 
 # 使用pacman,paru,doas配置
 
-将pacman.conf,paru.conf,doas.conf放进/etc里即可，
-doas的配置文件需要保持文件的语法和权限正确(必须),[见此处](#%E6%A3%80%E6%9F%A5doas%E9%85%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E7%AC%A6%E5%90%88%E8%AF%AD%E6%B3%95%E8%A6%81%E6%B1%82)
+将pacman.conf,paru.conf,doas.conf放进/etc里即可，doas的配置文件需要保持文件的语法和权限正确(必须),[见此处](#%E6%A3%80%E6%9F%A5doas%E9%85%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E7%AC%A6%E5%90%88%E8%AF%AD%E6%B3%95%E8%A6%81%E6%B1%82)
 
 # 使用本仓库的配置文件，需要安装如下软件：
 
@@ -152,8 +151,8 @@ map kitty_mod+v paste_from_clipboard # 粘贴快捷键
 
 # pacman.conf更改
 
-添加:ILoveCandy，Arch Linux CN源（USTC,TUNA）;
-更改:ParallelDownloads = 5；CheckSpace；Color
+添加:ILoveCandy，Arch Linux CN源（USTC,TUNA）; 更改:ParallelDownloads =
+5；CheckSpace；Color
 
 # paru.conf更改
 
@@ -164,13 +163,11 @@ Sudo = doas
 
 # Doas
 
-`doas`一个需要写配置文件的提权工具，但是可以实现免密码做很多事(写完配置以后)
-配置`doas`详见[Arch Wiki](https://wiki.archlinuxcn.org/wiki/Doas)
+`doas`一个需要写配置文件的提权工具，但是可以实现免密码做很多事(写完配置以后) 配置`doas`详见[Arch Wiki](https://wiki.archlinuxcn.org/wiki/Doas)
 
 ## 检查doas配置是否符合语法要求
 
-> [!WARNING]
-> Warning: 结尾必须以换行结束!
+> [!WARNING] Warning: 结尾必须以换行结束!
 
 ```
 doas -C /etc/doas.conf && echo config ok" || echo "config error"
@@ -189,8 +186,7 @@ sudo chmod -c 0400 /etc/doas.conf
 
 <!--*已失效，正在尝试其他方法*--->
 
-习惯使用sudo的人，难免会有一些不适应打`doas`
-使用本仓库的话就可以使用:
+习惯使用sudo的人，难免会有一些不适应打`doas` 使用本仓库的话就可以使用:
 
 ```
 alias sudo=doas
@@ -198,7 +194,6 @@ alias sudo=doas
 
 # Visual Studio Code
 
-> [!NOTE]
-> 配置文件可能会出现问题，不建议使用！
+> [!NOTE] 配置文件可能会出现问题，不建议使用！
 
 VSC的设置丢进文件夹即可，~~好久没用Visual Studio Code了~~

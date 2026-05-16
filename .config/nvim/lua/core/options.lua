@@ -1,80 +1,108 @@
--- 设置全局变量
+-- option.lua - 模块化版本
 local opt = vim.opt
 
--- Timeout
-vim.o.timeout = true
-vim.o.timeoutlen = 300
+-- 辅助函数
+local function set_local_indent(width)
+  vim.opt_local.tabstop = width
+  vim.opt_local.shiftwidth = width
+  vim.opt_local.softtabstop = width
+end
 
-opt.autowrite = true
+-- 路径配置
+local cache_dir = os.getenv("HOME") .. "/.cache/nvim"
+local undodir = cache_dir .. "/undodir"
+vim.fn.mkdir(undodir, "p")
 
--- undofiles
-opt.undofile = true
-opt.undodir = "/home/Spark/.cache/.undofiles/"
+-- 核心设置
+local settings = {
+  -- 超时
+  timeout = true,
+  timeoutlen = 300,
 
--- 相对行号
-opt.number = true
-opt.relativenumber = false
+  -- 文件
+  autowrite = true,
+  undofile = true,
+  undodir = undodir,
 
--- 在第八十列处显示垂直参考线
-opt.colorcolumn = "80"
+  -- 显示
+  number = true,
+  relativenumber = false,
+  colorcolumn = "80",
+  cursorline = true,
+  signcolumn = "yes",
+  termguicolors = true,
+  conceallevel = 0,
+  wrap = false,
+  list = true,
+  listchars = { tab = "»·", nbsp = "+", trail = "·", extends = "→", precedes = "←" },
 
--- 设置Tab键和缩进
-opt.tabstop = 4
-opt.shiftwidth = 4
-opt.expandtab = true
-opt.autoindent = true
+  -- 缩进
+  tabstop = 4,
+  shiftwidth = 4,
+  expandtab = true,
+  autoindent = true,
 
--- 显示完整的格式内容
-opt.conceallevel = 0
+  -- 交互
+  mouse = "a",
+  clipboard = "unnamedplus",
 
--- 防止包裹
-opt.wrap = false
+  -- 窗口
+  splitright = true,
+  splitbelow = true,
 
--- 光标行
-opt.cursorline = true
+  -- 搜索
+  ignorecase = true,
+  smartcase = true,
+}
 
--- 启用鼠标
-opt.mouse:append("a")
+-- 应用设置
+for key, value in pairs(settings) do
+  opt[key] = value
+end
 
--- 系统剪贴板
-opt.clipboard:append("unnamedplus")
+-- 自动命令
+local augroup = vim.api.nvim_create_augroup("UserOptions", { clear = true })
 
--- 默认新窗口在右和下
-opt.splitright = true
-opt.splitbelow = true
+-- 终端自动进入插入模式
+vim.api.nvim_create_autocmd("TermOpen", {
+  group = augroup,
+  pattern = "term://*",
+  command = "startinsert",
+})
 
--- 搜索
-opt.ignorecase = true
-opt.smartcase = true
+-- Markdown/文本文件启用换行
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = augroup,
+  pattern = { "*.md", "*.txt" },
+  callback = function()
+    vim.opt_local.wrap = true
+  end,
+})
 
--- 外观
-opt.termguicolors = true
-opt.signcolumn = "yes"
-
-vim.opt.list = true
-vim.opt.listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←"
-
-vim.api.nvim_create_autocmd("TermOpen", { pattern = "term://*", command = [[startinsert]] })
-
--- 设置在指定文件中启动包裹文字
-vim.api.nvim_create_autocmd(
-  { "BufRead", "BufNewFile" },
-  { pattern = { "*.md", "*.txt" }, command = "setlocal wrap" }
-)
-
--- 设置复制时高亮复制行
+-- 复制高亮
 vim.api.nvim_create_autocmd("TextYankPost", {
+  group = augroup,
   callback = function()
     vim.hl.on_yank({ higroup = "Visual", timeout = 300 })
   end,
 })
 
--- 设置在特定文件后缀中的缩进
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "FileType" }, {
-  pattern = { "yaml", "yml", "toml", "mjs", "js", "lua", "c" },
+-- 2 空格缩进文件类型
+local two_space_files = { "*.yaml", "*.yml", "*.toml", "*.mjs", "*.js", "*.lua", "*.c" }
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = augroup,
+  pattern = two_space_files,
   callback = function()
-    vim.opt_local.tabstop = 2
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.softtabstop = 2
+    set_local_indent(2)
+  end,
+})
+
+-- 4 空格缩进文件类型
+local four_space_files = { "*.py" }
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = augroup,
+  pattern = four_space_files,
+  callback = function()
+    set_local_indent(4)
   end,
 })

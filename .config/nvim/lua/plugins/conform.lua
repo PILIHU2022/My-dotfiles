@@ -1,9 +1,8 @@
--- 安装和配置conform
+-- conform.nvim 代码格式化配置
 return {
   {
-    "stevearc/conform.nvim", -- 安装插件
+    "stevearc/conform.nvim",
     config = function()
-      -- 配置conform，使用black格式化Python
       require("conform").setup({
         formatters_by_ft = {
           c = { "clang-format" },
@@ -19,25 +18,14 @@ return {
           end,
         },
         formatters = {
-          stylua = {
-            "column_width" == 100,
-            "line_endings" == "Unix",
-            "indent_type" == "Spaces",
-            "indent_width" == 2,
-            "quote_style" == "AutoPreferDouble",
-            "call_parentheses" == "Always",
-          },
+          stylua = {},  -- 默认配置即可，具体规则使用 stylua.toml
           ruff_format = {},
-          black = {
-            args = { "--line-length=80" },
-          },
-          ["clang-format"] = {
-            args = { "--style=Google" },
-          },
+          black = { args = { "--line-length=80" } },
+          ["clang-format"] = { args = { "--style=Google" } },
         },
       })
 
-      -- 自动格式化配置
+      -- 保存时自动格式化
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = { "*.py", "*.c" },
         callback = function(args)

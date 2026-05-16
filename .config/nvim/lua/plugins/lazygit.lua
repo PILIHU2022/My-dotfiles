@@ -1,3 +1,4 @@
+-- lazygit.nvim Git 图形界面
 return {
   "kdheepak/lazygit.nvim",
   event = "VeryLazy",

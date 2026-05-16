@@ -1,17 +1,24 @@
 [[plugin.deps]]
-use = "yazi-rs/plugins:smart-enter"
-rev = "e5f00e2"
-hash = "56fdabc96fc1f4d53c96eb884b02a5be"
-
-[[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "e5f00e2"
-hash = "37ebed215c8742eada643fc2655b65e2"
+rev = "5d5c480"
+hash = "88e56a64b7ce7c4314427452343fef17"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:vcs-files"
-rev = "e5f00e2"
-hash = "cc8da55f1deda45ee3787cc97b58ffc9"
+rev = "5d5c480"
+hash = "6b141fbed3c74b45558fbc7088c805ee"
 
-[flavor]
-deps = []
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-enter"
+rev = "5d5c480"
+hash = "187cc58ba7ac3befd49c342129e6f1b6"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-filter"
+rev = "5d5c480"
+hash = "c887903a63a2ff520081b6d90a4b3392"
+
+[[flavor.deps]]
+use = "yazi-rs/flavors:catppuccin-mocha"
+rev = "0670801"
+hash = "7dfe41c9c3d9be76da8a844263d0bbed"

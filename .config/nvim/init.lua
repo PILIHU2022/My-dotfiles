@@ -3,13 +3,13 @@ require("core.options")
 require("core.keymap")
 require("lazy_setup")
 -- yazi
-require("keymap.yazi")
+-- require("keymap.yazi")
 -- require("core.ImSwitch")
 -- require("core.ranger")
 -- require("core.CodeRunning")
 
--- Markdown keymap
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "FileType" }, {
+-- Markdown keymap - 最简洁最可靠的方式
+vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()
     require("keymap.markdown")

@@ -411,6 +411,34 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
+-- 重启Fcitx5
+hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("fcitx5 -r"))
+
+-- 调节音量(支持长按一直调节)
+hl.bind("CTRL + ALT + up", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_SINK@ +5%"), { repeating = true })
+hl.bind("CTRL + ALT + down", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_SINK@ -5%"), { repeating = true })
+
+-- 调节亮度(支持长按一直调节)
+-- hl.bind(mainMod .. " + 112", hl.dsp.exec_cmd("ddcutil setvcp 10 + 5"), { repeating = true })
+-- hl.bind(mainMod .. " + 117", hl.dsp.exec_cmd("ddcutil setvcp 10 - 5"), { repeating = true })
+
+-- 打开missioncenter(类似于任务管理器)
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("missioncenter"))
+
+-- Open Tor Browser
+-- hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("torbrowser-launcher"))
+
+-- 打开OBS
+hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("obs"))
+
+-- CopyQ 菜单
+-- hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("copyq menu"))
+
+-- Screenshot 截图
+hl.bind("ALT + J", hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
+hl.bind("ALT + K", hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
+hl.bind("Print", hl.dsp.exec_cmd("grim -l 2 ~/Pictures/Screenshot/grim-fullscreen-$(date '+%Y%m%d-%H:%M:%S').png"))
+
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
 --------------------------------

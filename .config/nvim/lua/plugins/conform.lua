@@ -6,7 +6,8 @@ return {
       require("conform").setup({
         formatters_by_ft = {
           c = { "clang-format" },
-          markdown = { "mdformat" },
+          -- markdown = { "mdformat" },
+          markdown = { "prettier" },
           lua = { "stylua" },
           yaml = { "yamlfmt" },
           python = function(bufnr)
@@ -18,16 +19,17 @@ return {
           end,
         },
         formatters = {
-          stylua = {},  -- 默认配置即可，具体规则使用 stylua.toml
+          stylua = {}, -- 默认配置即可，具体规则使用 stylua.toml
           ruff_format = {},
           black = { args = { "--line-length=80" } },
           ["clang-format"] = { args = { "--style=Google" } },
+          -- prettier = { args = { "--prose-wrap always --print-width 80" } },
         },
       })
 
       -- 保存时自动格式化
       vim.api.nvim_create_autocmd("BufWritePre", {
-        pattern = { "*.py", "*.c" },
+        pattern = { "*.py", "*.c", "*.md", "*.lua" },
         callback = function(args)
           require("conform").format({ bufnr = args.buf })
         end,

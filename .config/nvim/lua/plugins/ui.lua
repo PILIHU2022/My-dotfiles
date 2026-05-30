@@ -38,7 +38,4 @@ return {
 
   -- 高亮光标下相同单词
   { "RRethy/vim-illuminate", config = function() require("illuminate").configure() end },
-
-  -- mini.nvim 多功能库
-  { "nvim-mini/mini.nvim", version = false, config = function() require("mini.nvim").setup() end },
 }

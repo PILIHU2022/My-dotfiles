@@ -10,6 +10,7 @@ return {
         ruff = {},
         clangd = {},
         marksman = {},
+        -- prettier = {},
       },
     },
     config = function(_, opts)

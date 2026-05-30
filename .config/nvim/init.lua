@@ -1,7 +1,6 @@
-local au = vim.api.nvim_create_autocmd
+require("lazy_setup")
 require("core.options")
 require("core.keymap")
-require("lazy_setup")
 -- yazi
 -- require("keymap.yazi")
 -- require("core.ImSwitch")
@@ -17,7 +16,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Terminal
-au("TermOpen", { command = "startinsert" })
+vim.api.nvim_create_autocmd("TermOpen", { command = "startinsert" })
 
 -- highlight (invalid)
 -- vim.api.nvim_create_autocmd("TextYankPost", {

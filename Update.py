@@ -6,14 +6,16 @@ src_paths = [
     "~/.config/kitty/",
     "~/.config/fuzzel/",
     "~/.config/yazi/",
+    "~/.config/waybar/"
 ]
 
 target_paths = [
     "~/Projects/My-dotfiles/.config/hypr",
     "~/Projects/My-dotfiles/.config/nvim",
     "~/Projects/My-dotfiles/.config/kitty",
-    "~/Projects/My-dotfiles/.config/fuzzel/",
+    "~/Projects/My-dotfiles/.config/fuzzel",
     "~/Projects/My-dotfiles/.config/yazi",
+    "~/Projects/My-dotfiles/.config/waybar"
 ]
 
 for src_path, target_path in zip(src_paths, target_paths):

@@ -25,7 +25,6 @@ return {
           ruff_organize_imports = {},
           black = { args = { "--line-length=80" } },
           ["clang-format"] = { args = { "--style=Google" } },
-          -- prettier = { args = { "--prose-wrap always --print-width 80" } },
         },
       })
 

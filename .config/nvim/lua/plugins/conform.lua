@@ -19,21 +19,31 @@ return {
           end,
         },
         formatters = {
-          stylua = {}, -- 默认配置即可，具体规则使用 stylua.toml
+          stylua = {},
           ruff_format = {},
+          ruff_fix = {},
+          ruff_organize_imports = {},
           black = { args = { "--line-length=80" } },
           ["clang-format"] = { args = { "--style=Google" } },
           -- prettier = { args = { "--prose-wrap always --print-width 80" } },
         },
       })
 
-      -- 保存时自动格式化
+      -- 保存时自动格式化（异步，避免退出卡顿）
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = { "*.py", "*.c", "*.md", "*.lua" },
         callback = function(args)
-          require("conform").format({ bufnr = args.buf })
+          require("conform").format({ bufnr = args.buf, async = true })
         end,
       })
+
+      -- 手动触发 lint 修复和导入排序
+      vim.keymap.set("n", "<leader>ci", function()
+        require("conform").format({
+          async = true,
+          formatters = { "ruff_fix", "ruff_organize_imports" },
+        })
+      end, { desc = "Fix lint & organize imports" })
     end,
   },
 }

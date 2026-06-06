@@ -6,8 +6,34 @@ return {
     opts = {
       servers = {
         lua_ls = {},
-        pyright = {},
-        ruff = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                typeCheckingMode = "basic",
+                autoImportCompletions = true,
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = "workspace",
+                inlayHints = {
+                  variableTypes = true,
+                  functionReturnTypes = true,
+                },
+              },
+            },
+          },
+        },
+        ruff = {
+          settings = {
+            lineLength = 80,
+            indentWidth = 4,
+            format = { quoteStyle = "double" },
+            lint = {
+              select = { "E", "W", "F", "I", "N", "UP", "B", "SIM", "C4" },
+              ignore = { "D100", "D101", "D102", "D103", "D104", "D105", "D107" },
+            },
+          },
+        },
         clangd = {},
         marksman = {},
         -- prettier = {},
@@ -45,6 +71,7 @@ return {
           [vim.diagnostic.severity.WARN] = " ",
         },
         virtual_text = { prefix = "❯" },
+        update_in_insert = true,
       })
 
       -- 悬停显示诊断信息

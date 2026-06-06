@@ -1,7 +1,7 @@
 -- Catppuccin 主题配置
 local highlight_groups = function(C)
   return {
-    NormalFloat = { bg = C.none },           -- 透明浮动窗口
+    NormalFloat = { bg = C.none }, -- 透明浮动窗口
     FloatBorder = { fg = C.sky },
     TabLineSel = { bg = C.red },
     Pmenu = { bg = C.none },
@@ -9,7 +9,7 @@ local highlight_groups = function(C)
 
     -- blink.cmp 高亮
     BlinkCmpDoc = { link = "Pmenu" },
-    BlinkCmpDocBorder = { link = 'FloatBorder' },
+    BlinkCmpDocBorder = { link = "FloatBorder" },
     BlinkCmpMenu = { link = "Pmenu" },
     BlinkCmpMenuBorder = { fg = C.blue },
     BlinkCmpMenuSelection = { link = "PmenuSel" },
@@ -25,7 +25,7 @@ return {
   priority = 1000,
   config = function()
     require("catppuccin").setup({
-      flavor = "mocha",                    -- latte, frappe, macchiato, mocha
+      flavor = "mocha", -- latte, frappe, macchiato, mocha
       background = { light = "latte", dark = "mocha" },
       floating_border = "on",
       no_italic = false,

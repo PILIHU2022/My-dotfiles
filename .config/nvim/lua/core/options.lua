@@ -20,7 +20,7 @@ local settings = {
   timeoutlen = 300,
 
   -- 文件
-  autowrite = true,
+  -- autowrite = true,
   undofile = true,
   undodir = undodir,
 

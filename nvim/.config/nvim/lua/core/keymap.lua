@@ -1,0 +1,22 @@
+vim.g.mapleader = " "
+
+local keymap = vim.keymap
+
+keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split vertical" })
+keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split horizontal" })
+keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear highlights" })
+keymap.set({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save" })
+keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move line down" })
+keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move line up" })
+keymap.set("n", "<C-h>", "<C-w>h", { desc = "Window left" })
+keymap.set("n", "<C-l>", "<C-w>l", { desc = "Window right" })
+keymap.set("n", "<C-k>", "<C-w>k", { desc = "Window up" })
+keymap.set("n", "<C-j>", "<C-w>j", { desc = "Window down" })
+keymap.set("n", "<C-up>", ":resize +2<CR>", { desc = "Resize up" })
+keymap.set("n", "<C-down>", ":resize -2<CR>", { desc = "Resize down" })
+keymap.set("n", "<C-left>", ":vertical resize -2<CR>", { desc = "Resize left" })
+keymap.set("n", "<C-right>", ":vertical resize +2<CR>", { desc = "Resize right" })
+keymap.set("n", "<leader>l", ":Lazy<CR>", { desc = "Lazy" })
+keymap.set({ "n", "v", "s" }, "<C-r>", ":redo<CR>", { desc = "Redo" })
+keymap.set("n", "<leader>t", ":terminal<CR>", { desc = "Terminal" })
+keymap.set("n", "<leader>y", ":set relativenumber!<bar>set number<CR>", { desc = "Toggle number" })

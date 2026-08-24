@@ -5,6 +5,11 @@ return {
     "akinsho/bufferline.nvim",
     lazy = true,
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+      { "<A-[>", "<cmd>BufferLineCyclePrev<CR>", desc = "Previous buffer" },
+      { "<A-]>", "<cmd>BufferLineCycleNext<CR>", desc = "Next buffer" },
+      { "<A-q>", "<cmd>BufferLineClose<CR>", desc = "Close buffer" },
+    },
     init = function()
       -- 监听 BufAdd：当已打开的文件 buffer 数 >= 2 时才加载 bufferline（单文件时保持隐藏）
       local group = vim.api.nvim_create_augroup("UserLazyBufferline", { clear = true })

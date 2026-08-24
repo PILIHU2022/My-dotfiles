@@ -1,0 +1,13 @@
+[Unit]
+Description=Kitty terminal emulator (autostart)
+Documentation=https://sw.kovidgoyal.net/kitty/
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=exec
+ExecStart=kitty
+Restart=no
+
+[Install]
+WantedBy=graphical-session.target hyprland-autostart.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=Set swww wallpaper
+Documentation=https://github.com/Horus645/swww
+PartOf=graphical-session.target
+After=graphical-session.target
+Requires=swww-daemon.service
+After=swww-daemon.service
+
+[Service]
+Type=oneshot
+ExecStart=swww img ~/Pictures/Wallpapers/Raiden_Shogun_Wallpaper.jpg
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical-session.target hyprland-autostart.target

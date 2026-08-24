@@ -1,0 +1,46 @@
+return {
+  "shaunsingh/nord.nvim",
+  priority = 1000,
+  dependencies = { "akinsho/bufferline.nvim" },
+  config = function()
+    vim.g.nord_contrast = true
+    vim.g.nord_borders = false
+    vim.g.nord_italic = true
+    vim.g.nord_bold = true
+
+    require("nord").set()
+
+    local c = require("nord.colors")
+    require("bufferline").setup({
+      options = { separator_style = "thin" },
+      highlights = {
+        fill = { bg = c.nord0_gui },
+        background = { bg = c.nord0_gui },
+        tab = { bg = c.nord0_gui },
+        buffer = { bg = c.nord0_gui },
+        buffer_selected = { bg = c.nord1_gui, italic = true },
+        buffer_visible = { bg = "#2A2F3A" },
+        numbers = { bg = c.nord0_gui },
+        numbers_selected = { bg = c.nord1_gui, italic = true },
+        numbers_visible = { bg = "#2A2F3A" },
+        close_button = { bg = c.nord0_gui },
+        close_button_selected = { bg = c.nord1_gui },
+        close_button_visible = { bg = "#2A2F3A" },
+        separator = { fg = c.nord0_gui, bg = c.nord0_gui },
+        separator_selected = { fg = c.nord0_gui, bg = c.nord1_gui },
+        separator_visible = { fg = c.nord0_gui, bg = "#2A2F3A" },
+        indicator_selected = { fg = c.nord9_gui, bg = c.nord1_gui },
+        modified = { bg = c.nord0_gui },
+        modified_selected = { bg = c.nord1_gui },
+        duplicate_selected = { bg = c.nord1_gui, italic = true },
+        duplicate_visible = { bg = "#2A2F3A", italic = true },
+        duplicate = { bg = c.nord0_gui, italic = true },
+      },
+    })
+
+    vim.keymap.set({ "n", "t" }, "<A-[>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Buffer prev" })
+    vim.keymap.set({ "n", "t" }, "<A-]>", "<cmd>BufferLineCycleNext<cr>", { desc = "Buffer next" })
+    vim.keymap.set({ "n", "t" }, "<A-i>", "<cmd>BufferLinePick<cr>", { desc = "Buffer pick" })
+    vim.keymap.set({ "n", "t" }, "<A-q>", "<cmd>bp|sp|bn|bd!<cr>", { desc = "Buffer close" })
+  end,
+}

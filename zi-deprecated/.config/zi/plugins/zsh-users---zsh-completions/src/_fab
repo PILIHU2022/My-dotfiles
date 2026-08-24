@@ -1,0 +1,84 @@
+#compdef fab
+# ------------------------------------------------------------------------------
+# Copyright (c) 2015 Github zsh-users - https://github.com/zsh-users
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of the zsh-users nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL ZSH-USERS BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# ------------------------------------------------------------------------------
+# Description
+# -----------
+#
+#  Completion script for Fabric v3.2.2 (https://www.fabfile.org/)
+#
+# ------------------------------------------------------------------------------
+# Authors
+# -------
+#
+#  * Valerii Hiora (https://github.com/vhbit)
+#
+# ------------------------------------------------------------------------------
+
+_fab_tasks() {
+  local -a tasks=(${(f)"$(fab --list 2>/dev/null| awk '/^ /{first=$1;$1="";print first ":" substr($0, 2) }')"})
+  if (( $#tasks > 0)); then
+    _describe -t 'task' tasks tasks
+  fi
+}
+
+_arguments \
+  '--complete[Print tab-completion candidates for given parse remainder]' \
+  "--hide=[Set default value of run()'s 'hide' kwarg]:str" \
+  '(- *)--list-agent-keys[Display ssh-agent key list, and exit]' \
+  '--no-dedupe[Disable task deduplication]' \
+  '--print-completion-script=[Print the tab-completion script for your preferred shell]:shell:(bash zsh fish)' \
+  '--prompt-for-login-password[Request an upfront SSH-auth password prompt]' \
+  '--prompt-for-passphrase[Request an upfront SSH key passphrase prompt]' \
+  '--prompt-for-sudo-password[Prompt user at start of session for the sudo.password config value]' \
+  '--write-pyc[Enable creation of .pyc files]' \
+  '(-c --collection)'{-c,--collection=}'[Specify collection name to load]:name' \
+  '(-d --debug)'{-d,--debug}'[Enable debug output]' \
+  '(-D --list-depth)'{-D,--list-depth=}'[When listing tasks, only show the first INT levels]:level' \
+  '(-e --echo)'{-e,--echo}'[Echo executed commands before running]' \
+  '(-f --config)'{-f,--config=}'[Runtime configuration file to use]:file:_files' \
+  '(-F --list-format)'{-F,--list-format=}'[Change the display format used when listing tasks]:format:(flat nested json)' \
+  '(- *)'{-h,--help=-}'[Show core or per-task help and exit]::task:_fab_tasks' \
+  '(-H --hosts)'{-H,--hosts=}'[Comma-separated host name(s) to execute tasks against]:host' \
+  \*{-i,--identity=}'[Path to runtime SSH identity (key) file]:file:_files' \
+  '(-l --list)'{-l,--list=-}'[List available tasks, optionally limited to a namespace]::namespace' \
+  '(-p --pty)'{-p,--pty}'[Use a pty when executing shell commands]' \
+  '(-r --search-root)'{-r,--search-root=}'[Change root directory used for finding task modules]:dir:_files -/' \
+  '(-R --dry)'{-R,--dry}'[Echo commands instead of running]' \
+  '(-S --ssh-config)'{-S,--ssh-config=}'[Path to runtime SSH config file]:file:_files' \
+  '(-t --connect-timeout)'{-t,--connect-timeout=}'[Specifies default connection timeout, in seconds]:seconds' \
+  '(-T --command-timeout)'{-T,--command-timeout=}'[Specify a global command execution timeout, in seconds]:seconds' \
+  '(- *)'{-V,--version}'[Show version and exit]' \
+  '(-w --warn-only)'{-w,--warn-only}'[Warn, instead of failing, when shell commands fail]' \
+  '*::task:_fab_tasks'
+
+# Local Variables:
+# mode: Shell-Script
+# sh-indentation: 2
+# indent-tabs-mode: nil
+# sh-basic-offset: 2
+# End:
+# vim: ft=zsh sw=2 ts=2 et

@@ -1,0 +1,26 @@
+export XCURSOR_SIZE=24
+
+export QT_QPA_PLATFORMTHEME=qt6ct
+export QT_QPA_PLATFORM=wayland;xcb
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+export QT_QPA_PLATDORM=wayland, xcb
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+
+export MOZ_ENABLE_WAYLAND=1
+
+export GDK_SCALE=1
+export GDK_DPI_SCALE=1
+export XCURSOR_THEME="Breeze (Plasma 5)"
+export GDK_BACKEND=wayland, x11
+export SDL_VIDEODRIVER=wayland
+export CLUTTER_BACKEND=wayland
+
+export vblank_mode=0
+
+export $HYPR_CONF_DIR    = $HOME/.config/hypr
+export $HYPR_SCRIPTS_DIR = $HYPR_CONF_DIR/scripts
+
+export $screen_file = ${HOME}/Pictures/Screenshot/screenshot_grim_$(date +%F_%T).png
+
+export VDPAU, radeonsi
+export LIBVA_DRIVER_NAME=radeonsi

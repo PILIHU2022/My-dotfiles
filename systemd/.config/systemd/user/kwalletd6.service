@@ -1,0 +1,11 @@
+[Unit]
+Description=KDE Wallet daemon (kwalletd6, kwallet5-compatible)
+
+[Service]
+Type=dbus
+BusName=org.kde.kwalletd6
+ExecStart=/usr/bin/kwalletd6
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

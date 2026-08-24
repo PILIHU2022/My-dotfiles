@@ -1,0 +1,131 @@
+#compdef cask
+# ------------------------------------------------------------------------------
+# Copyright (c) 2014 Github zsh-users - https://github.com/zsh-users
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# * Redistributions of source code must retain the above copyright
+# notice, this list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright
+# notice, this list of conditions and the following disclaimer in the
+# documentation and/or other materials provided with the distribution.
+# * Neither the name of the zsh-users nor the
+# names of its contributors may be used to endorse or promote products
+# derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL ZSH-USERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+# EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# ------------------------------------------------------------------------------
+# Description
+# -----------
+#
+# Completion script for cask (https://cask.readthedocs.io)
+#
+# ------------------------------------------------------------------------------
+# Authors
+# -------
+#
+# * ptrv <mail@petervasil.net>
+# * Johan Andersson <johan.rejeep@gmail.com>
+# * Sebastien Duthil <duthils@free.fr>
+#
+# ------------------------------------------------------------------------------
+
+function _cask() {
+  typeset -A opt_args
+  local context state line ret=1
+  local curcontext="$curcontext"
+
+  _arguments -C \
+    '(--proxy --http-proxy              )--http-proxy[Set emacs proxy for HTTP]:host:_hosts' \
+    '(--proxy              --https-proxy)--https-proxy[Set emacs proxy for HTTPS]:host:_hosts' \
+    '(        --http-proxy --https-proxy)--proxy[Set emacs proxy for HTTPS and HTTPS]:host:_hosts' \
+    '--no-proxy[Set Emacs no-proxy to HOST (emacs pattern of hosts to not use proxy for)]:pattern:_hosts' \
+    '(- *)--version[Print Cask version and exit]' \
+    '(- *)'{-h,--help}'[Display usage or information for command]::command:->subcommand' \
+    '--debug[Turn on debug output]' \
+    '--path[Run command in this PATH instead of default-directory]:dir:_files -/' \
+    '(--verbose --silent)--verbose[Be verbose and show debug output]' \
+    '(--verbose --silent)--silent[Be silent and do not show anything]' \
+    ':subcommand:->subcommand' \
+    '*:: :->subcmds' \
+    && ret=0
+
+  case $state in
+    (subcommand)
+      local -a subcommands=(
+        "build:build all Elisp files in the files directive"
+        "clean-elc:remove all byte compiled Elisp files in the files directive"
+        "emacs:run emacs"
+        "eval:evaluate FORM as a lisp form"
+        "exec:execute command with correct 'exec-path' and 'load-path'"
+        "exec-path:print 'exec-path' for all packages and dependencies"
+        "files:print list of files specified in the files directive"
+        "help:display usage information or documentation for specified command"
+        "info:show info about the current package"
+        "init:initialize the current directory with a Cask-file"
+        "install:install all packages specified in the Cask-file"
+        "link:manage links"
+        "list:list dependencies"
+        "load-path:print 'load-path' for all packages and dependencies"
+        "outdated:print list of outdated packages"
+        "package:build package and put in specified directory (default: dist)"
+        "package-directory:print current package installation directory"
+        "path:print 'exec-path' for all packages and dependencies"
+        "pkg-file:write a 'define-package' file"
+        "update:update package version"
+        "upgrade-cask:upgrade Cask itself and its dependencies"
+        "upgrade:upgrade Cask itself and its dependencies"
+        "version:print program version"
+      )
+
+      _describe -t subcommands 'cask subcommands' subcommands && ret=0
+      ;;
+    (subcmds)
+      case "$words[1]" in
+        (init)
+          _arguments \
+            '(--dev)--dev[Run in dev mode]' \
+            && ret=0
+          ;;
+        (exec)
+          _generic
+          ;;
+        (emacs)
+          _as_if emacs && ret=0
+          ;;
+        (help)
+          _as_if cask --help && ret=0
+          ;;
+        (link)
+          _message "completion unimplemented"
+          ret=0
+          ;;
+        (package)
+          _wanted package-dir expl 'package directory' _files -/ && ret=0
+          ;;
+      esac
+      ;;
+  esac
+
+  return ret
+}
+
+_cask "$@"
+
+# Local Variables:
+# mode: Shell-Script
+# sh-indentation: 2
+# indent-tabs-mode: nil
+# sh-basic-offset: 2
+# End:
+# vim: ft=zsh sw=2 ts=2 et

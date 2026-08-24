@@ -1,0 +1,14 @@
+[Unit]
+Description=Mako notification daemon
+Documentation=https://github.com/emersion/mako
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=exec
+ExecStart=mako
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=graphical-session.target hyprland-autostart.target

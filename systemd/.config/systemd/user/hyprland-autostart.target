@@ -1,0 +1,9 @@
+[Unit]
+Description=Hyprland autostart applications
+Documentation=https://wiki.hypr.land/
+PartOf=graphical-session.target
+After=graphical-session.target
+Wants=mako.service polkit-kde-agent.service fcitx5.service swww-daemon.service swww-wallpaper.service waybar.service kitty.service
+
+[Install]
+WantedBy=graphical-session.target

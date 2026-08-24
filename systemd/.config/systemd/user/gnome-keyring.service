@@ -1,0 +1,11 @@
+[Unit]
+Description=GNOME Keyring daemon (Secrets only)
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/gnome-keyring-daemon --foreground --components=secrets
+Restart=on-failure
+Environment=GNOME_KEYRING_CONTROL=/run/user/1000/keyring
+
+[Install]
+WantedBy=default.target

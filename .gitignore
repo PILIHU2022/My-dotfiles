@@ -1,0 +1,5 @@
+# Ignore temporary nested Git repository backups used during initial indexing.
+**/.git.bak/
+
+# Ignore nested Git repositories so they are not added as embedded repos/gitlinks.
+**/.git/

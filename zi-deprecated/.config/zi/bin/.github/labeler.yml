@@ -1,0 +1,14 @@
+documentation 📝:
+  - "docs/*.md"
+  - "docs/man/*"
+enhancement ✨:
+  - "*.zsh"
+  - "lib/**"
+maintenance 📈:
+  - ".github/CODEOWNERS"
+  - ".github/*.yml"
+  - ".github/*.json"
+  - ".vscode/*"
+  - ".trunk/**"
+ci 🤖:
+  - ".github/workflows/*.yml"

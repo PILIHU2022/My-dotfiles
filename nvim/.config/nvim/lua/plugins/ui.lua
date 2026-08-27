@@ -76,7 +76,14 @@ return {
         vim.api.nvim_set_hl(0, group, { fg = color })
       end
 
-      require("rainbow-delimiters.setup").setup({ highlight = highlight })
+      require("rainbow-delimiters.setup").setup({
+        highlight = highlight,
+        query = {
+          c = "rainbow-delimiters",
+          lua = "rainbow-delimiters",
+          python = "rainbow-delimiters",
+        },
+      })
     end,
   },
 

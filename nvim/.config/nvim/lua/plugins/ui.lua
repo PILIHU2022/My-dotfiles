@@ -43,7 +43,8 @@ return {
   -- 彩虹括号
   {
     "HiPhish/rainbow-delimiters.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       local highlight = {
         "RainbowDelimiterRed",
@@ -79,6 +80,7 @@ return {
       require("rainbow-delimiters.setup").setup({
         highlight = highlight,
         query = {
+          [""] = "rainbow-delimiters",
           c = "rainbow-delimiters",
           lua = "rainbow-delimiters",
           python = "rainbow-delimiters",

@@ -44,7 +44,8 @@ return {
   {
     "luochen1990/rainbow",
     event = { "BufReadPost", "BufNewFile" },
-    config = function()
+    init = function()
+      -- 必须在插件加载前设置，插件会在 source 时读取该变量
       vim.g.rainbow_active = 1
     end,
   },

@@ -42,11 +42,10 @@ return {
 
   -- 彩虹括号
   {
-    "luochen1990/rainbow",
+    "HiPhish/rainbow-delimiters.nvim",
     event = { "BufReadPost", "BufNewFile" },
-    init = function()
-      -- 必须在插件加载前设置，插件会在 source 时读取该变量
-      vim.g.rainbow_active = 1
+    config = function()
+      require("rainbow-delimiters.setup").setup({})
     end,
   },
 

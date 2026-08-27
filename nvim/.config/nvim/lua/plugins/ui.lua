@@ -86,3 +86,12 @@ return {
     end,
   },
 }
+
+  -- 彩虹括号
+  {
+    "luochen1990/rainbow",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("rainbow").setup()
+    end,
+  },

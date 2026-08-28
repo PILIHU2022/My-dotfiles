@@ -40,64 +40,17 @@ return {
     end,
   },
 
-  -- blink.pairs：自动配对括号，并启用彩虹括号高亮
-  -- 颜色按括号嵌套层级循环，便于快速辨认层级
+  -- blink.pairs：自动配对括号（GitHub 文档默认配置）
+  -- 使用官方推荐的 download 方式安装 native library
   {
     "saghen/blink.pairs",
     event = { "InsertEnter", "BufReadPost" },
     dependencies = { "saghen/blink.lib" },
     build = function()
-      require("blink.pairs").build():pwait(60000)
+      require("blink.pairs").download():pwait(60000)
     end,
     config = function()
-      -- 定义彩虹高亮组颜色（Catppuccin Mocha 风格）
-      local colors = {
-        BlinkPairsRed = "#f38ba8",
-        BlinkPairsYellow = "#f9e2af",
-        BlinkPairsGreen = "#a6e3a1",
-        BlinkPairsBlue = "#89b4fa",
-        BlinkPairsPurple = "#cba6f7",
-        BlinkPairsOrange = "#fab387",
-        BlinkPairsCyan = "#89dceb",
-        BlinkPairsPink = "#f5c2e7",
-        BlinkPairsTeal = "#94e2d5",
-        BlinkPairsSapphire = "#74c7ec",
-      }
-      for group, color in pairs(colors) do
-        vim.api.nvim_set_hl(0, group, { fg = color })
-      end
-      vim.api.nvim_set_hl(0, "BlinkPairsUnmatched", { fg = "#f38ba8", undercurl = true })
-      vim.api.nvim_set_hl(0, "BlinkPairsMatchParen", { fg = "#89b4fa", bold = true })
-
-      require("blink.pairs").setup({
-        highlights = {
-          enabled = true,
-          cmdline = true,
-          -- 彩虹括号通过 groups 指定高亮组，颜色在下方 nvim_set_hl 中定义
-          groups = {
-            "BlinkPairsOrange",
-            "BlinkPairsPurple",
-            "BlinkPairsBlue",
-            "BlinkPairsRed",
-            "BlinkPairsYellow",
-            "BlinkPairsGreen",
-            "BlinkPairsCyan",
-            "BlinkPairsPink",
-            "BlinkPairsTeal",
-            "BlinkPairsSapphire",
-          },
-          unmatched_group = "BlinkPairsUnmatched",
-
-          -- 高亮光标下的配对括号
-          matchparen = {
-            enabled = true,
-            cmdline = false,
-            include_surrounding = false,
-            group = "BlinkPairsMatchParen",
-            priority = 250,
-          },
-        },
-      })
+      require("blink.pairs").setup({})
     end,
   },
 

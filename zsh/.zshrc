@@ -31,6 +31,10 @@ setopt inc_append_history     # allow multiple terminal sessions to append to on
 setopt share_history          # share command history data
 
 # Alias
+## Path
+alias -g dsh='./Projects/deepseek-harness/'
+alias -g paper267='./Projects/Papers-Coding/2026~2027/'
+## Others
 alias pvenv='source bin/activate'
 alias upvenv='source .venv/bin/activate'
 alias syc='doas systemctl start mihomo'
@@ -143,6 +147,11 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # Load zoxide for quick `cd`
 eval "$(zoxide init zsh)"
+
+## Options
+export _ZO_EXCLUDE_DIRS="/tmp:/var:/proc:/sys:/node_modules" # exclude huge folders
+export _ZO_DATA_DIR="$HOME/.local/share/zoxide" # set database location
+export _ZO_EXCLUDE_PATHS=".git" # exclude .git folder
 
 # Load snippet
 ## Load starship

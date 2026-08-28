@@ -45,7 +45,7 @@ return {
     dependencies = { "saghen/blink.lib" },
     config = function()
       require("blink.pairs").setup({
-        rainbow = {
+        highlight = {
           enabled = true,
           colors = {
             "#f38ba8", -- 红

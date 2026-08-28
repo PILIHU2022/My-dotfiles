@@ -42,6 +42,7 @@ return {
   {
     "saghen/blink.pairs",
     event = { "InsertEnter", "BufReadPost" },
+    dependencies = { "saghen/blink.lib" },
     config = function()
       require("blink.pairs").setup({
         rainbow = {

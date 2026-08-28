@@ -17,6 +17,19 @@ return {
       enable = true,
       extended_mode = true,
       max_file_lines = 1000,
+      -- Catppuccin Mocha 配色，便于区分嵌套层级
+      colors = {
+        "#f38ba8",
+        "#f9e2af",
+        "#a6e3a1",
+        "#89b4fa",
+        "#cba6f7",
+        "#fab387",
+        "#89dceb",
+        "#f5c2e7",
+        "#94e2d5",
+        "#74c7ec",
+      },
     },
     ignore_install_checks = true,
     textobjects = {

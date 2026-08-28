@@ -40,55 +40,6 @@ return {
     end,
   },
 
-  -- 彩虹括号
-  {
-    "HiPhish/rainbow-delimiters.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      local highlight = {
-        "RainbowDelimiterRed",
-        "RainbowDelimiterYellow",
-        "RainbowDelimiterBlue",
-        "RainbowDelimiterOrange",
-        "RainbowDelimiterGreen",
-        "RainbowDelimiterViolet",
-        "RainbowDelimiterCyan",
-        "RainbowDelimiterPink",
-        "RainbowDelimiterTeal",
-        "RainbowDelimiterSapphire",
-      }
-
-      -- Catppuccin Mocha 配色，便于区分嵌套层级
-      local colors = {
-        RainbowDelimiterRed = "#f38ba8",
-        RainbowDelimiterYellow = "#f9e2af",
-        RainbowDelimiterBlue = "#89b4fa",
-        RainbowDelimiterOrange = "#fab387",
-        RainbowDelimiterGreen = "#a6e3a1",
-        RainbowDelimiterViolet = "#cba6f7",
-        RainbowDelimiterCyan = "#89dceb",
-        RainbowDelimiterPink = "#f5c2e7",
-        RainbowDelimiterTeal = "#94e2d5",
-        RainbowDelimiterSapphire = "#74c7ec",
-      }
-
-      for group, color in pairs(colors) do
-        vim.api.nvim_set_hl(0, group, { fg = color })
-      end
-
-      require("rainbow-delimiters.setup").setup({
-        highlight = highlight,
-        query = {
-          [""] = "rainbow-delimiters",
-          c = "rainbow-delimiters",
-          lua = "rainbow-delimiters",
-          python = "rainbow-delimiters",
-        },
-      })
-    end,
-  },
-
   -- 缩进辅助线
   {
     "lukas-reineke/indent-blankline.nvim",

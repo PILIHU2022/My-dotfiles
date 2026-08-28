@@ -48,11 +48,12 @@ return {
     event = { "InsertEnter", "BufReadPost" },
     dependencies = { "saghen/blink.lib" },
     build = function()
-      require("blink.pairs").download():pwait(60000)
+      require("blink.pairs").build():pwait(60000)
     end,
     config = function()
-      -- 兜底：若 lazy.nvim 尚未执行 build，也在这里确保 native library 已下载
-      require("blink.pairs").download():pwait(60000)
+      -- 兜底：若 lazy.nvim 尚未执行 build，也在这里确保 native library 可用
+      -- 使用 build() 从源码构建，不依赖当前 checkout 必须处于 release tag
+      require("blink.pairs").build():pwait(60000)
 
       -- 定义彩虹高亮组颜色（Catppuccin Mocha 风格）
       local colors = {

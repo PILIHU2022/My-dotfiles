@@ -44,12 +44,16 @@ return {
   -- 颜色按括号嵌套层级循环，便于快速辨认多重括号层级
   {
     "saghen/blink.pairs",
+    version = "*",
     event = { "InsertEnter", "BufReadPost" },
     dependencies = { "saghen/blink.lib" },
     build = function()
       require("blink.pairs").download():pwait(60000)
     end,
     config = function()
+      -- 兜底：若 lazy.nvim 尚未执行 build，也在这里确保 native library 已下载
+      require("blink.pairs").download():pwait(60000)
+
       -- 定义彩虹高亮组颜色（Catppuccin Mocha 风格）
       local colors = {
         BlinkPairsRed = "#f38ba8",

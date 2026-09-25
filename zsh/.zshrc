@@ -32,7 +32,6 @@ setopt share_history          # share command history data
 
 # Alias
 ## Path
-alias -g dsh='./Projects/deepseek-harness/'
 alias -g paper267='./Projects/Papers-Coding/2026~2027/'
 ## Others
 alias pvenv='source bin/activate'
@@ -147,6 +146,19 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # Load zoxide for quick `cd`
 eval "$(zoxide init zsh)"
+
+## zoxide 目录别名：`z <别名>` 直接跳转到对应目录
+## 例：z dsh -> ~/Projects/deepseek-harness（其余查询仍交给 zoxide）
+typeset -gA ZOXIDE_ALIASES=(
+    dsh "$HOME/Projects/deepseek-harness"
+)
+function z() {
+    if [[ "$#" -eq 1 && -d "${ZOXIDE_ALIASES[$1]:-}" ]]; then
+        __zoxide_cd "${ZOXIDE_ALIASES[$1]}"
+    else
+        __zoxide_z "$@"
+    fi
+}
 
 ## Options
 export _ZO_EXCLUDE_DIRS="/tmp:/var:/proc:/sys:/node_modules" # exclude huge folders

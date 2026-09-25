@@ -1,0 +1,124 @@
+# ~/.config/starship.toml
+# Visit https://starship.rs/guide/ to learn more
+format = """
+$username\
+$os\
+$directory\
+$git_branch\
+$git_status\
+$python\
+$lua\
+$c\
+\n$character
+"""
+
+# 扫描当前目录的超时时间（毫秒）。默认 30，调高可避免偶发的
+# "Scanning current directory timed out" 警告
+scan_timeout = 100
+
+[username]
+style_user = 'white bold'
+style_root = 'red bold'
+# format = 'user: [$user]($style) '
+format = '[$user]($style) [at](green) [lkr](bold) '
+# format = '[$user]($style) [at](green) [Arch Linux](bold) '
+disabled = false
+show_always = true
+
+[buf]
+symbol = " "
+
+[c]
+symbol = " "
+
+[directory]
+style = 'bold cyan'
+format = 'in [$path]($style) '
+read_only = " 󰌾"
+read_only_style = 'red'
+home_symbol = '~'
+truncation_length = 3
+fish_style_pwd_dir_length = 3
+[docker_context]
+symbol = " "
+
+[git_branch]
+symbol = " "
+
+[git_status]
+conflicted = '$count='
+ahead = '$count⇡'
+behind = '$count⇣'
+diverged = '$count⇕'
+# up_to_date = '✓{$count}'
+up_to_date = '✓'
+untracked = '$count?'
+stashed = '$count+'
+modified = '$count!'
+staged = '[++\($count\)](green)'
+renamed = '$count”'
+deleted = '$count✘'
+
+[hostname]
+ssh_symbol = " "
+
+[lua]
+symbol = " "
+
+[memory_usage]
+symbol = "󰍛 "
+disabled = false
+threshold = -1
+style = 'bold dimmed green'
+
+[os]
+format = "on [($symbol$name )]($style)"
+style = "bold blue"
+disabled = false
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Windows = "󰍲 "
+
+[python]
+symbol = " "
+
+[character]
+success_symbol = '[○](bold green)'

@@ -3,3 +3,12 @@
 
 # Ignore nested Git repositories so they are not added as embedded repos/gitlinks.
 **/.git/
+
+**/lazy-lock.json
+
+# Ignore generated Python bytecode caches copied along with live configs.
+**/__pycache__/
+**/*.pyc
+
+# Ignore aria2's runtime session lock.
+**/session.lock

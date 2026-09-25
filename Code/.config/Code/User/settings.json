@@ -1,0 +1,17 @@
+{
+    "terminal.integrated.fontFamily": "Cascadia Code NF",
+    "gruvboxMaterial.darkPalette": "mix",
+    "gruvboxMaterial.darkContrast": "soft",
+    "editor.fontSize": 16,
+    "editor.fontFamily": "'Cascadia Code NF', 'monospace', monospace",
+    "git.autofetch": true,
+    "git.enableCommitSigning": true,
+    "cloudcode.duetAI.project": "gen-lang-client-0401232277",
+    "git.confirmSync": false,
+    "editor.unicodeHighlight.nonBasicASCII": false,
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    "workbench.editor.empty.hint": "hidden",
+    "workbench.colorTheme": "Visual Studio Dark",
+    "catppuccin.colorOverrides": {},
+    "catppuccin.accentColor": "blue"
+}

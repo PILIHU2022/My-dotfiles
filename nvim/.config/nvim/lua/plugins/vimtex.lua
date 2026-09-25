@@ -13,7 +13,7 @@ return {
     -- 副作用：同时禁用正向跳转（vim → PDF）与反向搜索（PDF 点击跳回 vim）。
     vim.g.vimtex_view_zathura_use_synctex = 0
     -- 默认前缀是 <localleader>l（\l），中文输入法下反斜杠常被 IME 吞掉；
-    -- 且 <leader>l 已被 Lazy、<leader>lg 已被 LazyGit 占用，
+    -- 且 <leader>l 已被 Lazy、<leader>lg 已被 Neogit 占用，
     -- 因此改用 <leader>v：默认键变为 <Space>v*（如 <Space>vl 编译、<Space>vv 查看）
     vim.g.vimtex_mappings_prefix = "<leader>v"
     -- 禁用 vimtex 默认的 <Space>vl（仅编译），

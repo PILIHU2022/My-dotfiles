@@ -1,0 +1,231 @@
+#!/usr/bin/env bash
+# pinentry-named —— 把 gpg-agent 密码提示框里的“机器标识”换成你手写的密钥名称
+#
+# 背景：gpg-agent 走 Assuan 协议把提示内容交给 pinentry（本机实际链路是
+#   /usr/bin/pinentry → pinentry-gnome3 → gcr-prompter）。它只会给出机器标识：
+#     * OpenPGP : SETDESC 首行“请输入密码以解锁 OpenPGP 私钥：”，随后 %22UID%22
+#                 和“255 位 EDDSA 密钥，标识 06570441417F04DA”这类内容
+#     * SSH     : SETDESC 首行“请输入 ssh 密钥”，随后 SHA256:jmTwL7E91/… 指纹
+# 本脚本夹在 gpg-agent 和真正的 pinentry 之间，按两张配置表改写 SETDESC：
+#   ~/.config/pinentry/names.conf  密钥标识 → 显示名称（可加 ssh: / gpg: 场景前缀）
+#   ~/.config/pinentry/text.conf   首行说明里的字面文字修正（例如 ssh → SSH）
+#
+# 用法：
+#   pinentry-named             由 gpg-agent 通过 pinentry-program 调用（正常路径）
+#   pinentry-named --rewrite   只过滤 stdin 上的 Assuan 流并打印，不弹窗（自检用）
+#   pinentry-named --list      列出可写进 names.conf 的匹配键（密钥 ID / keygrip / SSH 指纹）
+#   pinentry-named --help
+#
+# 环境变量（一般不用设，便于测试）：
+#   PINENTRY_NAMED_CONF   别名表，默认 ${XDG_CONFIG_HOME:-$HOME/.config}/pinentry/names.conf
+#   PINENTRY_NAMED_TEXT   文字修正表，默认 ${XDG_CONFIG_HOME:-$HOME/.config}/pinentry/text.conf
+#   PINENTRY_NAMED_REAL   真正的 pinentry，默认 /usr/bin/pinentry（保持发行版的后端自动选择）
+#   PINENTRY_NAMED_DEBUG  指向一个文件时，把每条收到的 Assuan 行追加进去
+
+set -u
+
+CONF=${PINENTRY_NAMED_CONF:-${XDG_CONFIG_HOME:-$HOME/.config}/pinentry/names.conf}
+TEXT_CONF=${PINENTRY_NAMED_TEXT:-${XDG_CONFIG_HOME:-$HOME/.config}/pinentry/text.conf}
+REAL_PINENTRY=${PINENTRY_NAMED_REAL:-/usr/bin/pinentry}
+DEBUG_LOG=${PINENTRY_NAMED_DEBUG:-}
+
+declare -A ALIAS=()
+declare -a FIX_FROM=() FIX_TO=()
+KEYINFO=''
+
+# ---------------------------------------------------------------- 配置表 ----
+# 两张表都是“<键> <值>”：空行与 # 开头忽略，值可含空格并取到行尾。
+load_table() { # $1=文件 $2=加载函数名
+	local line key val
+	[[ -r $1 ]] || return 0
+	while IFS= read -r line || [[ -n $line ]]; do
+		line=${line%$'\r'}
+		[[ -z ${line//[[:space:]]/} ]] && continue
+		key=${line%%[[:space:]]*}
+		[[ $key == '#'* ]] && continue
+		val=${line#"$key"}
+		val=${val#"${val%%[![:space:]]*}"}
+		val=${val%"${val##*[![:space:]]}"}
+		[[ -n $key ]] && "$2" "$key" "$val"
+	done <"$1"
+}
+
+load_aliases() { load_table "$CONF" add_alias; }
+add_alias() { ALIAS[$1]=$2; }
+
+load_text_fixes() { load_table "$TEXT_CONF" add_fix; }
+add_fix() {
+	FIX_FROM+=("$1")
+	FIX_TO+=("$2")
+}
+
+# 查表：先精确匹配；纯十六进制再按大写重试一次。
+lookup() {
+	local v
+	v=${ALIAS[${1:-}]:-}
+	if [[ -z $v && ${1:-} =~ ^[0-9A-Fa-f]{16,40}$ ]]; then
+		v=${ALIAS[${1^^}]:-}
+	fi
+	[[ -n $v ]] && printf '%s' "$v"
+}
+
+# 先找带场景前缀的（ssh: / gpg:），再退回通用条目。
+lookup_ctx() { # $1=场景 $2=标识
+	local v
+	v=$(lookup "$1:$2")
+	[[ -z $v ]] && v=$(lookup "$2")
+	printf '%s' "$v"
+}
+
+# SETKEYINFO 形如 "s/<40位keygrip>"（SSH）或 "n/<40位keygrip>"（OpenPGP）。
+grip_from_keyinfo() {
+	[[ $KEYINFO =~ ^[ns]/([0-9A-Fa-f]{40})$ ]] && printf '%s' "${BASH_REMATCH[1]}"
+}
+
+# 值写回 Assuan 流前必须转义；% 一定要先处理。
+assuan_escape() {
+	local s=$1
+	s=${s//%/%25}
+	s=${s//$'\n'/%0A}
+	s=${s//$'\r'/%0D}
+	s=${s//\"/%22}
+	printf '%s' "$s"
+}
+
+# 对首行说明做字面替换（按 text.conf 的顺序逐条做一次）。
+fix_text() {
+	local s=$1 i pat rep
+	for i in "${!FIX_FROM[@]}"; do
+		pat=${FIX_FROM[i]}
+		[[ -z $pat ]] && continue
+		rep=$(assuan_escape "${FIX_TO[i]}")
+		s=${s//"$pat"/"$rep"}
+	done
+	printf '%s' "$s"
+}
+
+# ------------------------------------------------------------ 改写逻辑 ----
+rewrite_desc() {
+	local enc=$1 header='' rest='' name='' tok='' kid='' grip='' ctx='gpg'
+
+	# 首行是“说明”，其余是 UID / 密钥 ID / 指纹 / 创建时间
+	if [[ $enc == *%0A* ]]; then
+		header=${enc%%%0A*}
+		rest=${enc#*%0A}
+	else
+		header=$enc
+	fi
+
+	# 场景判定：带摘要指纹，或 SETKEYINFO 为 s/ 开头 → SSH
+	if [[ $rest =~ (SHA256|SHA1|SHA512|MD5):[A-Za-z0-9+/=]+ || $KEYINFO == s/* ]]; then
+		ctx=ssh
+	fi
+
+	header=$(fix_text "$header")
+
+	if [[ $ctx == ssh && $rest =~ (SHA256|SHA1|SHA512|MD5):[A-Za-z0-9+/=]+ ]]; then
+		tok=${BASH_REMATCH[0]}
+		name=$(lookup_ctx ssh "$tok")
+		if [[ -z $name ]]; then
+			grip=$(grip_from_keyinfo)
+			[[ -n $grip ]] && name=$(lookup_ctx ssh "$grip")
+		fi
+		if [[ -n $name ]]; then
+			rest=${rest//"$tok"/$(assuan_escape "$name")}
+			rest=${rest//%0A  ()/} # 去掉 gpg-agent 留下的空注释组
+			rest=${rest//%0A ()/}
+		fi
+	elif [[ $rest =~ [0-9A-Fa-f]{16} ]]; then
+		kid=${BASH_REMATCH[0]}
+		name=$(lookup_ctx gpg "$kid")
+		if [[ -z $name ]]; then
+			grip=$(grip_from_keyinfo)
+			[[ -n $grip ]] && name=$(lookup_ctx gpg "$grip")
+		fi
+		if [[ -n $name ]]; then
+			if [[ $rest == *%22*%22* ]]; then
+				# 丢开 %22UID%22、密钥算法行和创建时间，只留首行说明 + 名称
+				rest=$(assuan_escape "$name")
+			else
+				rest=${rest//"$kid"/$(assuan_escape "$name")}
+			fi
+		fi
+	fi
+
+	if [[ -n $rest ]]; then
+		printf '%s%%0A%s' "$header" "$rest"
+	else
+		printf '%s' "$header"
+	fi
+}
+
+# 逐行处理 gpg-agent 发来的 Assuan 流，只有 SETDESC 会被改写。
+filter_stream() {
+	local line
+	while IFS= read -r line || [[ -n $line ]]; do
+		[[ -n $DEBUG_LOG ]] && printf '<< %s\n' "$line" >>"$DEBUG_LOG"
+		case $line in
+		SETKEYINFO\ *)
+			KEYINFO=${line#SETKEYINFO }
+			printf '%s\n' "$line"
+			;;
+		SETDESC\ *)
+			printf 'SETDESC %s\n' "$(rewrite_desc "${line#SETDESC }")"
+			;;
+		*) printf '%s\n' "$line" ;;
+		esac
+	done
+}
+
+# --------------------------------------------------------------- 辅助 ----
+list_identities() {
+	printf '%s\n' '# ===== 可写进 names.conf 的匹配键（前加 ssh: 或 gpg: 可限定场景）====='
+	printf '\n# --- OpenPGP 私钥（16 位密钥 ID / keygrip）---\n'
+	gpg --list-secret-keys --with-colons --with-keygrip 2>/dev/null |
+		awk -F: '
+			function flush() {
+				if (id == "") return
+				printf "%-16s  %s\n", id, uid
+				for (i = 1; i <= n; i++) printf "%-16s  keygrip: %s\n", "", g[i]
+				id = ""; uid = ""; n = 0
+			}
+			$1 == "sec" { flush(); id = substr($5, length($5) - 15); next }
+			$1 == "uid" && uid == "" { uid = $10; next }
+			$1 == "grp" { g[++n] = $10; next }
+			END { flush() }
+		'
+	printf '\n# --- gpg-agent 提供的 SSH 密钥（SHA256: 指纹 / keygrip）---\n'
+	local sock grip
+	sock=$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
+	if [[ -n $sock && -S $sock ]]; then
+		SSH_AUTH_SOCK=$sock ssh-add -L 2>/dev/null | ssh-keygen -lf - 2>/dev/null |
+			awk '{ printf "%-52s %s\n", $2, $3 }'
+		while IFS= read -r grip; do
+			[[ -z $grip || $grip == '#'* ]] && continue
+			printf '%-52s keygrip: %s\n' '' "$grip"
+		done <"$HOME/.gnupg/sshcontrol"
+	else
+		printf '%s\n' '# （SSH agent 未运行，跳过）'
+	fi
+}
+
+case ${1:-} in
+--list)
+	list_identities
+	exit 0
+	;;
+--rewrite)
+	load_aliases
+	load_text_fixes
+	filter_stream
+	exit 0
+	;;
+--help | -h)
+	awk 'NR > 1 && /^#/ { sub(/^# ?/, ""); print; next } NR > 1 { exit }' "$0"
+	exit 0
+	;;
+esac
+
+load_aliases
+load_text_fixes
+exec "$REAL_PINENTRY" "$@" < <(filter_stream)

@@ -1,0 +1,73 @@
+#!/bin/sh
+# stardew-valley-launch - start Stardew Valley with the SDL2/fcitx5 preedit fix.
+#
+# Why this exists
+# ---------------
+# Stardew Valley's Linux build ships an X11-only SDL2 2.30.4 which, when it
+# talks to fcitx5 over D-Bus, advertises the "preedit" capability:
+#
+#     SDL_AddHintCallback("SDL_IME_INTERNAL_EDITING", Fcitx_SetCapabilities)
+#     -> SetCapability(org.freedesktop.portal.Fcitx,
+#                      org.fcitx.Fcitx.InputContext1, 0x12)
+#
+# fcitx5 therefore stops painting the pinyin string itself and expects the
+# application to paint it. MonoGame does not, so the sign editor shows the
+# candidate window but no composition text.
+#
+# Setting SDL_IME_INTERNAL_EDITING=1 makes SDL send SetCapability(0) instead,
+# which hands the preedit back to fcitx5.
+#
+# Steam launch options:  /home/Spark/.local/bin/stardew-valley-launch %command%
+
+set -eu
+
+GAME_DIR=${STARDEW_DIR:-}
+if [ -z "$GAME_DIR" ] || [ ! -d "$GAME_DIR" ]; then
+    # Steam %command% expands to the game executable's absolute path.
+    if [ "$#" -gt 0 ] && [ -x "$1" ]; then
+        GAME_DIR=$(CDPATH= cd -- "$(dirname -- "$1")" && pwd)
+    else
+        GAME_DIR=$PWD
+    fi
+fi
+
+if [ ! -d "$GAME_DIR" ]; then
+    echo "stardew-valley-launch: cannot find the game directory" >&2
+    echo "set STARDEW_DIR=/path/to/Stardew Valley and retry" >&2
+    exit 1
+fi
+
+# SMAPI replaces the launcher when it is installed.
+if [ -x "$GAME_DIR/StardewModdingAPI" ]; then
+    GAME_BIN="$GAME_DIR/StardewModdingAPI"
+elif [ -x "$GAME_DIR/Stardew Valley" ]; then
+    GAME_BIN="$GAME_DIR/Stardew Valley"
+else
+    echo "stardew-valley-launch: no game executable in $GAME_DIR" >&2
+    exit 1
+fi
+
+FIX_DIR=${STARDEW_IME_FIX_DIR:-$HOME/.local/lib/stardew-ime-fix}
+SHIM=$FIX_DIR/sdl-ime-internal.so
+DEBUG_SHIM=$FIX_DIR/sdl-ime-debug.so
+
+if [ ! -f "$SHIM" ]; then
+    echo "stardew-valley-launch: $SHIM is missing - run 'make' in $FIX_DIR" >&2
+    exit 1
+fi
+
+# Let fcitx5 draw the composition string again (this is the actual fix).
+SDL_IME_INTERNAL_EDITING=1
+export SDL_IME_INTERNAL_EDITING
+
+PRELOAD=$SHIM
+if [ -n "${STARDEW_IME_DEBUG:-}" ] && [ -f "$DEBUG_SHIM" ]; then
+    # Diagnostics: also make SDL log which input-method backend it picked.
+    PRELOAD="$SHIM:$DEBUG_SHIM"
+    export SDL_IME_DEBUG=1
+fi
+LD_PRELOAD=${LD_PRELOAD:+$LD_PRELOAD:}$PRELOAD
+export LD_PRELOAD
+
+cd "$GAME_DIR"
+exec "$GAME_BIN" "$@"

@@ -1,0 +1,27 @@
+export XCURSOR_SIZE=24
+
+export QT_QPA_PLATFORMTHEME=qt6ct
+# 注意必须整体加引号：不加引号时 ';' 会被 shell 当成命令分隔符，
+# 结果只导出 QPA_PLATFORM=wayland（丢掉 xcb 回退）并去执行一条叫 xcb 的命令。
+export QT_QPA_PLATFORM="wayland;xcb"
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+
+export MOZ_ENABLE_WAYLAND=1
+
+export GDK_SCALE=1
+export GDK_DPI_SCALE=1
+export XCURSOR_THEME="Breeze (Plasma 5)"
+export GDK_BACKEND=wayland, x11
+export SDL_VIDEODRIVER=wayland
+export CLUTTER_BACKEND=wayland
+
+export vblank_mode=0
+
+# 变量名不能带 $（原来写成 export $HYPR_CONF_DIR=... 会报
+# "not a valid identifier"，变量其实从未被赋值）。
+export HYPR_CONF_DIR="$HOME/.config/hypr"
+export HYPR_SCRIPTS_DIR="$HYPR_CONF_DIR/scripts"
+
+export screen_file="${HOME}/Pictures/Screenshot/screenshot_grim_$(date +%F_%T).png"
+export LANG=zh_CN.UTF-8

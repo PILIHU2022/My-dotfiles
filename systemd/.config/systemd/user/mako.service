@@ -1,0 +1,27 @@
+[Unit]
+Description=Mako notification daemon (org.freedesktop.Notifications)
+Documentation=https://github.com/emersion/mako
+# 本机真正在用的通知守护进程就是 mako，它持有 org.freedesktop.Notifications。
+#   单独启停：systemctl --user start|stop|restart mako.service
+#   整组启停：systemctl --user stop hyprland-autostart.target（靠下面的 PartOf=）
+# PartOf= 只把 target 的 stop/restart 单向传播过来，不影响本 unit 单独启停。
+PartOf=graphical-session.target hyprland-autostart.target
+After=graphical-session.target hyprland-autostart.target
+# org.freedesktop.Notifications 这个名字有三个 D-Bus 激活文件在抢，先到先得：
+#   /usr/share/dbus-1/services/fr.emersion.mako.service            -> SystemdService=mako.service
+#   /usr/share/dbus-1/services/org.knopwob.dunst.service           -> SystemdService=dunst.service
+#   /usr/share/dbus-1/services/org.kde.plasma.Notifications.service -> plasma_waitforname
+# dunst 装了但本仓库从不启动它（也没有 dunst.service），这里显式排斥，防止将来
+# 某个 dunst.service 被 D-Bus 激活把总线名抢走。
+Conflicts=dunst.service
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/mako
+Restart=on-failure
+RestartSec=3
+# 与 uwsm 对 XDG autostart 应用的处理保持一致：放进随会话回收的图形应用 slice。
+Slice=app-graphical.slice
+
+[Install]
+WantedBy=hyprland-autostart.target

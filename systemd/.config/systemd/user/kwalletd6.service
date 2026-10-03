@@ -1,0 +1,26 @@
+[Unit]
+Description=KDE Wallet daemon (kwalletd6)
+Documentation=https://invent.kde.org/frameworks/kwallet
+# 只在图形会话里启动：default.target 早于合成器，kwalletd6 会因为拿不到
+# Wayland/Tty 显示而 Qt abort（日志：Failed to create wl_display）。
+PartOf=graphical-session.target
+# 两条 After= 合并成一行；dbus.socket 保证发请求时总线已经就绪。
+After=graphical-session.target dbus.socket
+# 发行版已提供 D-Bus 激活文件 org.kde.kwalletd6.service，因此这里不声明
+# BusName/不用 Type=dbus，避免两套机制抢同一个总线名。
+# 启用位置必须跟 WantedBy= 一致：graphical-session.target.wants/。
+# 之前放在 default.target.wants/ 里，正好撞上上面注释说的「早于合成器会 Qt abort」。
+# 本机已选定 KWallet 作密钥后端，因此 ksecretd.service 用 Wants= 依赖本 unit：
+# 前者通过 D-Bus 找后者存取钱包。
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/kwalletd6
+# 用 systemd 传给 Qt 的候选平台列表（这里是字面量，不经 shell，';' 不会被当命令分隔符）。
+# 只有 wayland 且 socket 未就绪时 Qt 会直接 abort，加 xcb 回退可避免。
+Environment=QT_QPA_PLATFORM=wayland;xcb
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target

@@ -1,0 +1,23 @@
+[Unit]
+Description=Set the swww wallpaper
+Documentation=https://github.com/Horus645/swww
+# 单独启停：systemctl --user start|stop|restart swww-wallpaper.service
+# 整组启停：systemctl --user stop hyprland-autostart.target
+PartOf=graphical-session.target hyprland-autostart.target
+After=graphical-session.target hyprland-autostart.target
+# Requires= 负责「daemon 停了我也停」；PartOf= 额外负责「daemon 重启了我也重跑」，
+# 这样 `systemctl --user restart swww-daemon` 之后壁纸会自动重新贴一次。
+Requires=swww-daemon.service
+PartOf=swww-daemon.service
+After=swww-daemon.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# swww-daemon 是 Type=exec，只能保证进程已 exec，不保证 Wayland socket 已经可以连接。
+# 直接 swww img 会偶发 "failed to connect to daemon"，所以这里最多重试 10 秒。
+# systemd 不展开 ~，路径必须用 %h（用户家目录）。
+ExecStart=/usr/bin/bash -c 'for _ in {1..40}; do /usr/bin/swww img %h/Pictures/Wallpapers/Raiden_Shogun_Wallpaper.jpg && exit 0; sleep 0.25; done; echo "swww-daemon 10s 内仍不可连接" >&2; exit 1'
+
+[Install]
+WantedBy=hyprland-autostart.target

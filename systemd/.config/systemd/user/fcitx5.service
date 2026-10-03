@@ -1,0 +1,18 @@
+[Unit]
+Description=Fcitx5 input method framework
+Documentation=https://fcitx-im.org/
+# 单独启停：systemctl --user start|stop|restart fcitx5.service
+# 整组启停：systemctl --user stop hyprland-autostart.target
+# 原先写成两行 PartOf=，这里合并；After= 也补上了 hyprland-autostart.target。
+PartOf=graphical-session.target hyprland-autostart.target
+After=graphical-session.target hyprland-autostart.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/fcitx5
+Restart=always
+RestartSec=3
+Slice=app-graphical.slice
+
+[Install]
+WantedBy=hyprland-autostart.target

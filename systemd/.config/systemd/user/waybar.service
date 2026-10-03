@@ -1,0 +1,17 @@
+[Unit]
+Description=Waybar status bar
+Documentation=https://github.com/Alexays/Waybar
+# 单独启停：systemctl --user start|stop|restart waybar.service
+# 整组启停：systemctl --user stop hyprland-autostart.target
+PartOf=graphical-session.target hyprland-autostart.target
+After=graphical-session.target hyprland-autostart.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/waybar
+Restart=on-failure
+RestartSec=3
+Slice=app-graphical.slice
+
+[Install]
+WantedBy=hyprland-autostart.target

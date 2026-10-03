@@ -1,0 +1,19 @@
+[Unit]
+Description=Hyprland autostart applications
+Documentation=man:systemd.special(7) https://wiki.hypr.land/Configuring/Basics/Autostart/
+# 唯一的启用入口：本 target 被 graphical-session.target 拉起，各应用通过
+# hyprland-autostart.target.wants/ 里的相对软链接挂到这里。避免同一批服务同时被
+# graphical-session.target 和本 target 各 enable 一次——之前就是这样，而且那些
+# 软链接还写成了指向旧家目录 /home/Spark 的绝对路径，仓库搬到 /home/Projects 后
+# 全部失效。
+PartOf=graphical-session.target
+After=graphical-session.target
+# 发行版自带 /usr/lib/systemd/user/hyprpolkitagent.service（内含
+# ConditionEnvironment=WAYLAND_DISPLAY，并已声明 PartOf=graphical-session.target），
+# 仓库里没有对应文件，所以只能用 Wants= 引用，没法放进 .wants/ 软链接。
+# 这里原先写的是 polkit-kde-agent.service，该文件已改名为
+# polkit-kde-agent.service.back，是悬空引用，由 hyprpolkitagent 取代。
+Wants=hyprpolkitagent.service
+
+[Install]
+WantedBy=graphical-session.target

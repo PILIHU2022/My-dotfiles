@@ -1,0 +1,18 @@
+[Unit]
+Description=swww animated wallpaper daemon
+Documentation=https://github.com/Horus645/swww
+# 单独启停：systemctl --user start|stop|restart swww-daemon.service
+# 整组启停：systemctl --user stop hyprland-autostart.target
+# 注意：restart swww-daemon 会连带重新执行 swww-wallpaper（后者 PartOf= 本 unit）。
+PartOf=graphical-session.target hyprland-autostart.target
+After=graphical-session.target hyprland-autostart.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/swww-daemon
+Restart=on-failure
+RestartSec=3
+Slice=app-graphical.slice
+
+[Install]
+WantedBy=hyprland-autostart.target

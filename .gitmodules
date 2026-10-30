@@ -1,0 +1,15 @@
+[submodule "zi-deprecated/.config/zi/plugins/Aloxaf---fzf-tab"]
+	path = zi-deprecated/.config/zi/plugins/Aloxaf---fzf-tab
+	url = https://github.com/Aloxaf/fzf-tab
+[submodule "zi-deprecated/.config/zi/plugins/zsh-users---zsh-completions"]
+	path = zi-deprecated/.config/zi/plugins/zsh-users---zsh-completions
+	url = https://github.com/zsh-users/zsh-completions
+[submodule "zi-deprecated/.config/zi/plugins/zdharma-continuum---fast-syntax-highlighting"]
+	path = zi-deprecated/.config/zi/plugins/zdharma-continuum---fast-syntax-highlighting
+	url = https://github.com/zdharma-continuum/fast-syntax-highlighting
+[submodule "zi-deprecated/.config/zi/plugins/jeffreytse---zsh-vi-mode"]
+	path = zi-deprecated/.config/zi/plugins/jeffreytse---zsh-vi-mode
+	url = https://github.com/jeffreytse/zsh-vi-mode
+[submodule "zi-deprecated/.config/zi/plugins/zsh-users---zsh-autosuggestions"]
+	path = zi-deprecated/.config/zi/plugins/zsh-users---zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions

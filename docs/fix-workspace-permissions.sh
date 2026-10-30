@@ -4,7 +4,7 @@
 #
 # 用途：把 /home/Projects 变成 Spark 与 dsh 两个用户都能安全读写的共享工作区。
 #
-# 运行：sudo bash Docs/fix-workspace-permissions.sh
+# 运行：sudo bash docs/fix-workspace-permissions.sh
 #
 # 特点：
 #   * 幂等——可以反复执行，结果一致。

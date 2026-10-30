@@ -6,8 +6,8 @@
 # 为什么需要你自己跑：Agent 身份是 dsh(1002)，/home/Spark 是 700，写不进去。
 #
 # 用法（以 Spark 身份，在任意终端里；不需要图形会话）：
-#   bash /home/Projects/Stow-Dotfile/Docs/sync-systemd-units.sh --dry-run   # 先看要做什么
-#   bash /home/Projects/Stow-Dotfile/Docs/sync-systemd-units.sh             # 真正执行
+#   bash /home/Projects/Stow-Dotfile/docs/sync-systemd-units.sh --dry-run   # 先看要做什么
+#   bash /home/Projects/Stow-Dotfile/docs/sync-systemd-units.sh             # 真正执行
 #
 # 做了四件事：
 #   1. 备份 ~/.config/systemd/user/ 到 ~/systemd-user-backup-<时间戳>/

@@ -8,7 +8,7 @@
 #   Agent 连 Spark 的会话总线都读不到，因此无法在你屏幕上弹出任何窗口。
 #
 # 用法（在图形会话的终端里，以 Spark 身份）：
-#   bash /home/Projects/Stow-Dotfile/Docs/compare-secrets-backends.sh
+#   bash /home/Projects/Stow-Dotfile/docs/compare-secrets-backends.sh
 #
 #   --diag        额外打印每条底层命令的原始输出（排查用）
 #   --force-new   强制走「新建测试密钥环/钱包」路径（真实密钥环若无密码则永不弹窗）

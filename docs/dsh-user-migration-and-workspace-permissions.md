@@ -18,7 +18,7 @@
 **一条命令修复**（需要你输入 sudo 密码）：
 
 ```bash
-sudo bash /home/Projects/Stow-Dotfile/Docs/fix-workspace-permissions.sh
+sudo bash /home/Projects/Stow-Dotfile/docs/fix-workspace-permissions.sh
 ```
 
 ---
@@ -266,7 +266,7 @@ sudo setfacl -d -m u::rwx,g:agent:rwx,o::rx /home/Projects
 如果 `/home/Projects` 里会存放含密钥、token、订阅链接、`~/.ssh/config` 之类内容的 dotfiles，建议保持当前的严格状态：
 
 ```bash
-sudo OTHER_PERMS=--- bash /home/Projects/Stow-Dotfile/Docs/fix-workspace-permissions.sh
+sudo OTHER_PERMS=--- bash /home/Projects/Stow-Dotfile/docs/fix-workspace-permissions.sh
 ```
 
 `---` 不会影响 `Spark` 和 `dsh`（两者都在 `agent` 组里，靠组权限读写），只是把"其他用户"彻底关在门外。**改档只需要重跑脚本**：它会把新档位同时应用到已有对象和新建对象（后者靠默认 ACL 继承），不需要手工 `chmod`。
@@ -362,7 +362,7 @@ done
 
 ```bash
 # 需要 root，会提示输入密码
-sudo bash /home/Projects/Stow-Dotfile/Docs/fix-workspace-permissions.sh
+sudo bash /home/Projects/Stow-Dotfile/docs/fix-workspace-permissions.sh
 ```
 
 脚本**幂等**，可以反复执行。默认行为：
@@ -473,14 +473,14 @@ find /home/Projects ! -group agent
 #   find /home/Projects -path '*/.git' -prune -o -type f ! -perm -g+w -print
 
 # 4) 交叉写测试：两个用户都能在同一个目录里建/删文件
-sudo -u dsh   bash -c 'touch /home/Projects/Stow-Dotfile/Docs/.w && rm -f /home/Projects/Stow-Dotfile/Docs/.w && echo dsh-ok'
-sudo -u Spark bash -c 'touch /home/Projects/Stow-Dotfile/Docs/.w && rm -f /home/Projects/Stow-Dotfile/Docs/.w && echo Spark-ok'
+sudo -u dsh   bash -c 'touch /home/Projects/Stow-Dotfile/docs/.w && rm -f /home/Projects/Stow-Dotfile/docs/.w && echo dsh-ok'
+sudo -u Spark bash -c 'touch /home/Projects/Stow-Dotfile/docs/.w && rm -f /home/Projects/Stow-Dotfile/docs/.w && echo Spark-ok'
 
 # 5) 新建文件的继承是否正确（关键！属组必须是 agent，且组带 w）
 #    注意：如果你是用 OTHER_PERMS=--- 跑的，期望值是 -rw-rw----+ 1 dsh agent
-sudo -u dsh touch /home/Projects/Stow-Dotfile/Docs/.inherit
-ls -l /home/Projects/Stow-Dotfile/Docs/.inherit   # 期望 -rw-rw-r--+ 1 dsh agent
-rm -f /home/Projects/Stow-Dotfile/Docs/.inherit
+sudo -u dsh touch /home/Projects/Stow-Dotfile/docs/.inherit
+ls -l /home/Projects/Stow-Dotfile/docs/.inherit   # 期望 -rw-rw-r--+ 1 dsh agent
+rm -f /home/Projects/Stow-Dotfile/docs/.inherit
 
 # 6) git 在两个身份下都正常
 sudo -u dsh   git -C /home/Projects/Stow-Dotfile status --short
@@ -570,7 +570,7 @@ sudo find /home/Projects -type d -exec setfacl -k {} +
    它同时作用于**已有对象**（第 5 步）和**新建对象**（第 6 步的默认 ACL）。目录与"可执行文件"给 `r-x`，普通文件给 `r--`，配置文件不会被带上执行位。
 
 10. **会被"重命名式写入"绕过的继承规则（重要，日常最容易踩）。**
-    实测对比（同一目录 `Docs/`，已设 setgid + 默认 ACL）：
+    实测对比（同一目录 `docs/`，已设 setgid + 默认 ACL）：
 
     | 写入方式 | 结果 |
     | --- | --- |
@@ -584,7 +584,7 @@ sudo find /home/Projects -type d -exec setfacl -k {} +
     处理：
     ```bash
     # 最省事：重跑一次脚本（幂等，会把属组和权限全部拉回）
-    sudo bash /home/Projects/Stow-Dotfile/Docs/fix-workspace-permissions.sh
+    sudo bash /home/Projects/Stow-Dotfile/docs/fix-workspace-permissions.sh
     ```
     或者在 `Spark` 需要读之前，对新增文件单独修一次：
     ```bash
@@ -642,7 +642,7 @@ sudo find /home/Projects -type d -exec chmod g+s {} +
 sudo find /home/Projects -type d -exec setfacl -m d:u::rwx,d:g::rwx,d:g:agent:rwx,d:m::rwx,d:o::rx {} +
 ```
 
-（脚本相比这 5 条，多了前置校验、顶层目录处理、已有对象的命名 ACL、`safe.directory` 同步、`OTHER_PERMS` 档位与验证提示。想要"其他用户完全隔离"就把最后一条的 `d:o::rx` 换成 `d:o::---`，并给已有对象补 `setfacl -m o::---`——也就是直接跑 `sudo OTHER_PERMS=--- bash Docs/fix-workspace-permissions.sh`。）
+（脚本相比这 5 条，多了前置校验、顶层目录处理、已有对象的命名 ACL、`safe.directory` 同步、`OTHER_PERMS` 档位与验证提示。想要"其他用户完全隔离"就把最后一条的 `d:o::rx` 换成 `d:o::---`，并给已有对象补 `setfacl -m o::---`——也就是直接跑 `sudo OTHER_PERMS=--- bash docs/fix-workspace-permissions.sh`。）
 
 ---
 
@@ -707,7 +707,7 @@ dsh 可写                                     # 目录本身对 dsh 是可读�
 **一条命令即可**（脚本是递归的，`Others` 会被一起处理；它会 `chgrp` 到 `agent`、给目录 `g+rwx`、给文件 `g+rw`、补 setgid 与 ACL）：
 
 ```bash
-sudo OTHER_PERMS=--- bash /home/Projects/Stow-Dotfile/Docs/fix-workspace-permissions.sh
+sudo OTHER_PERMS=--- bash /home/Projects/Stow-Dotfile/docs/fix-workspace-permissions.sh
 ```
 
 如果只想动 `Others` 一处，等价的最小命令是：
@@ -750,14 +750,14 @@ find /home/Projects/Others -type f ! -perm -g+w
 cd /home/Projects/Stow-Dotfile
 
 NO_ROOT=1 OWNER=Spark OTHER_PERMS=--- \
-  bash Docs/fix-workspace-permissions.sh
+  bash docs/fix-workspace-permissions.sh
 ```
 
 只想修 `Others` 这一个子树：
 
 ```bash
 NO_ROOT=1 OWNER=Spark OTHER_PERMS=--- WORKSPACE=/home/Projects/Others \
-  bash /home/Projects/Stow-Dotfile/Docs/fix-workspace-permissions.sh
+  bash /home/Projects/Stow-Dotfile/docs/fix-workspace-permissions.sh
 ```
 
 脚本在 `NO_ROOT=1` 时会：
@@ -806,12 +806,12 @@ find /home/Projects/Others -type d -exec setfacl \
 
 ### 11.5 反向案例：`dsh` 写的文件 `Spark` 打不开（Typora）
 
-**现象**：以 `Spark` 启动 Typora，打开 `/home/Projects/Stow-Dotfile/Docs/nvim_ds-lazyvim_doc/` 下的 Markdown，提示无权限。
+**现象**：以 `Spark` 启动 Typora，打开 `/home/Projects/Stow-Dotfile/docs/nvim_ds-lazyvim_doc/` 下的 Markdown，提示无权限。
 
 **实测**：
 
 ```console
-$ ls -ln /home/Projects/Stow-Dotfile/Docs/nvim_ds-lazyvim_doc/
+$ ls -ln /home/Projects/Stow-Dotfile/docs/nvim_ds-lazyvim_doc/
 drwxrws---+ Spark agent   108 .
 -rw-------+ dsh   dsh   18673 lazyvim-plugins.md     # ← dsh:dsh 600，Spark 读不了
 -rw-------+ dsh   dsh    7268 markdown-writing.md    # ← 同上
@@ -826,7 +826,7 @@ drwxrws---+ Spark agent   108 .
 # 在 dsh 的会话里
 cd /home/Projects/Stow-Dotfile
 NO_ROOT=1 OWNER=dsh OTHER_PERMS=--- WORKSPACE=/home/Projects \
-  bash Docs/fix-workspace-permissions.sh
+  bash docs/fix-workspace-permissions.sh
 ```
 
 **推荐的双人免 root 流程**（实测属主分布：`Spark` 2727 个对象 + `dsh` 128 个对象，两边各跑一次就覆盖全树）：
@@ -834,11 +834,11 @@ NO_ROOT=1 OWNER=dsh OTHER_PERMS=--- WORKSPACE=/home/Projects \
 ```bash
 # Spark 的会话里
 NO_ROOT=1 OWNER=Spark OTHER_PERMS=--- WORKSPACE=/home/Projects \
-  bash /home/Projects/Stow-Dotfile/Docs/fix-workspace-permissions.sh
+  bash /home/Projects/Stow-Dotfile/docs/fix-workspace-permissions.sh
 
 # dsh 的会话里
 NO_ROOT=1 OWNER=dsh   OTHER_PERMS=--- WORKSPACE=/home/Projects \
-  bash /home/Projects/Stow-Dotfile/Docs/fix-workspace-permissions.sh
+  bash /home/Projects/Stow-Dotfile/docs/fix-workspace-permissions.sh
 ```
 
 脚本会**自动跳过不属于当前用户的对象**并给出提示，所以顺序无所谓、重复执行也无副作用。
@@ -907,12 +907,12 @@ await rename(tempPath, absolutePath);
   为什么 `chmod` 会清掉 setgid？内核规则是：调用进程**不在该目录的属组里**、又没有该 inode 上的 `CAP_FSETID` 时，写模式位会强制清掉 `S_ISGID`。也就是说，**执行写入的进程不在 `agent` 组里**——最可能的原因是 `dsh web` 启动早于 `usermod -aG agent dsh`，进程持有的是旧的组集合（这也解释了为什么沙箱里的 `bash` 创建文件反而正常：那个进程的组集合里有 `agent`）。
 * **缺陷②**：新文件被固定成 `0600`。即使属组修对了，`Spark` 依旧读不到（组位是 `---`）——因为目录的默认 ACL 只能"往下夹"，不能替程序加上权限。
 
-**取证过程**（可复现）：用 Agent 的写文件工具在 `Docs/` 里建一个探针文件，然后 `getfacl`：
+**取证过程**（可复现）：用 Agent 的写文件工具在 `docs/` 里建一个探针文件，然后 `getfacl`：
 
 ```console
-$ ls -ln Docs/.acl-probe.md
+$ ls -ln docs/.acl-probe.md
 -rw-------+ 1 1002 1005 36 .acl-probe.md            # 属组是 dsh
-$ getfacl -p Docs/.acl-probe.md
+$ getfacl -p docs/.acl-probe.md
 user::rw-
 group::rwx              #effective:---
 group:4294967295:rwx    #effective:---                # ← 这里就是 agent 条目！
@@ -922,7 +922,7 @@ other::---
 
 `group:agent` 条目**确实被继承到了**，说明临时文件就是在目标目录内的 staging 目录里创建的（默认 ACL 继承正常）；但属组是 `dsh`，说明 staging 目录的 setgid 已被清掉。两条线索合起来锁定了缺陷①。
 
-状态对照实验（在同一个 setgid 目录 `Docs/`，`2770 dsh:agent` 下）：
+状态对照实验（在同一个 setgid 目录 `docs/`，`2770 dsh:agent` 下）：
 
 | staging 目录 | 创建方式 | 落地文件 |
 | --- | --- | --- |
@@ -936,21 +936,21 @@ other::---
 | Agent **新建**文件 | `dsh:dsh 600`（属组和组可读都丢） |
 | Agent **改写**已有文件 | 模式被 `mode` 保住，但**属组丢成 `dsh`**（例如 `dsh:dsh 660`） |
 
-**这一条解释了本文档里所有反复出现的症状**（`Others` 的报告文件、`Docs/nvim_ds-lazyvim_doc` 的 Markdown、Typora 打不开、Neovim 的 `snacks.lua`/`trouble.lua`……）。
+**这一条解释了本文档里所有反复出现的症状**（`Others` 的报告文件、`docs/nvim_ds-lazyvim_doc` 的 Markdown、Typora 打不开、Neovim 的 `snacks.lua`/`trouble.lua`……）。
 
 **处置一：立刻修**——文件属主是 `dsh`，不需要 root：
 
 ```bash
 NO_ROOT=1 OWNER=dsh OTHER_PERMS=--- WORKSPACE=/home/Projects \
-  bash /home/Projects/Stow-Dotfile/Docs/fix-workspace-permissions.sh
+  bash /home/Projects/Stow-Dotfile/docs/fix-workspace-permissions.sh
 ```
 
 **处置二：给 DSH 打补丁（根治，本次交付了脚本）。** 需要 root（目标是 `/usr/lib/node_modules/…`），而且**升级 DSH 会覆盖**：
 
 ```bash
-sudo bash /home/Projects/Stow-Dotfile/Docs/patch-dsh-fs-local.sh          # 打补丁
-sudo bash /home/Projects/Stow-Dotfile/Docs/patch-dsh-fs-local.sh --check  # 只看状态
-sudo bash /home/Projects/Stow-Dotfile/Docs/patch-dsh-fs-local.sh --revert # 回滚
+sudo bash /home/Projects/Stow-Dotfile/docs/patch-dsh-fs-local.sh          # 打补丁
+sudo bash /home/Projects/Stow-Dotfile/docs/patch-dsh-fs-local.sh --check  # 只看状态
+sudo bash /home/Projects/Stow-Dotfile/docs/patch-dsh-fs-local.sh --revert # 回滚
 ```
 
 脚本做的事（幂等、自动备份、`node --check` 校验失败自动回滚）：
@@ -981,7 +981,7 @@ Description=Normalize /home/Projects group ownership for dsh-owned files
 [Service]
 Type=oneshot
 Environment=NO_ROOT=1 OWNER=dsh OTHER_PERMS=---
-ExecStart=/usr/bin/bash /home/Projects/Stow-Dotfile/Docs/fix-workspace-permissions.sh
+ExecStart=/usr/bin/bash /home/Projects/Stow-Dotfile/docs/fix-workspace-permissions.sh
 EOF
 cat > ~/.config/systemd/user/dsh-workspace-perms.timer <<'EOF'
 [Unit]
@@ -1053,11 +1053,11 @@ umask 000 → 660 dsh:agent    umask 077 → 660 dsh:agent
 
 | 层次 | 手段 | 能修什么 | 代价 |
 | --- | --- | --- | --- |
-| ① 创作者（唯一治本） | `Docs/patch-dsh-fs-local.sh` | 属组 + 新文件组可读，**同时**修掉 | 需 root；升级 DSH 被覆盖 |
+| ① 创作者（唯一治本） | `docs/patch-dsh-fs-local.sh` | 属组 + 新文件组可读，**同时**修掉 | 需 root；升级 DSH 被覆盖 |
 | ② 环境 | 让 `dsh web` 带着 `agent` 组重启（`usermod -aG` 对已运行进程无效） | 只修属组那一半 | 免费，但不足以单独解决问题 |
 | ③ 兜底 | user timer 归一化（11.6 处置三） | 事后修复**任何**来源的权限漂移 | 有最长几分钟的窗口；零侵入 |
 | ④ 习惯 | `umask 002`（配 setgid）；`Spark`/`dsh` 各自重登 | 只在无默认 ACL 的目录里有效 | 与本 bug 无关 |
 
 **最优组合**：① + ②（+ ③ 如果还有别的程序会写坏）。④ 可以有，但请不要指望它解决这个问题。
 
-> 上游最干净的修法是让 DSH 提供"新文件权限策略"（或按目标目录的属组/默认 ACL 语义创建）。`Docs/patch-dsh-fs-local.sh` 就是这个思路的最小实现，本次取证（探针文件 ACL + 状态对照实验）可以直接作为报给上游的依据。
+> 上游最干净的修法是让 DSH 提供"新文件权限策略"（或按目标目录的属组/默认 ACL 语义创建）。`docs/patch-dsh-fs-local.sh` 就是这个思路的最小实现，本次取证（探针文件 ACL + 状态对照实验）可以直接作为报给上游的依据。

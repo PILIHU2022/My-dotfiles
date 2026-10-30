@@ -84,7 +84,7 @@
 
 ### F1 的根因（值得单独记一笔）
 
-那些绝对软链是**当年在仓库目录里跑 `systemctl --user enable` 留下的**：stow 折叠目录后 `~/.config/systemd/user/*.wants/` 就是仓库里的目录，`systemctl enable` 直接往里写，于是把「本机绝对路径」提交进了仓库。这个坑在 `Docs/file-dialog-ime-and-clipboard.md` §5.1 已经记录过一次，本次把源头的**绝对软链**改成了**相对软链**，从根上消除。
+那些绝对软链是**当年在仓库目录里跑 `systemctl --user enable` 留下的**：stow 折叠目录后 `~/.config/systemd/user/*.wants/` 就是仓库里的目录，`systemctl enable` 直接往里写，于是把「本机绝对路径」提交进了仓库。这个坑在 `docs/file-dialog-ime-and-clipboard.md` §5.1 已经记录过一次，本次把源头的**绝对软链**改成了**相对软链**，从根上消除。
 
 > **重要习惯**：这个包 stow 之后，**不要**再用 `systemctl --user enable/disable` 管这些 unit——它会经折叠目录写回仓库。
 > 用 `stow --no-folding`（见 §3.2）可以让 `.wants/` 变成真实目录，`enable/disable` 就只动 live 文件、不进仓库。
@@ -215,15 +215,15 @@ systemctl --user show-environment | grep WAYLAND_DISPLAY
 
 ## 5. 让改动真正生效（**需要你在真机上执行**）
 
-⚠️ 关键前提：按 `Docs/file-dialog-ime-and-clipboard.md` §5.1 的记录，本机 `~/.config/systemd/user/` 下的 unit 是**真实文件**（不是指向仓库的软链），所以 `systemd` 这个包在本机是「**配置备份**」，**我改仓库不会自动影响 live 状态**。而且 Agent 身份是 `dsh(1002)`、`/home/Spark` 是 `700`，**我自己写不进 `~/.config/systemd/`**。
+⚠️ 关键前提：按 `docs/file-dialog-ime-and-clipboard.md` §5.1 的记录，本机 `~/.config/systemd/user/` 下的 unit 是**真实文件**（不是指向仓库的软链），所以 `systemd` 这个包在本机是「**配置备份**」，**我改仓库不会自动影响 live 状态**。而且 Agent 身份是 `dsh(1002)`、`/home/Spark` 是 `700`，**我自己写不进 `~/.config/systemd/`**。
 
 ### 5.1 推荐做法：跑现成的覆盖脚本（第四轮新增）
 
 [`sync-systemd-units.sh`](sync-systemd-units.sh) 把上面那套手工步骤固化下来了，**以你（Spark）的身份跑**：
 
 ```bash
-bash /home/Projects/Stow-Dotfile/Docs/sync-systemd-units.sh --dry-run   # 先看要做什么
-bash /home/Projects/Stow-Dotfile/Docs/sync-systemd-units.sh             # 真正覆盖
+bash /home/Projects/Stow-Dotfile/docs/sync-systemd-units.sh --dry-run   # 先看要做什么
+bash /home/Projects/Stow-Dotfile/docs/sync-systemd-units.sh             # 真正覆盖
 ```
 
 它做四件事：
@@ -395,7 +395,7 @@ pacman -Qdtq | grep -E 'libxinerama|libxss|libxrandr'   # 期望：无输出（�
 脚本：[compare-secrets-backends.sh](compare-secrets-backends.sh)（`chmod 775`）。
 
 ```bash
-bash /home/Projects/Stow-Dotfile/Docs/compare-secrets-backends.sh
+bash /home/Projects/Stow-Dotfile/docs/compare-secrets-backends.sh
 # 可选： --diag（打印原始输出）  --force-new（强制走新建路径）  --no-prompt（不交互）
 ```
 

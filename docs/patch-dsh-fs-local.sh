@@ -19,9 +19,9 @@
 #      非 setgid 目录维持原来的 0600 私有默认，不改变既有安全语义。
 #
 # 用法：
-#   sudo bash Docs/patch-dsh-fs-local.sh            # 打补丁
-#   sudo bash Docs/patch-dsh-fs-local.sh --check    # 只看状态
-#   sudo bash Docs/patch-dsh-fs-local.sh --revert   # 从最新备份回滚
+#   sudo bash docs/patch-dsh-fs-local.sh            # 打补丁
+#   sudo bash docs/patch-dsh-fs-local.sh --check    # 只看状态
+#   sudo bash docs/patch-dsh-fs-local.sh --revert   # 从最新备份回滚
 #
 # 注意：改的是 /usr/lib/node_modules 下的文件，DSH 升级/重装后会被覆盖，需要重打。
 # =============================================================================

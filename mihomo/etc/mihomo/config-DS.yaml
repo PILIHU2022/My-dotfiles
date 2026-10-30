@@ -1,0 +1,349 @@
+# ============================================================================
+# Mihomo 配置文件
+# 参考: https://www.naomi.plus/code/exp/05.mihomo-config.html
+# 文档: https://wiki.metacubex.one/config/
+# 规则集: https://ruleset.skk.moe/
+# ============================================================================
+
+# ================================ 全局配置 ===================================
+mixed-port: 7890
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: true
+tcp-concurrent: true
+unified-delay: true
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+external-controller: 127.0.0.1:9090
+
+# ================================ TUN ========================================
+tun:
+  enable: true
+  stack: mixed
+  mtu: 1400
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+  auto-route: true
+  auto-detect-interface: true
+  strict-route: false
+
+# ================================ DNS ========================================
+# fake-ip + respect-rules 模式，国内域名走国内 DNS 直连，国外域名走代理解析
+dns:
+  enable: true
+  ipv6: true
+  prefer-h3: false
+  use-hosts: false
+  use-system-hosts: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-range6: fdfe:dcba:9876::1/64
+  fake-ip-filter:
+    - rule-set:clash_fake_ip_filter
+    - geosite:private
+    - geosite:tracker
+  default-nameserver:
+    - 223.5.5.5
+    - 223.6.6.6
+  nameserver-policy:
+    "geosite:cn,private":
+      - https://dns.alidns.com/dns-query
+      - https://doh.pub/dns-query
+  nameserver:
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
+  proxy-server-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  direct-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  respect-rules: true
+
+# ================================ Geo 数据 ===================================
+geodata-mode: true
+geo-auto-update: true
+geo-update-interval: 24
+geox-url:
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
+
+# ================================ 代理集 =====================================
+proxy-providers:
+  订阅A:
+    type: http
+    url: 'https://example.com/api/v1/client/subscribe?token=YOUR_SUBSCRIPTION_TOKEN'
+    interval: 3600
+    path: ./profile/provider-a.yaml
+    health-check:
+      enable: true
+      interval: 180
+      lazy: true
+      url: https://cp.cloudflare.com/generate_204
+    override:
+      additional-prefix: "[订阅A] "
+      skip-cert-verify: true
+
+  订阅B:
+    type: http
+    url: 'https://example.com/api/v1/client/subscribe?token=YOUR_SUBSCRIPTION_TOKEN'
+    interval: 3600
+    path: ./profile/订阅B.yaml
+    health-check:
+      enable: true
+      interval: 180
+      lazy: true
+      url: https://cp.cloudflare.com/generate_204
+    override:
+      additional-prefix: "[订阅B] "
+      skip-cert-verify: true
+
+# ================================ 规则集 =====================================
+RuleSet_classical: &RuleSet_classical
+  type: http
+  behavior: classical
+  interval: 43200
+  format: text
+  proxy: Proxy
+
+RuleSet_domain: &RuleSet_domain
+  type: http
+  behavior: domain
+  interval: 43200
+  format: text
+  proxy: Proxy
+
+RuleSet_ipcidr: &RuleSet_ipcidr
+  type: http
+  behavior: ipcidr
+  interval: 43200
+  format: text
+  proxy: Proxy
+
+rule-providers:
+  clash_fake_ip_filter:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/clash_fake_ip_filter.txt'
+    path: './rule_set/sukkaw/clash_fake_ip_filter.txt'
+
+  reject_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/reject.txt'
+    path: './rule_set/sukkaw/reject_non_ip.txt'
+  reject_domainset:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/reject.txt'
+    path: './rule_set/sukkaw/reject_domainset.txt'
+  reject_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/reject.txt'
+    path: './rule_set/sukkaw/reject_ip.txt'
+  ad_reject_AWA:
+    <<: *RuleSet_domain
+    url: 'https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml'
+    path: './rule_set/others/ad_reject_AWA.txt'
+
+  apple_cdn:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt'
+    path: './rule_set/sukkaw/apple_cdn.txt'
+  apple_services:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/apple_services.txt'
+    path: './rule_set/sukkaw/apple_services.txt'
+  apple_cn:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt'
+    path: './rule_set/sukkaw/apple_cn.txt'
+
+  ai_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/ai.txt'
+    path: './rule_set/sukkaw/ai_non_ip.txt'
+
+  game_download:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/game-download.txt'
+    path: './rule_set/sukkaw/game_download.txt'
+
+  download_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/download.txt'
+    path: './rule_set/sukkaw/download_non_ip.txt'
+  download_domainset:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/download.txt'
+    path: './rule_set/sukkaw/download_domainset.txt'
+
+  cdn_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/cdn.txt'
+    path: './rule_set/sukkaw/cdn_non_ip.txt'
+  cdn_domainset:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/cdn.txt'
+    path: './rule_set/sukkaw/cdn_domainset.txt'
+
+  lan_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/lan.txt'
+    path: './rule_set/sukkaw/lan_non_ip.txt'
+  lan_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/lan.txt'
+    path: './rule_set/sukkaw/lan_ip.txt'
+  domestic_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/domestic.txt'
+    path: './rule_set/sukkaw/domestic_non_ip.txt'
+  domestic_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/domestic.txt'
+    path: './rule_set/sukkaw/domestic_ip.txt'
+  china_ip:
+    <<: *RuleSet_ipcidr
+    url: 'https://ruleset.skk.moe/Clash/ip/china_ip.txt'
+    path: './rule_set/sukkaw/china_ip.txt'
+  china_ip_ipv6:
+    <<: *RuleSet_ipcidr
+    url: 'https://ruleset.skk.moe/Clash/ip/china_ip_ipv6.txt'
+    path: './rule_set/sukkaw/china_ip_ipv6.txt'
+  direct_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/direct.txt'
+    path: './rule_set/sukkaw/direct_non_ip.txt'
+
+  global_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/global.txt'
+    path: './rule_set/sukkaw/global_non_ip.txt'
+
+  stream_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/stream.txt'
+    path: './rule_set/sukkaw/stream_non_ip.txt'
+  stream_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/stream.txt'
+    path: './rule_set/sukkaw/stream_ip.txt'
+
+  telegram_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/telegram.txt'
+    path: './rule_set/sukkaw/telegram_non_ip.txt'
+  telegram_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/telegram.txt'
+    path: './rule_set/sukkaw/telegram_ip.txt'
+
+  microsoft_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/microsoft.txt'
+    path: './rule_set/sukkaw/microsoft_non_ip.txt'
+  microsoft_cdn_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt'
+    path: './rule_set/sukkaw/microsoft_cdn_non_ip.txt'
+
+# ================================ 代理组 =====================================
+# 节点过滤器：排除含有"剩余/重置/天数/过期/已用/流量/到期"等关键字或日期的无效节点
+FilterNode: &FilterNode '^(?=.*(.))(?!.*((?i)群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|家宽|剩余|重置|天数|(\b(USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author)\b|(\d{4}-\d{2}-\d{2}|\d+G)))).*$'
+
+proxy-groups:
+  - name: 🚀 手动切换
+    type: select
+    include-all: true
+    filter: *FilterNode
+
+  - name: Proxy
+    type: select
+    proxies:
+      - 🚀 手动切换
+      - ♻️ 自动选择
+      - DIRECT
+
+  - name: AI
+    type: select
+    proxies:
+      - 🚀 手动切换
+      - ♻️ 自动选择
+      - Proxy
+      - DIRECT
+
+  - name: Apple_Service
+    type: select
+    proxies:
+      - 🚀 手动切换
+      - ♻️ 自动选择
+      - Proxy
+      - DIRECT
+
+  - name: ♻️ 自动选择
+    type: url-test
+    url: https://cp.cloudflare.com/generate_204
+    interval: 180
+    lazy: true
+    tolerance: 50
+    timeout: 3000
+    include-all: true
+    filter: *FilterNode
+
+# ================================ 路由规则 ===================================
+rules:
+  - GEOSITE,private,DIRECT,no-resolve
+  - GEOIP,private,DIRECT,no-resolve
+
+  - RULE-SET,reject_non_ip,REJECT
+  - RULE-SET,reject_domainset,REJECT
+  - RULE-SET,reject_ip,REJECT
+  - RULE-SET,ad_reject_AWA,REJECT
+
+  - DOMAIN-SUFFIX,gov.cn,DIRECT
+  - DOMAIN-SUFFIX,.gov,DIRECT
+  - DOMAIN-SUFFIX,.政务,DIRECT
+
+  - RULE-SET,domestic_non_ip,DIRECT
+  - RULE-SET,direct_non_ip,DIRECT
+  - RULE-SET,lan_non_ip,DIRECT
+
+  - RULE-SET,game_download,DIRECT
+  - GEOSITE,steam@cn,DIRECT
+
+  - RULE-SET,download_domainset,Proxy
+  - RULE-SET,download_non_ip,Proxy
+
+  - RULE-SET,microsoft_cdn_non_ip,DIRECT   # 微软中国 CDN（download.microsoft.com 等国内节点）
+  - RULE-SET,microsoft_non_ip,Proxy        # 微软全球服务（Bing/Outlook/Office365/Azure 等需代理）
+
+  - RULE-SET,apple_cn,DIRECT
+  - RULE-SET,apple_services,Apple_Service
+
+  - RULE-SET,cdn_domainset,Proxy
+  - RULE-SET,cdn_non_ip,Proxy
+
+  - RULE-SET,ai_non_ip,AI
+
+  - RULE-SET,stream_non_ip,Proxy
+
+  - RULE-SET,telegram_non_ip,Proxy
+
+  - RULE-SET,global_non_ip,Proxy
+
+  - RULE-SET,telegram_ip,Proxy,no-resolve
+  - RULE-SET,stream_ip,Proxy,no-resolve
+  - RULE-SET,lan_ip,DIRECT,no-resolve
+  - RULE-SET,domestic_ip,DIRECT,no-resolve
+  - RULE-SET,china_ip,DIRECT,no-resolve
+  - RULE-SET,china_ip_ipv6,DIRECT,no-resolve
+
+  - GEOSITE,cn,DIRECT
+  - GEOIP,CN,DIRECT
+
+  - MATCH,Proxy

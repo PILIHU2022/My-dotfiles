@@ -1,0 +1,364 @@
+# Mihomo (Clash Meta) 配置文件
+# 优化版 - 添加注释并修正规则顺序问题（需用户确认）
+
+# === 基础设置 ===
+mixed-port: 7890          # 混合代理端口（HTTP/SOCKS5 自动识别）
+port: 20173               # 纯 HTTP 代理端口
+socks-port: 20172         # 纯 SOCKS5 代理端口
+allow-lan: true           # 允许局域网连接
+mode: rule                # 规则模式
+log-level: warning        # 日志级别（调试时可改为 info）
+ipv6: true                # 启用 IPv6
+
+# 外部控制（RESTful API）
+external-controller: 127.0.0.1:9090
+
+# === TUN 虚拟网卡（用于透明代理）===
+tun:
+  enable: true
+  device: Mihomo        # macOS 用户请删除此行
+  stack: gvisor           # 使用 gvisor 栈，兼容性好
+  mtu: 1400               # MTU 值，可根据网络调整
+  # strict-route: true    # 严格路由（通常不需要）
+
+# === DNS 配置（fake-ip 模式）===
+dns:
+  enable: true
+  listen: 127.0.0.1:53    # 本机 DNS 监听（若做网关可改为 0.0.0.0:53）
+  prefer-h3: true         # 优先使用 HTTP/3 DNS
+  ipv6: true
+  enhanced-mode: fake-ip
+  respect-rules: true     # 遵循规则策略进行 DNS 解析
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:         # 不 fake-ip 的域名
+    - '*.lan'
+    - localhost.ptlogin2.qq.com
+
+  default-nameserver:     # 初始 DNS（用于解析下面的 DoH 服务器）
+    - 119.29.29.29
+    - 223.5.5.5
+
+  nameserver:             # 常规 DNS（国内 DoH）
+    - https://doh.pub/dns-query
+    - https://223.5.5.5/dns-query
+
+  fallback:               # 备用 DNS（国外 DoH）
+    - https://1.1.1.1/dns-query
+    - https://dns.google/dns-query
+
+  proxy-server-nameserver: # 用于解析代理服务器域名的 DNS
+    - https://doh.pub/dns-query
+    - https://223.5.5.5/dns-query
+
+  nameserver-policy:      # 按域名/规则集指定 DNS
+    "+.apple.com":
+    - https://doh.pub/dns-query
+    - https://223.5.5.5/dns-query
+    "+.archlinuxcn.org":
+      - https://doh.pub/dns-query
+    "geosite:cn,private":
+      - https://doh.pub/dns-query
+    "geosite:geolocation-!cn":
+      - https://1.1.1.1/dns-query
+      - https://dns.google/dns-query
+
+# === GeoData 资源文件 ===
+geodata-mode: true
+geox-url:
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
+
+# === 代理节点 ===
+proxies:
+  - name: "直连"
+    type: direct
+    udp: true
+
+# === 代理集（从远程订阅）===
+proxy-providers:
+  订阅A:
+    type: http
+    url: 'https://example.com/api/v1/client/subscribe?token=YOUR_SUBSCRIPTION_TOKEN'
+    interval: 3600
+    path: ./profile/provider-a.yaml
+    health-check:
+      enable: true
+      interval: 180
+      lazy: true
+      url: http://www.gstatic.com/generate_204
+
+  订阅B:
+    type: http
+    url: 'https://example.com/api/v1/client/subscribe?token=YOUR_SUBSCRIPTION_TOKEN'
+    interval: 3600
+    path: ./profile/订阅B.yaml
+    health-check:
+      enable: true
+      interval: 180
+      lazy: true
+      url: http://www.gstatic.com/generate_204
+
+# === 策略组 ===
+proxy-groups:
+  # 默认代理组（手动选择）
+  - name: "PROXY"
+    type: select
+    proxies:
+      - 直连
+    use:
+      - 订阅A
+      - 订阅B
+
+  # Apple 服务专用组（可手动切换直连或代理）
+  - name: "Apple Services"
+    type: select
+    proxies:
+      - 直连
+    use:
+      - 订阅A
+      - 订阅B
+
+  # ChatGPT 专用组（后备直连）
+  - name: "ChatGPT"
+    type: select
+    proxies:
+      - 直连          # 新增后备
+    use:
+      - 订阅A
+      - 订阅B
+
+  # 自动选择最快节点
+  - name: "Auto"
+    type: url-test
+    use:
+      - 订阅A
+      - 订阅B
+    proxies:
+      - 直连          # 新增后备
+    url: 'http://www.cloudflare.com'
+    interval: 180
+    lazy: true
+
+  # 负载均衡（同一域名保持同一节点）
+  - name: "load-balance"
+    type: load-balance
+    use:
+      - 订阅A
+      - 订阅B
+    proxies:
+      - 直连          # 新增后备
+    url: 'http://cp.cloudflare.com'
+    interval: 180
+    # strategy: round-robin   # 轮询；默认 consistent-hashing
+
+# === 规则集定义 ===
+RuleSet_classical: &RuleSet_classical {type: http, behavior: classical, interval: 43200, format: text, proxy: PROXY}
+RuleSet_domain:    &RuleSet_domain    {type: http, behavior: domain,    interval: 43200, format: text, proxy: PROXY}
+RuleSet_ipcidr:    &RuleSet_ipcidr    {type: http, behavior: ipcidr,    interval: 43200, format: text, proxy: PROXY}
+
+rule-providers:
+  # 广告/恶意拦截
+  reject_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/reject.txt'
+    path: './rule_set/sukkaw_ruleset/reject_non_ip.txt'
+  reject_domainset:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/reject.txt'
+    path: './rule_set/sukkaw_ruleset/reject_domainset.txt'
+  reject_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/reject.txt'
+    path: './rule_set/sukkaw_ruleset/reject_ip.txt'
+  # 以下两个如果需要 REJECT-DROP 可保留，否则可删除
+  # reject_non_ip_drop:
+  #   <<: *RuleSet_classical
+  #   url: https://ruleset.skk.moe/Clash/non_ip/reject-drop.txt
+  #   path: ./rule_set/sukkaw_ruleset/reject_non_ip_drop.txt
+  # reject_non_ip_no_drop:
+  #   <<: *RuleSet_classical
+  #   url: https://ruleset.skk.moe/Clash/non_ip/reject-no-drop.txt
+  #   path: ./rule_set/sukkaw_ruleset/reject_non_ip_no_drop.txt
+
+  # CDN
+  cdn_domainset:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/cdn.txt'
+    path: './rule_set/sukkaw_ruleset/cdn_domainset.txt'
+  cdn_non_ip:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/non_ip/cdn.txt'
+    path: './rule_set/sukkaw_ruleset/cdn_non_ip.txt'
+
+  # 流媒体
+  stream_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/stream.txt'
+    path: './rule_set/sukkaw_ruleset/stream_non_ip.txt'
+  stream_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/stream.txt'
+    path: './rule_set/sukkaw_ruleset/stream_ip.txt'
+
+  # AI
+  ai_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/ai.txt'
+    path: './rule_set/sukkaw_ruleset/ai_non_ip.txt'
+
+  # Telegram
+  telegram_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/telegram.txt'
+    path: './rule_set/sukkaw_ruleset/telegram_non_ip.txt'
+  telegram_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/telegram.txt'
+    path: './rule_set/sukkaw_ruleset/telegram_ip.txt'
+
+  # 广告拦截备用（AWAvenue）
+  ad_reject_AWA:
+    <<: *RuleSet_domain
+    url: 'https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml'
+    path: './rule_set/others/ad_reject_AWA.txt'
+
+  # Apple
+  apple_cdn:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt'
+    path: './rule_set/sukkaw_ruleset/apple_cdn.txt'
+  apple_services:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/apple_services.txt'
+    path: './rule_set/sukkaw_ruleset/apple_services.txt'
+  apple_cn_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt'
+    path: './rule_set/sukkaw_ruleset/apple_cn_non_ip.txt'
+
+  # Microsoft
+  microsoft_cdn_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt'
+    path: './rule_set/sukkaw_ruleset/microsoft_cdn_non_ip.txt'
+  microsoft_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/microsoft.txt'
+    path: './rule_set/sukkaw_ruleset/microsoft_non_ip.txt'
+
+  # 下载
+  download_domainset:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/download.txt'
+    path: './rule_set/sukkaw_ruleset/download_domainset.txt'
+  download_non_ip:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/non_ip/download.txt'
+    path: './rule_set/sukkaw_ruleset/download_non_ip.txt'
+
+  # 局域网 & 国内
+  lan_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/lan.txt'
+    path: './rule_set/sukkaw_ruleset/lan_non_ip.txt'
+  lan_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/lan.txt'
+    path: './rule_set/sukkaw_ruleset/lan_ip.txt'
+  domestic_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/domestic.txt'
+    path: './rule_set/sukkaw_ruleset/domestic_non_ip.txt'
+  direct_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/direct.txt'
+    path: './rule_set/sukkaw_ruleset/direct_non_ip.txt'
+  global_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/global.txt'
+    path: './rule_set/sukkaw_ruleset/global_non_ip.txt'
+  domestic_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/domestic.txt'
+    path: './rule_set/sukkaw_ruleset/domestic_ip.txt'
+  china_ip:
+    <<: *RuleSet_ipcidr
+    url: 'https://ruleset.skk.moe/Clash/ip/china_ip.txt'
+    path: './rule_set/sukkaw_ruleset/china_ip.txt'
+
+# === 规则（顺序优先）===
+rules:
+  # ---------- Steam（强制直连加速）----------
+  - DOMAIN-SUFFIX,steampipe-partner.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,steampipe-kr.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,steampipe.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,content-origin.steampowered.com,DIRECT
+  - DOMAIN-SUFFIX,content.steampowered.com,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT          # 重复行已删除一条
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT           # 重复行已删除一条
+  - DOMAIN,*.steamcontent.com,DIRECT
+  - DOMAIN,fastly.cdn.steampipe.steamcontent.com,DIRECT
+  - DOMAIN,cdn.fastly.steamstatic.com,DIRECT
+  - DOMAIN,*.fastly.steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,fastly.steamstatic.com,DIRECT
+  - DOMAIN,steamcdn-a.akamaihd.net,DIRECT
+  - DOMAIN-SUFFIX,cm.steampowered.com,DIRECT
+  - GEOSITE,steam@cn,DIRECT
+
+  # ---------- 自定义域名 ----------
+  - DOMAIN,gemini.google.com,ChatGPT
+  - DOMAIN-SUFFIX,linux.do,PROXY
+  - DOMAIN-SUFFIX,wttr.in,DIRECT
+  - IP-CIDR,72.11.144.205/32,DIRECT
+  - DOMAIN-SUFFIX,http.cat,DIRECT
+  # === 国内政务网站强制直连 ===
+  - DOMAIN-SUFFIX,.gov.cn,DIRECT
+  - DOMAIN-SUFFIX,.gov,DIRECT          # 部分政府网站使用 .gov
+  - DOMAIN-SUFFIX,.政务,DIRECT         # 中文域名（如有）
+  # 让匹配到 geosite:cn 的域名直连，不经过代理
+  - GEOSITE,cn,DIRECT
+  # 通常也需要让国内的IP地址直连
+  - GEOIP,CN,DIRECT
+
+  # ---------- 非IP类规则集 ----------
+  # 广告拦截
+  - RULE-SET,reject_non_ip,REJECT
+  - RULE-SET,reject_domainset,REJECT
+  - RULE-SET,reject_ip,REJECT
+  - RULE-SET,ad_reject_AWA,REJECT
+
+  # 国内直连
+  - RULE-SET,domestic_non_ip,DIRECT
+  - RULE-SET,direct_non_ip,DIRECT
+  - RULE-SET,lan_non_ip,DIRECT
+
+  # 微软 CDN（走代理）
+  - RULE-SET,microsoft_cdn_non_ip,PROXY
+
+  # Apple（国内域名直连，其余进入 Apple Services 组）
+  - RULE-SET,apple_cn_non_ip,DIRECT
+  - RULE-SET,apple_services,Apple Services
+
+  # CDN 走代理
+  - RULE-SET,cdn_domainset,PROXY
+  - RULE-SET,cdn_non_ip,PROXY
+
+  # 流媒体、Telegram、下载、AI、全球直连走代理
+  - RULE-SET,stream_non_ip,PROXY
+  - RULE-SET,telegram_non_ip,PROXY
+  - RULE-SET,download_domainset,PROXY
+  - RULE-SET,download_non_ip,PROXY
+  - RULE-SET,ai_non_ip,PROXY
+  - RULE-SET,global_non_ip,PROXY
+
+  # ---------- IP类规则集 ----------
+  - RULE-SET,telegram_ip,PROXY
+  - RULE-SET,stream_ip,PROXY
+  - RULE-SET,lan_ip,DIRECT
+  - RULE-SET,domestic_ip,DIRECT
+  - RULE-SET,china_ip,DIRECT
+
+  # ---------- 默认策略 ----------
+  - MATCH,PROXY

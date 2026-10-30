@@ -1,0 +1,46 @@
+# Ignore temporary nested Git repository backups used during initial indexing.
+**/.git.bak/
+
+# Ignore nested Git repositories so they are not added as embedded repos/gitlinks.
+**/.git/
+
+**/lazy-lock.json
+
+# Ignore generated Python bytecode caches copied along with live configs.
+**/__pycache__/
+**/*.pyc
+
+# Ignore aria2's runtime session lock.
+**/session.lock
+
+# Ignore compiled LD_PRELOAD shims (built with make, machine specific).
+**/*.so
+
+# Ignore mihomo runtime data: geo databases (re-downloaded from geox-url),
+# proxy-provider snapshots (overwritten on every subscription refresh) and
+# rule-set caches (downloaded at runtime under the config directory).
+**/mihomo/ASN.mmdb
+**/mihomo/GeoIP.dat
+**/mihomo/GeoSite.dat
+**/mihomo/Country.mmdb
+**/mihomo/profiles/
+**/mihomo/profile/
+**/mihomo/rule_set/
+
+# Ignore DeepSeek Harness scratch directories.
+.dsh-kwallet-tmp/
+
+# 真实订阅 token 所在的两个文件：本地配置与 mihomo 运行时缓存（BoltDB 里
+# 缓存了订阅 URL）。仓库只保留脱敏的 config.example.yaml。
+**/mihomo/config.yaml
+**/mihomo/cache.db
+
+# 图片/媒体：仅本地保留，不入 Git（历史已清除）
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.bmp
+*.ico
+*.svg

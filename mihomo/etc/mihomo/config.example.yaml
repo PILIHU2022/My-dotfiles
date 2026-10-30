@@ -1,0 +1,455 @@
+# =============================================================================
+# config.example.yaml —— config.yaml 的脱敏版本，用于提交到 git。
+#
+# 与本地 config.yaml 的实质差异只有一处：proxy-providers 的订阅 URL 中，
+# token 被替换为 YOUR_SUBSCRIPTION_TOKEN 占位符。真实 token 只存在于
+#   - 本地 mihomo/etc/mihomo/config.yaml（已加入 .gitignore，不进 git）
+#   - 线上 /etc/mihomo/config.yaml
+#
+# 部署：复制本文件到 /etc/mihomo/config.yaml，再把占位符换回真实 token。
+# =============================================================================
+
+# =============================================================================
+# Mihomo 配置文件
+# 资源: https://wiki.metacubex.one/config/
+# 规则集: https://ruleset.skk.moe/ (Sukka) / https://github.com/ACL4SSR/ACL4SSR
+# 最后更新: 2026-07-22
+# =============================================================================
+
+# ================================ 端口配置 ====================================
+mixed-port: 7890              # 混合代理端口（HTTP + SOCKS）
+port: 20173                   # HTTP 代理端口
+socks-port: 20172             # SOCKS5 代理端口
+
+# ================================ 通用设置 ====================================
+allow-lan: true               # 允许局域网连接
+mode: rule                    # 运行模式: rule / global / direct
+log-level: info               # 日志级别（临时调为 info：抓 Apple Music 出口用，确认后改回 warning）
+ipv6: true                    # 启用 IPv6（全局开关）
+
+external-controller: 127.0.0.1:9090   # 外部控制器（Web UI）监听地址
+tcp-concurrent: true                 # 并发 TCP 连接，加速多资源页面加载
+
+# ================================ TUN 虚拟网卡 ================================
+# TUN 模式劫持所有系统流量，实现全局代理
+tun:
+  enable: true
+  device: Mihomo              # 虚拟网卡名称（macOS 建议删除此项）
+  stack: gvisor               # 网络栈: gvisor / mixed / system
+  mtu: 1400                   # 最大传输单元（部分环境需调小防断流）
+  auto-route: true            # 自动配置路由表
+  auto-detect-interface: true # 自动检测物理网卡
+  dns-hijack:                 # DNS 劫持：拦截所有 DNS 请求防止泄露
+    - any:53                  # 劫持 UDP :53 流量
+    - tcp://any:53            # 劫持 TCP :53 流量
+
+# ================================ 域名嗅探 ====================================
+# 浏览器自带 DoH、连接复用与 Alt-Svc 会让一部分连接以「裸 IP」到达 mihomo，
+# 此时域名规则全部失效、只能落到 MATCH → Proxy。Apple Music 正是受害者：
+# 网页 music.apple.com 解析到金山云 CN CDN（本就走直连），而 API 主机
+# amp-api.music.apple.com 解析到 Fastly 的 151.101.79.6——一旦以裸 IP 到达，
+# 就被 MATCH 送去韩国出口，Apple 判定页面与接口区域不一致，于是报错并把
+# 页面导到 /us/。启用嗅探后，mihomo 会从 TLS ClientHello / QUIC Initial /
+# HTTP Host 还原出域名，使裸 IP 连接同样命中域名规则。
+sniffer:
+  enable: true
+  parse-pure-ip: true          # 关键项：对纯 IP 连接也尝试嗅探
+  force-dns-mapping: true      # fake-ip 模式下强制用 DNS 映射还原域名
+  override-destination: false  # 保留原始目标 IP，只用嗅探结果匹配规则
+  sniff:
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+    HTTP:
+      ports: [80, 8080-8880]
+
+# ================================ DNS 配置 ====================================
+# 策略: fake-ip 模式 + respect-rules
+# 国内域名 → 国内 DoH（腾讯/阿里）
+# 国外域名 → 国外 DoH（Cloudflare/Google）
+# 未分类域名 → 国外 DoH（兜底）
+dns:
+  enable: true
+  listen: 0.0.0.0:53          # 监听所有接口（配合 TUN dns-hijack）
+  prefer-h3: false            # 不用 HTTP/3 发 DoH：QUIC 被路由到代理时会解析失败
+  ipv6: true                  # 启用 IPv6 域名解析
+  enhanced-mode: fake-ip      # DNS 模式: fake-ip（返回虚拟 IP，由 mihomo 代为发起连接）
+  respect-rules: true         # 遵循规则路由（域名命中 DIRECT 则用 direct-nameserver 解析）
+  fake-ip-range: 198.18.0.1/16  # fake-ip 地址段（不应与真实 IP 冲突）
+  store-fake-ip: true         # 缓存 fake-ip 映射，重复访问无需重新查询 DNS
+  use-hosts: false            # 不使用 /etc/hosts（防止 DNS 泄露）
+  use-system-hosts: false     # 不使用系统 hosts（防止 DNS 泄露）
+
+  # ---- fake-ip 豁免列表 ----
+  # 这些域名返回真实 IP（不经过 fake-ip），用于本地网络/连通性检测
+  fake-ip-filter:
+    - '*.lan'
+    - '*.local'
+    - '*.localhost'
+    - '*.srv.nintendo.net'
+    - '*.stun.playstation.net'
+    - '*.msftconnecttest.com'
+    - '*.msftncsi.com'
+    - localhost.ptlogin2.qq.com
+
+  # ---- 用于解析 DNS 服务器地址的纯 IP DNS ----
+  # 当 DoH/DNS 服务器本身需要域名解析时，使用这些 DNS（纯 UDP，不可用 DoH）
+  default-nameserver:
+    - 119.29.29.29            # 腾讯 DNSPod
+    - 223.5.5.5               # 阿里云 DNS
+
+  # ---- 兜底 DNS 服务器 ----
+  # 未命中 nameserver-policy 的域名使用此 DNS 解析
+  nameserver:
+    - https://1.1.1.1/dns-query        # Cloudflare DoH
+    - https://dns.google/dns-query      # Google DoH
+
+  # ---- 直连流量专用 DNS ----
+  # 当规则命中 DIRECT 时，使用此 DNS 解析（国内 CDN 获得正确 IP）
+  direct-nameserver:
+    - https://doh.pub/dns-query         # 腾讯 DNSPod DoH
+    - https://dns.alidns.com/dns-query  # 阿里云 DoH
+
+  # ---- 代理节点地址解析 ----
+  # 用于解析订阅 URL 与节点 server 域名。原先用明文 UDP（119.29.29.29 /
+  # 223.5.5.5）：机场节点域名在明文 DNS 下会被污染或直接丢弃，日志中出现大量
+  # 「dns resolve failed: couldn't find ip」，节点拨不通、播放中断。
+  # 改用 DoH；DoH 服务器自身的地址由 default-nameserver 引导解析，无循环依赖。
+  proxy-server-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+
+  # ---- 按策略分流 DNS ----
+  nameserver-policy:
+    "geosite:cn,private":              # 国内域名 + 私有域名
+      - https://doh.pub/dns-query
+      - https://dns.alidns.com/dns-query
+    "geosite:geolocation-!cn":         # 非中国大陆域名
+      - https://1.1.1.1/dns-query
+      - https://dns.google/dns-query
+
+# ================================ Geo 数据 ====================================
+geodata-mode: true            # 启用 GeoData 模式（使用 .dat 格式）
+geox-url:                     # Geo 数据自动更新地址
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
+
+# ================================ 内置代理 ====================================
+proxies:
+  - name: "直连"
+    type: direct
+    udp: true
+
+# ================================ 订阅代理集 ==================================
+proxy-providers:
+  # ---- 提供商: 订阅A ----
+  订阅A:
+    type: http
+    url: 'https://example.com/api/v1/client/subscribe?token=YOUR_SUBSCRIPTION_TOKEN'
+    interval: 3600            # 更新间隔（秒）
+    path: ./profile/provider-a.yaml
+    exclude-filter: '剩余|重置|过期|已用|可用|流量|到期|天数|总额|官网|客服|网站|网址|获取|订阅|机场|下次|版本|官址|备用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|家宽|防失联|(?i)use|(?i)total|(?i)expire|(?i)email|(?i)panel|(?i)channel|(?i)author'
+    health-check:
+      enable: true
+      interval: 180
+      lazy: true              # 未使用时不对该集合作健康检查
+      url: http://cp.cloudflare.com
+    override:
+      additional-prefix: "[订阅A] "   # 节点名前缀（便于区分提供商）
+      skip-cert-verify: true          # 跳过证书验证（机场节点常用）
+      client-fingerprint: chrome      # TLS 指纹伪装 Chrome，避免 CDN 限速
+ 
+# ================================ 代理组 ======================================
+# 优先级排序: 手动选择(1) > Proxy(2) > AI(3) > 自动选择(4) > Apple_Service(5)
+proxy-groups:
+  # 1. 手动选择 - 用户手动在面板中挑选用哪个节点
+  - name: "手动选择"
+    type: select
+    use:
+      - 订阅A
+
+  # 2. Proxy - 主要代理组（MATCH 兜底目标）
+  - name: "Proxy"
+    type: select
+    proxies:
+      - 手动选择              # 用户可切换到手动选择模式
+      - 自动选择              # 或切换到自动延迟优选模式
+      - 直连                  # 或强制直连
+
+  # 3. AI - 国外 AI 服务专用组（ChatGPT/Gemini 等）
+  - name: "AI"
+    type: select
+    proxies:
+      - Proxy
+    use:
+      - 订阅A
+
+  # 4. 自动选择 - 自动选择延迟最低的节点
+  - name: "自动选择"
+    type: url-test
+    use:
+      - 订阅A
+    lazy: true
+    url: 'http://www.cloudflare.com'
+    interval: 180
+
+  # 5. Apple_Service - Apple 服务专用组
+  # 列表顺序即默认值：直连优先。Apple 依据出口 IP 归属地决定 storefront，
+  # 机房出口无法被 Apple 正确定位，会被判为 /us/，CN 账号随即弹
+  # 「发生错误。请刷新页面并重试。」并跳转 /us/。直连放在首位后，无论
+  # cache.db 是否丢失、配置是否重载，Apple 都会走本机 CN 出口。
+  - name: "Apple_Service"
+    type: select
+    proxies:
+      - 直连
+      - Proxy
+
+# ================================ 规则集锚点 ==================================
+# YAML 锚点，用于 rule-providers 复用配置
+RuleSet_classical: &RuleSet_classical {type: http, behavior: classical, interval: 43200, format: text, proxy: Proxy}
+RuleSet_domain: &RuleSet_domain {type: http, behavior: domain, interval: 43200, format: text, proxy: Proxy}
+RuleSet_ipcidr: &RuleSet_ipcidr {type: http, behavior: ipcidr, interval: 43200, format: text, proxy: Proxy}
+
+# ================================ 规则提供者 ==================================
+# 远程规则集，来源: https://ruleset.skk.moe/ (Sukka 规则集)
+rule-providers:
+  # ---- 广告 / 恶意 / 拦截 ----
+  reject_non_ip_no_drop:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/reject-no-drop.txt'
+    path: './rule_set/sukkaw_ruleset/reject_non_ip_no_drop.txt'
+  reject_non_ip_drop:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/reject-drop.txt
+    path: ./rule_set/sukkaw_ruleset/reject_non_ip_drop.txt
+  reject_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/reject.txt
+    path: ./rule_set/sukkaw_ruleset/reject_non_ip.txt
+  reject_domainset:
+    <<: *RuleSet_domain
+    url: https://ruleset.skk.moe/Clash/domainset/reject.txt
+    path: ./rule_set/sukkaw_ruleset/reject_domainset.txt
+  reject_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/reject.txt
+    path: ./rule_set/sukkaw_ruleset/reject_ip.txt
+
+  # ---- CDN 加速 ----
+  cdn_domainset:
+    <<: *RuleSet_domain
+    url: https://ruleset.skk.moe/Clash/domainset/cdn.txt
+    path: ./rule_set/sukkaw_ruleset/cdn_domainset.txt
+  cdn_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/cdn.txt
+    path: ./rule_set/sukkaw_ruleset/cdn_non_ip.txt
+
+  # ---- 流媒体 ----
+  stream_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/stream.txt
+    path: ./rule_set/sukkaw_ruleset/stream_non_ip.txt
+  stream_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/stream.txt
+    path: ./rule_set/sukkaw_ruleset/stream_ip.txt
+
+  # ---- AI 服务 ----
+  ai_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/ai.txt
+    path: ./rule_set/sukkaw_ruleset/ai_non_ip.txt
+
+  # ---- Telegram ----
+  telegram_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/telegram.txt
+    path: ./rule_set/sukkaw_ruleset/telegram_non_ip.txt
+  telegram_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/telegram.txt
+    path: ./rule_set/sukkaw_ruleset/telegram_ip.txt
+
+  # ---- Apple ----
+  apple_cdn:
+    <<: *RuleSet_domain
+    url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
+    path: ./rule_set/sukkaw_ruleset/apple_cdn.txt
+  apple_services:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
+    path: ./rule_set/sukkaw_ruleset/apple_services.txt
+  apple_cn_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
+    path: ./rule_set/sukkaw_ruleset/apple_cn_non_ip.txt
+
+  # ---- 微软 ----
+  microsoft_cdn_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
+    path: ./rule_set/sukkaw_ruleset/microsoft_cdn_non_ip.txt
+  microsoft_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
+    path: ./rule_set/sukkaw_ruleset/microsoft_non_ip.txt
+
+  # ---- 大文件下载 ----
+  download_domainset:
+    <<: *RuleSet_domain
+    url: https://ruleset.skk.moe/Clash/domainset/download.txt
+    path: ./rule_set/sukkaw_ruleset/download_domainset.txt
+  download_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/download.txt
+    path: ./rule_set/sukkaw_ruleset/download_non_ip.txt
+
+  # ---- 内网 / 局域网 ----
+  lan_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/lan.txt
+    path: ./rule_set/sukkaw_ruleset/lan_non_ip.txt
+  lan_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/lan.txt
+    path: ./rule_set/sukkaw_ruleset/lan_ip.txt
+
+  # ---- 地理分流 ----
+  domestic_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/domestic.txt
+    path: ./rule_set/sukkaw_ruleset/domestic_non_ip.txt
+  direct_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/direct.txt
+    path: ./rule_set/sukkaw_ruleset/direct_non_ip.txt
+  global_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/global.txt
+    path: ./rule_set/sukkaw_ruleset/global_non_ip.txt
+  domestic_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/domestic.txt
+    path: ./rule_set/sukkaw_ruleset/domestic_ip.txt
+  china_ip:
+    <<: *RuleSet_ipcidr
+    url: https://ruleset.skk.moe/Clash/ip/china_ip.txt
+    path: ./rule_set/sukkaw_ruleset/china_ip.txt
+
+# ================================ 路由规则 ====================================
+# 规则从上到下逐条匹配，命中即停止
+rules:
+  # ======== [1] 广告 / 恶意 / 拦截 ========
+  # 优先级最高：广告、恶意软件、钓鱼网站等直接阻断
+  - RULE-SET,reject_non_ip,REJECT
+  - RULE-SET,reject_domainset,REJECT
+  - RULE-SET,reject_non_ip_drop,REJECT-DROP
+  - RULE-SET,reject_non_ip_no_drop,REJECT
+  - RULE-SET,reject_ip,REJECT
+
+  # ======== [2] 内网 / 局域网 ========
+  # 本地网络流量直连（路由器、打印机、NAS 等）
+  - RULE-SET,lan_non_ip,DIRECT
+  - RULE-SET,lan_ip,DIRECT,no-resolve
+
+  # ======== [3] 国内直连 ========
+  # 中国境内域名/IP 直连，提高访问速度
+  - RULE-SET,domestic_non_ip,DIRECT
+  - RULE-SET,direct_non_ip,DIRECT
+  - RULE-SET,apple_cn_non_ip,DIRECT
+  # ---- Apple Music：锁定中国大陆 storefront ----
+  # Apple 依据「出口 IP 归属地」选择 storefront。music.apple.com 原本被
+  # apple_services（含 DOMAIN-SUFFIX,apple.com）收进 Apple_Service 选择器，
+  # 而该选择器的配置默认值是 Proxy；运行时选择存在 cache.db，一旦丢失就会
+  # 回落到 Proxy —— 此时裸访问 music.apple.com/ 会被 302 到 /us/new，CN 账号
+  # 随即报"出现错误，请刷新"。用显式规则绕过选择器，使 storefront 恒定。
+  # 该后缀同时覆盖 amp-api.music.apple.com。
+  - DOMAIN-SUFFIX,music.apple.com,DIRECT
+  # 以下两个后缀同样参与 Apple Music 的区域/授权判定，却被 apple_services 收在
+  # Apple_Service 选择器内。一并硬编码直连，使其也不依赖任何选择器状态。
+  - DOMAIN-SUFFIX,media.apple.com,DIRECT
+  - DOMAIN-SUFFIX,blobstore.apple.com,DIRECT
+  # Apple 自有网段：store-*.blobstore.apple.com / buy.music.apple.com /
+  # mvod.itunes.apple.com 等都在 17/8 内。即使域名没被嗅探出来，也能按 IP
+  # 判定为直连，不依赖 sniff 是否成功。
+  - IP-CIDR,17.0.0.0/8,DIRECT,no-resolve
+  # Sukka apple_cdn：使用中国大陆 CDN 的 Apple 域，涵盖 mzstatic 封面图床
+  # （is1-5-ssl / a1-5 / s.mzstatic.com）、audio-ssl/aod.itunes.apple.com 音频流
+  # 以及 oscdn、swcdn。该 provider 原本只定义、从未被任何 rule 引用。
+  - RULE-SET,apple_cdn,DIRECT
+  - RULE-SET,domestic_ip,DIRECT,no-resolve
+  - RULE-SET,china_ip,DIRECT,no-resolve
+  - IP-CIDR,72.11.144.205/32,DIRECT,no-resolve  # VPS 服务器直连
+
+  # ======== [3.5] 拒绝 QUIC（UDP 443） ========
+  # Apple 的 CDN 在 Akamai / Fastly 上，没有可枚举的网段。QUIC 一旦嗅探不出
+  # SNI 就只剩 IP 匹配，最终落到 MATCH → Proxy，从机房出口出去，Apple 无法
+  # 地理定位 → 回落到 /us/ storefront。拒绝 UDP 443 让浏览器退回 TCP/TLS，
+  # SNI 可稳定嗅探，域名规则必然命中。放在这里：已命中的域名/IP 规则不受
+  # 影响，只拦截「没被识别出来、即将落到 MATCH」的 QUIC。
+  - AND,((NETWORK,udp),(DST-PORT,443)),REJECT
+
+  # ======== [4] Steam 下载直连 ========
+  # Steam 游戏下载走国内 CDN，享受满速下载
+  - DOMAIN-SUFFIX,steampipe-partner.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,steampipe-kr.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,steampipe.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,content-origin.steampowered.com,DIRECT
+  - DOMAIN-SUFFIX,content.steampowered.com,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - DOMAIN,*.steamcontent.com,DIRECT
+  - DOMAIN,fastly.cdn.steampipe.steamcontent.com,DIRECT
+  - DOMAIN,cdn.fastly.steamstatic.com,DIRECT
+  - DOMAIN,*.fastly.steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,fastly.steamstatic.com,DIRECT
+  - DOMAIN,steamcdn-a.akamaihd.net,DIRECT
+  - DOMAIN-SUFFIX,cm.steampowered.com,DIRECT
+  - GEOSITE,steam@cn,DIRECT
+
+  # ======== [5] Apple 服务 ========
+  # Apple 服务走 Apple_Service 组（可在面板中选择 代理 或 直连）
+  - RULE-SET,apple_services,Apple_Service
+
+  # ======== [6] 微软 ========
+  # 微软全球服务走代理（Bing / Outlook / Office365 / Azure 等）
+  - RULE-SET,microsoft_cdn_non_ip,Proxy
+  - RULE-SET,microsoft_non_ip,Proxy
+
+  # ======== [7] CDN 加速 ========
+  # 全球 CDN 资源走代理获取更优节点
+  - RULE-SET,cdn_domainset,Proxy
+  - RULE-SET,cdn_non_ip,Proxy
+
+  # ======== [8] 流媒体 ========
+  # Netflix / Disney+ / YouTube / Spotify 等流媒体走代理
+  - RULE-SET,stream_non_ip,Proxy
+  - RULE-SET,stream_ip,Proxy,no-resolve
+
+  # ======== [9] Telegram ========
+  # Telegram 走代理（国内直连不稳定）
+  - RULE-SET,telegram_non_ip,Proxy
+  - RULE-SET,telegram_ip,Proxy,no-resolve
+
+  # ======== [10] AI ========
+  # ChatGPT / Gemini / Claude 等 AI 服务走 AI 组
+  - RULE-SET,ai_non_ip,AI
+  - DOMAIN,gemini.google.com,AI
+
+  # ======== [11] 大文件下载 ========
+  # 软件更新、系统镜像等大文件走代理（利用代理带宽提速）
+  - RULE-SET,download_domainset,Proxy
+  - RULE-SET,download_non_ip,Proxy
+
+  # ======== [12] 全球其余 ========
+  # 未被以上规则匹配的境外域名/服务走代理
+  - RULE-SET,global_non_ip,Proxy
+
+  # ======== [13] 兜底 ========
+  # 所有未被任何规则匹配的流量，默认走 Proxy 组
+  # 确保没有流量漏网直连（防止 DNS 泄露和 IP 泄露）
+  - MATCH,Proxy

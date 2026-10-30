@@ -1,0 +1,446 @@
+# ============================================================================
+# Mihomo (Clash Meta) 配置文件
+# 文档: https://wiki.metacubex.one/config/
+# ============================================================================
+
+# ================================ 全局配置 ===================================
+
+# 混合代理端口 — 同时支持 HTTP 和 SOCKS5 协议，客户端只需配这一个端口
+# 如果不需要拆分 HTTP 和 SOCKS，可注释掉 port 和 socks-port，仅保留 mixed-port
+mixed-port: 7890
+port: 20173                # 纯 HTTP 代理端口（已配 mixed-port 则此行为可选）
+socks-port: 20172          # 纯 SOCKS5 代理端口（同上）
+
+allow-lan: true            # 允许局域网其他设备连接此代理
+mode: rule                 # 运行模式: rule/global/direct
+log-level: warning         # 日志级别: debug/info/warning/error/silent
+ipv6: true
+
+# TCP 并发连接 - 多 IP 域名并行握手，选最快
+tcp-concurrent: true
+# 统一延迟 - 消除不同协议节点的延迟差异
+unified-delay: true
+# 状态持久化缓存
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+external-controller: 127.0.0.1:9090
+# secret: ""               # API 访问密钥（建议设置，防止未授权访问）
+
+# ================================ TUN 虚拟网卡 ================================
+# 开启后系统全局流量进入 mihomo，再由规则分流
+# 文档: https://wiki.metacubex.one/config/inbound/tun/
+
+tun:
+  enable: true
+  stack: mixed                        # 官方推荐：TCP 用 system，UDP 用 gvisor
+  mtu: 1400
+  auto-route: true                    # 自动设置全局路由
+  auto-detect-interface: true         # 自动选择出口接口
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+  strict-route: true                  # 严格路由，防 DNS 泄露
+  route-exclude-address:              # 排除 DNS 服务器 IP，防环路
+    - 119.29.29.29/32
+    - 223.5.5.5/32
+
+# ================================ 域名嗅探 ===================================
+# 文档: https://wiki.metacubex.one/config/sniff/
+# 将 IP 请求还原为域名，使规则能正确匹配
+
+sniffer:
+  enable: true
+  sniffing:
+    - tls
+    - http
+  skip-domain:
+    - 'Mijia Cloud'
+    - 'dlg.io.mi.com'
+    - '+.apple.com'
+    - '+.icloud.com'
+  force-domain:
+    - 'google.com'
+
+# ================================ DNS 配置 ===================================
+# 文档: https://wiki.metacubex.one/config/dns/
+# fake-ip 模式: 为每个域名分配一个假的 IP（198.18.x.x），避免 DNS 泄露
+# respect-rules 模式: DNS 查询也按规则路由
+
+# DNS 配置 - 基于 LINUX DO 精华帖优化
+# 原理: fake-ip 为域名分配 198.18.x.x 假 IP，避免 DNS 泄露
+#       nameserver 添加 #RULES 后缀强制 DNS 查询走代理规则分流
+#       国内域名 → nameserver-policy → 国内 DoH → 直连
+#       国外域名 → nameserver → #RULES → 代理节点解析 → 无泄露
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  prefer-h3: true
+
+  # IPv6 DNS 置 false 防止 IPv6 DNS 泄露
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - '*.lan'
+    - '*.local'
+    - '*.arpa'
+    - time.*.com
+    - ntp.*.com
+    - '+.market.xiaomi.com'
+    - localhost.ptlogin2.qq.com
+    - '*.msftncsi.com'
+    - www.msftconnecttest.com
+
+  # 初始 DNS — 仅用于解析 DoH 域名，必须为纯 IP
+  default-nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
+
+  # 国内/内网/apple 域名走国内 DNS
+  nameserver-policy:
+    "geosite:cn,private,apple":
+      - https://doh.pub/dns-query
+      - https://dns.alidns.com/dns-query
+
+  # 全局 DNS — 用国外 DoH 并强制走代理规则（#RULES = respect-rules）
+  # 1.1.1.1 不匹配任何规则 → 走到 MATCH → 由远程节点解析 → 无 DNS 泄露
+  nameserver:
+    - "https://1.1.1.1/dns-query#RULES"
+    - "https://dns.google/dns-query#RULES"
+
+  # 代理节点域名解析 — 必须用纯 IP 的 DNS，避免死循环
+  proxy-server-nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
+
+  # 直连专用 DNS — 当规则匹配 DIRECT 时，走此 DNS 解析
+  direct-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  direct-nameserver-follow-policy: true
+
+# ================================ Geo 数据资源 ================================
+# geodata-mode: true 表示使用 .dat 格式（轻量）；false 表示使用 .mmdb 格式
+
+geodata-mode: true
+geox-url:
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
+
+# ================================ 代理节点 ===================================
+# 文档: https://wiki.metacubex.one/config/proxies/
+
+proxies:
+  - name: "直连"
+    type: direct
+    udp: true
+
+# ================================ 代理集（订阅）==============================
+# 文档: https://wiki.metacubex.one/config/proxy-providers/
+
+proxy-providers:
+  订阅A:
+    type: http
+    url: 'https://example.com/api/v1/client/subscribe?token=YOUR_SUBSCRIPTION_TOKEN'
+    interval: 3600
+    path: ./profile/provider-a.yaml
+    health-check:
+      enable: true
+      interval: 180
+      lazy: true
+      url: http://www.gstatic.com/generate_204
+    override:
+      additional-prefix: "[订阅A] "   # 给该订阅所有节点添加前缀，按名称排序后自动按订阅分组
+
+  订阅B:
+    type: http
+    url: 'https://example.com/api/v1/client/subscribe?token=YOUR_SUBSCRIPTION_TOKEN'
+    interval: 3600
+    path: ./profile/订阅B.yaml
+    health-check:
+      enable: true
+      interval: 180
+      lazy: true
+      url: http://www.gstatic.com/generate_204
+    override:
+      additional-prefix: "[订阅B] "
+
+# ================================ 策略组 =====================================
+# 文档: https://wiki.metacubex.one/config/proxy-groups/
+
+proxy-groups:
+  # 默认代理组 — 手动选择节点
+  - name: "PROXY"
+    type: select
+    proxies:
+      - 直连
+    use:
+      - 订阅A
+      - 订阅B
+
+  # Apple 服务专用组（可手动切换直连或代理）
+  - name: "Apple Services"
+    type: select
+    proxies:
+      - 直连
+    use:
+      - 订阅A
+      - 订阅B
+
+  # ChatGPT 专用组
+  - name: "ChatGPT"
+    type: select
+    proxies:
+      - 直连
+    use:
+      - 订阅A
+      - 订阅B
+
+  # 自动选择最快节点（基于延迟测试）
+  - name: "Auto"
+    type: url-test
+    use:
+      - 订阅A
+      - 订阅B
+    proxies:
+      - 直连
+    url: 'http://www.cloudflare.com'
+    interval: 180
+    lazy: true
+
+  # 负载均衡（同一域名哈希到同一节点）
+  - name: "load-balance"
+    type: load-balance
+    use:
+      - 订阅A
+      - 订阅B
+    proxies:
+      - 直连
+    url: 'http://cp.cloudflare.com'
+    interval: 180
+    # strategy: round-robin   # 轮询；默认 consistent-hashing（建议保持默认）
+
+# ================================ 规则集定义 =================================
+# 文档: https://wiki.metacubex.one/config/rule-providers/
+# 使用 YAML 锚点复用公共字段
+
+RuleSet_classical: &RuleSet_classical
+  type: http
+  behavior: classical
+  interval: 43200
+  format: text
+  proxy: PROXY            # 通过 PROXY 策略组下载规则文件
+
+RuleSet_domain: &RuleSet_domain
+  type: http
+  behavior: domain
+  interval: 43200
+  format: text
+  proxy: PROXY
+
+RuleSet_ipcidr: &RuleSet_ipcidr
+  type: http
+  behavior: ipcidr
+  interval: 43200
+  format: text
+  proxy: PROXY
+
+rule-providers:
+  # 广告/恶意拦截
+  reject_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/reject.txt'
+    path: './rule_set/sukkaw_ruleset/reject_non_ip.txt'
+  reject_domainset:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/reject.txt'
+    path: './rule_set/sukkaw_ruleset/reject_domainset.txt'
+  reject_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/reject.txt'
+    path: './rule_set/sukkaw_ruleset/reject_ip.txt'
+
+  # CDN
+  cdn_domainset:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/cdn.txt'
+    path: './rule_set/sukkaw_ruleset/cdn_domainset.txt'
+  cdn_non_ip:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/non_ip/cdn.txt'
+    path: './rule_set/sukkaw_ruleset/cdn_non_ip.txt'
+
+  # 流媒体
+  stream_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/stream.txt'
+    path: './rule_set/sukkaw_ruleset/stream_non_ip.txt'
+  stream_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/stream.txt'
+    path: './rule_set/sukkaw_ruleset/stream_ip.txt'
+
+  # AI
+  ai_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/ai.txt'
+    path: './rule_set/sukkaw_ruleset/ai_non_ip.txt'
+
+  # Telegram
+  telegram_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/telegram.txt'
+    path: './rule_set/sukkaw_ruleset/telegram_non_ip.txt'
+  telegram_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/telegram.txt'
+    path: './rule_set/sukkaw_ruleset/telegram_ip.txt'
+
+  # 广告拦截备用（AWAvenue）
+  ad_reject_AWA:
+    <<: *RuleSet_domain
+    url: 'https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml'
+    path: './rule_set/others/ad_reject_AWA.txt'
+
+  # Apple
+  apple_cdn:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt'
+    path: './rule_set/sukkaw_ruleset/apple_cdn.txt'
+  apple_services:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/apple_services.txt'
+    path: './rule_set/sukkaw_ruleset/apple_services.txt'
+  apple_cn_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt'
+    path: './rule_set/sukkaw_ruleset/apple_cn_non_ip.txt'
+
+  # Microsoft
+  microsoft_cdn_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt'
+    path: './rule_set/sukkaw_ruleset/microsoft_cdn_non_ip.txt'
+  microsoft_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/microsoft.txt'
+    path: './rule_set/sukkaw_ruleset/microsoft_non_ip.txt'
+
+  # 下载
+  download_domainset:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/domainset/download.txt'
+    path: './rule_set/sukkaw_ruleset/download_domainset.txt'
+  download_non_ip:
+    <<: *RuleSet_domain
+    url: 'https://ruleset.skk.moe/Clash/non_ip/download.txt'
+    path: './rule_set/sukkaw_ruleset/download_non_ip.txt'
+
+  # 局域网 & 国内
+  lan_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/lan.txt'
+    path: './rule_set/sukkaw_ruleset/lan_non_ip.txt'
+  lan_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/lan.txt'
+    path: './rule_set/sukkaw_ruleset/lan_ip.txt'
+  domestic_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/domestic.txt'
+    path: './rule_set/sukkaw_ruleset/domestic_non_ip.txt'
+  direct_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/direct.txt'
+    path: './rule_set/sukkaw_ruleset/direct_non_ip.txt'
+  global_non_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/non_ip/global.txt'
+    path: './rule_set/sukkaw_ruleset/global_non_ip.txt'
+  domestic_ip:
+    <<: *RuleSet_classical
+    url: 'https://ruleset.skk.moe/Clash/ip/domestic.txt'
+    path: './rule_set/sukkaw_ruleset/domestic_ip.txt'
+  china_ip:
+    <<: *RuleSet_ipcidr
+    url: 'https://ruleset.skk.moe/Clash/ip/china_ip.txt'
+    path: './rule_set/sukkaw_ruleset/china_ip.txt'
+
+# ================================ 路由规则 ===================================
+# 文档: https://wiki.metacubex.one/config/rules/
+# 规则从上到下依次匹配，匹配到即停止（顺序敏感！）
+
+rules:
+  # ---- 内网/私有地址优先直连（最優先）----
+  - GEOSITE,private,DIRECT,no-resolve
+  - GEOIP,private,DIRECT,no-resolve
+
+  # ---- Steam 强制直连 ----
+  - DOMAIN-SUFFIX,steampipe-partner.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,steampipe-kr.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,steampipe.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,content-origin.steampowered.com,DIRECT
+  - DOMAIN-SUFFIX,content.steampowered.com,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - DOMAIN-SUFFIX,fastly.steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,cm.steampowered.com,DIRECT
+  - GEOSITE,steam@cn,DIRECT
+
+  # ---- 自定义域名 ----
+  - DOMAIN,gemini.google.com,ChatGPT
+  - DOMAIN-SUFFIX,linux.do,PROXY
+  - DOMAIN-SUFFIX,wttr.in,DIRECT
+  - IP-CIDR,72.11.144.205/32,DIRECT,no-resolve
+  - DOMAIN-SUFFIX,http.cat,DIRECT
+  - DOMAIN-SUFFIX,gov.cn,DIRECT
+  - DOMAIN-SUFFIX,.gov,DIRECT
+  - DOMAIN-SUFFIX,.政务,DIRECT
+
+  # ---- 广告拦截（优先于其他规则）----
+  - RULE-SET,reject_non_ip,REJECT
+  - RULE-SET,reject_domainset,REJECT
+  - RULE-SET,reject_ip,REJECT
+  - RULE-SET,ad_reject_AWA,REJECT
+
+  # ---- 国内直连 ----
+  - RULE-SET,domestic_non_ip,DIRECT
+  - RULE-SET,direct_non_ip,DIRECT
+  - RULE-SET,lan_non_ip,DIRECT
+
+  # ---- 微软 CDN（走代理加速）----
+  - RULE-SET,microsoft_cdn_non_ip,PROXY
+
+  # ---- Apple（国内 CDN 直连，其余走 Apple Services 组）----
+  - RULE-SET,apple_cn_non_ip,DIRECT
+  - RULE-SET,apple_services,Apple Services
+
+  # ---- CDN 走代理 ----
+  - RULE-SET,cdn_domainset,PROXY
+  - RULE-SET,cdn_non_ip,PROXY
+
+  # ---- 流媒体、Telegram、下载、AI、全局走代理 ----
+  - RULE-SET,stream_non_ip,PROXY
+  - RULE-SET,telegram_non_ip,PROXY
+  - RULE-SET,download_domainset,PROXY
+  - RULE-SET,download_non_ip,PROXY
+  - RULE-SET,ai_non_ip,PROXY
+  - RULE-SET,global_non_ip,PROXY
+
+  # ---- IP 类规则集 ----
+  - RULE-SET,telegram_ip,PROXY,no-resolve
+  - RULE-SET,stream_ip,PROXY,no-resolve
+  - RULE-SET,lan_ip,DIRECT,no-resolve
+  - RULE-SET,domestic_ip,DIRECT,no-resolve
+  - RULE-SET,china_ip,DIRECT,no-resolve
+
+  # ---- 国内 Geo 兜底 ----
+  - GEOSITE,cn,DIRECT
+  - GEOIP,CN,DIRECT
+
+  # ---- 兜底规则 ----
+  - MATCH,PROXY

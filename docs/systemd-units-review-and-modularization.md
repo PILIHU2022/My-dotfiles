@@ -104,7 +104,8 @@ graphical-session.target                  （由 uwsm 拉起；RefuseManualStart
 │       ├── mako.service                  ← 通知守护进程，Conflicts=dunst.service
 │       ├── swww-daemon.service
 │       ├── swww-wallpaper.service        （Requires + PartOf swww-daemon）
-│       └── waybar.service
+│       ├── waybar.service
+│       └── wl-clip-persist.service       ← 让 Wayland 剪贴板脱离「源程序存活」约束，见 §9.5
 ├── ksecretd.service                      ← org.freedesktop.secrets 的实现（KWallet 6）
 │   └── Wants/After kwalletd6.service     （它通过 D-Bus 用 kwalletd6 存取钱包）
 └── kwalletd6.service                     （会话级守护进程，不属于"应用"组）
@@ -149,6 +150,7 @@ systemctl --user stop hyprland-autostart.target   # 停一整组（其余 unit �
 | ~~`gnome-keyring.service`~~ | **已删除**（连同 `default.target.wants/gnome-keyring.service`，该目录已空并移除），改用 KWallet 6 |
 | `ksecretd.service` | **新增**：KWallet 6 的 `org.freedesktop.secrets` 实现，随 `graphical-session.target` 起，`Before=hyprland-autostart.target` |
 | `xdg-desktop-portal/.config/xdg-desktop-portal/portals.conf` | **新增包**：把 portal 的 Secret 接口钉死到 `kwallet`，见 §9.4 |
+| `wl-clip-persist.service` | **新增**：常驻接管 CLIPBOARD + PRIMARY，使关掉 kitty 后仍能直接粘贴，见 §9.5 |
 | `kwalletd6.service` | 合并重复 `After=`，注明启用位置必须与 `WantedBy=` 一致 |
 | `polkit-kde-agent.service.back` | 未动，但已无任何引用 |
 | `.wants/` 全部软链 | 删除绝对软链，重建为**相对**软链（8 条） |
@@ -545,3 +547,67 @@ busctl --user tree org.freedesktop.secrets
 1. **启动竞态**：如果某个应用在 `ksecretd` 占名之前就请求密钥，总线会按发行版激活文件拉起 gnome-keyring 并让它占名。`Before=hyprland-autostart.target` 把窗口压到最小，但没有 `BusName=` 就无法从机制上杜绝（原因见 §9.4.2）。**验证命令能立刻发现**这种情况。
 2. **gnome-keyring 的包仍在**（`code-features`/`qtkeychain-qt6` 依赖），只是不再由本仓库启动。它的 `~/.local/share/keyrings` 数据也原样保留，没有迁移到 KWallet——**原先存在 gnome-keyring 里的密钥不会自动出现在 KWallet 里**。需要迁移的话得逐个重新登录保存，或临时把两边都跑起来手工导出。
 3. **portal 覆盖要重启 portal 才生效**：`systemctl --user restart xdg-desktop-portal.service`，否则下次登录才生效。
+
+---
+
+### 9.5 第五轮：Wayland 剪贴板跨进程存活（关掉 kitty 后仍能粘贴）
+
+#### 9.5.1 现象与根因
+
+现象：在 kitty 里 `Ctrl+Shift+C` 复制，关掉 kitty，再到别的程序 `Ctrl+V` —— 粘不出来（`wl-paste` 直接回 `Nothing is copied`）。
+
+**不是 kitty 的配置问题**。`kitty.conf` 里
+
+```conf
+map kitty_mod+c copy_to_clipboard
+map kitty_mod+v paste_from_clipboard
+```
+
+这两行是对的，`clipboard_control` 也没被改过（默认 `write-clipboard write-primary read-clipboard read-primary`）。真正的原因是 **Wayland 的剪贴板模型**：
+
+* 选区（selection）的数据**由源客户端持有**，compositor 只负责把「谁持有」这件事告诉别人；
+* 没有「剪贴板服务器」这种角色——协议里数据是**按需拉取**的：目标程序粘贴时才通过 `wl_data_source` 向持有者要字节；
+* 所以持有者进程一退出，这些字节就没了，compositor 把选区作废。
+
+X11 时代的「剪贴板天生持久」不成立。会话里**没有任何剪贴板管理器**（`ps` 里没有 `wl-clip-persist` / `cliphist` / `copyq` / `greenclip`），所以这条链上没有人替 kitty 接管数据。
+
+沙箱内可复现的等价实验（不需要关你的 kitty 窗口）：
+
+```bash
+printf 'x' | wl-copy; sleep 0.3; wl-paste          # x
+kill "$(pgrep -x wl-copy)"; sleep 0.5; wl-paste    # Nothing is copied
+```
+
+任何「持有者退出」都是同一个结局，kitty 只是最常见的那一个。
+
+#### 9.5.2 处理：`wl-clip-persist.service`
+
+`wl-clip-persist`（`wl-clip-persist-git 0.4.0`，已装）常驻后会在**每次选区变更时立刻把数据读进内存、自己重新声明所有权**。于是数据不再依赖原程序存活，kitty 关不关都无所谓，粘贴路径完全不变（还是普通 `Ctrl+V`）。
+
+```ini
+ExecStart=/usr/bin/wl-clip-persist --clipboard both --disable-timestamps
+```
+
+* `--clipboard both`：`CLIPBOARD`（`Ctrl+V`）和 `PRIMARY`（鼠标中键选区）都要持久化。kitty 的 `copy_to_clipboard` 默认会同时写这两个。
+* `--disable-timestamps`：否则 journal 里每次选区变更都刷一条。
+* `ConditionEnvironment=WAYLAND_DISPLAY`：**这次加了**，与 §4.3 里「先不加」的结论不冲突——当时的顾虑是「沙箱里无法确认 manager 环境有没有这个变量，加错了会静默 skip 整组应用」。现在有实测：本 unit 在本会话里 `active (running)`，而 `ConditionEnvironment` 不成立时 systemd 会直接判 `skipped`，说明变量确实在 manager 环境里。其它 5 个 GUI unit 依然维持原状（不加），避免一次动太多。
+* `PartOf=` / `After=` / `Slice=` 与该组其它 unit 一致；启用链放在 `hyprland-autostart.target.wants/`。
+
+**为什么不用 `cliphist` / `copyq` 单独顶上**：它们只**监听并记录历史**，不接管选区，源程序退出后照样粘不出「上一次复制」——想要 `Ctrl+V` 就直接有效，必须有人持有数据。`cliphist`（也已装）值得**另外**加，作为「翻历史」的补充，两者不冲突。
+
+#### 9.5.3 验证（本机已跑过）
+
+```bash
+printf 'KITTY-CLIP-TEST-9F3A' | wl-copy; sleep 0.4; wl-paste   # KITTY-CLIP-TEST-9F3A
+kill "$(pgrep -x wl-copy)"; sleep 0.6; wl-paste              # KITTY-CLIP-TEST-9F3A  ← 修复前这里是 Nothing is copied
+systemctl --user is-enabled wl-clip-persist.service          # enabled
+systemctl --user is-active  wl-clip-persist.service          # active
+```
+
+真机上最直接的判据：在 kitty 里复制一段字，`Ctrl+Shift+Q` 关掉整个 kitty，再到任意程序 `Ctrl+V`。
+
+#### 9.5.4 已知副作用
+
+1. **密码管理器「清空剪贴板」变成「替换为空」**：源程序退出后数据仍在 `wl-clip-persist` 内存里，清除动作随之失效。需要用的话可以额外跑 `cliphist` 并在敏感操作后手动清（`printf '' | wl-copy`）。
+2. **大对象有 3 秒读超时**：默认 `--write-timeout 3000`，超大图片/多 MIME 组合可能在源程序退出前没读完，此时该次选区不接管。可以用 `--selection-size-limit` 或调大超时。
+3. **内存占用**跟随剪贴板对象大小（一张 4K PNG 就是几 MB），属于预期。

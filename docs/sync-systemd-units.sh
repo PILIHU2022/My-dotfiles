@@ -3,21 +3,21 @@
 # 用途：把仓库里的 systemd user 单元【覆盖】到 ~/.config/systemd/user/，
 #       并处理被删除 / 改变启用位置的单元与 .wants 链接。
 #
-# 为什么需要你自己跑：Agent 身份是 dsh(1002)，/home/user 是 700，写不进去。
+# 为什么需要你自己跑：家居目录权限为 700，沙箱里的 agent 写不进 ~/.config。
 #
 # 用法（以 user 身份，在任意终端里；不需要图形会话）：
-#   bash /home/Projects/Stow-Dotfile/docs/sync-systemd-units.sh --dry-run   # 先看要做什么
-#   bash /home/Projects/Stow-Dotfile/docs/sync-systemd-units.sh             # 真正执行
+#   bash ~/Projects/Stow-Dotfile/docs/sync-systemd-units.sh --dry-run   # 先看要做什么
+#   bash ~/Projects/Stow-Dotfile/docs/sync-systemd-units.sh             # 真正执行
 #
 # 做了四件事：
 #   1. 备份 ~/.config/systemd/user/ 到 ~/systemd-user-backup-<时间戳>/
 #   2. 删除已退役的 unit（gnome-keyring.service、kitty.service 等）
-#   3. 覆盖 8 个 unit（7 service + 1 target）+ 重建 8 条 .wants 相对链接
+#   3. 覆盖全部 unit（8 service + 1 target，含 wl-clip-persist）+ 重建 9 条 .wants 相对链接
 #   4. daemon-reload 并做验证（含「org.freedesktop.secrets 到底归谁」）
 # ============================================================================
 set -uo pipefail
 
-REPO="${REPO:-/home/Projects/Stow-Dotfile}"
+REPO="${REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"  # 默认取脚本所在仓库，不再写死家目录
 SRC="$REPO/systemd/.config/systemd/user"
 DST="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
 PORTAL_SRC="$REPO/xdg-desktop-portal/.config/xdg-desktop-portal/portals.conf"
@@ -81,7 +81,7 @@ for u in $RETIRED_UNITS; do
 done
 
 # ---------------------------------------------------------------------------
-say "3. 覆盖 unit（7 service + 1 target）"
+say "3. 覆盖 unit（8 service + 1 target）"
 # ---------------------------------------------------------------------------
 for f in "$SRC"/*.service "$SRC"/*.target; do
   [ -e "$f" ] || continue

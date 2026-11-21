@@ -1,0 +1,28 @@
+[Unit]
+Description=Keep the Wayland clipboard alive after the owning program exits
+Documentation=https://github.com/Linus789/wl-clip-persist
+# Wayland 的剪贴板内容归「选区持有者」所有：kitty 里 Ctrl+Shift+C 之后，数据实际由
+#   kitty 进程持有；kitty 一退出，compositor 就把选区作废（wl-paste 直接回
+#   "Nothing is copied"）。所以「从 kitty 复制 -> 关掉 kitty -> 别处粘贴」一定失败，
+#   这不是 kitty 的问题，是 Wayland 的协议模型，X11 时代的「剪贴板天生持久」不再成立。
+# wl-clip-persist 常驻后会立刻接管当前选区（再次声明同一个选区），让内容不再依赖
+#   原程序存活；小程序退出后也能正常 Ctrl+V。
+#   单独启停：systemctl --user start|stop|restart wl-clip-persist.service
+#   整组启停：systemctl --user stop hyprland-autostart.target（靠下面的 PartOf=）
+PartOf=graphical-session.target hyprland-autostart.target
+After=graphical-session.target hyprland-autostart.target
+# 需要 WAYLAND_DISPLAY 才能连上 compositor；只在图形会话里跑，别在 TTY/SSH 里刷失败。
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=exec
+# both = 同时管 CLIPBOARD（Ctrl+V）和 PRIMARY（鼠标中键选区），两个都得持久化。
+# 关掉时间戳日志，避免 journal 里每秒一条 selection 变更。
+ExecStart=/usr/bin/wl-clip-persist --clipboard both --disable-timestamps
+Restart=on-failure
+RestartSec=3
+# 与 uwsm 对 XDG autostart 应用的处理保持一致：放进随会话回收的图形应用 slice。
+Slice=app-graphical.slice
+
+[Install]
+WantedBy=hyprland-autostart.target

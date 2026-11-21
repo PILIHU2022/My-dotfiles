@@ -35,6 +35,7 @@
 | `starship` | `~/.config` | starship 提示符 |
 | `steam` | `~/.local/share/applications` | Steam 输入法修复（XWayland / 原生 Wayland 两档 desktop 文件） |
 | `systemd` | `~/.config/systemd/user` | 用户级 systemd unit 与启动模块化 |
+| `tmux` | `~/.config/tmux` | tmux 配置：常规键位、Vim 风格窗格操作与 Catppuccin Mocha 主题 |
 | `uwsm` | `~/.config/uwsm` | uwsm 会话管理 |
 | `waybar` | `~/.config/waybar` | waybar 状态栏、样式与通知历史/免打扰脚本 |
 | `wofi` | `~/.config/wofi` | wofi 启动器 |
@@ -97,6 +98,7 @@ sudo stow -d . -t / --no-folding etc
 | [stow-mihomo-management.md](docs/stow-mihomo-management.md) | 用 GNU Stow 管理 mihomo 配置的可行性与方案 |
 | [tailscale-mihomo-fakeip-conflict.md](docs/tailscale-mihomo-fakeip-conflict.md) | Tailscale 与 mihomo（TUN/fake-ip）冲突的排查与修复 |
 | [systemd-units-review-and-modularization.md](docs/systemd-units-review-and-modularization.md) | systemd user unit 审查与启动模块化 |
+| [tmux-configuration.md](docs/tmux-configuration.md) | tmux 键位、复制模式、会话操作与 Catppuccin Mocha 主题 |
 | [file-dialog-ime-and-clipboard.md](docs/file-dialog-ime-and-clipboard.md) | Firefox 系统文件对话框的输入法与剪贴板问题 |
 | [dsh-user-migration-and-workspace-permissions.md](docs/dsh-user-migration-and-workspace-permissions.md) | 工作区权限修复与用户迁移说明 |
 | [dsh-write-tool-permission-behavior.md](docs/dsh-write-tool-permission-behavior.md) | DSH write 工具权限行为的实测结论 |

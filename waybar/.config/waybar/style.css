@@ -283,7 +283,9 @@ tooltip label {
 
 #clock {
     color: @lavender;
-    font-size: 17px;
+    /* 必须和全局字号一致：字号一变，图标 span 撑出的行盒高度就变，
+     * 垂直居中后时间基线和音量对不齐（17px 时整行下移 2px）。 */
+    font-size: 16px;
 }
 
 /* ---------- 播放器 ---------- */

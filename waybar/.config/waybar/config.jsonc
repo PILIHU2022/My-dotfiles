@@ -39,17 +39,26 @@
     "hyprland/window": {
         "format": "{}",
         "rewrite": {
-            "(.*) — Mozilla Firefox": "<span size='130%'>󰈹</span>  $1",
-            "(.*) - Google Chrome": "<span size='135%'></span>  $1",
-            "nvim (.*)": "<span size='110%'></span>  $1"
+            "(.*) — Mozilla Firefox": "<span size='130%' rise='-2048'>󰈹</span> $1",
+            "(.*) - Google Chrome": "<span size='135%' rise='-2048'></span> $1",
+            "nvim (.*)": "<span size='110%' rise='-1024'></span> $1"
         }
     },
     "clock": {
-        // "format": "<span size='135%'></span> {:%H:%M:%S}", // 显示时间(精确到秒)
-        "format": "<span size='135%'></span> {:%H:%M}",
+        // 图标统一 120%：行盒与音量相同，时间与音量基线对齐（详见 README「图标大小」）
+        // "format": "<span size='120%'></span> {:%H:%M:%S}", // 显示时间(精确到秒)
+        "format": "<span size='120%'></span> {:%H:%M}",
         "tooltip": "true",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "<span size='125%'></span>  {:%Y-%m-%d}",
+        "format-alt": "<span size='120%'></span>  {:%Y-%m-%d}",
+        // 整块日历交给 Maple Mono CN：汉字宽 = 拉丁字符 2 倍，正好匹配
+        // Waybar 按「7 列 × 3 字符」生成的网格；用回退的比例中文字体时，
+        // 星期行每列都会窄一截，日期数字越往右偏得越多（详见 README「日历对齐」）。
+        "calendar": {
+            "format": {
+                "days": "<span font_family='Maple Mono CN'>{}</span>"
+            }
+        },
         "interval": 1
     },
     "hyprland/workspaces": {

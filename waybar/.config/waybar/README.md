@@ -93,6 +93,28 @@ makoctl mode -r do-not-disturb   # 恢复通知
 makoctl mode                     # 查看当前 mode
 ```
 
+## 日历对齐
+
+时钟 tooltip 里的 `{calendar}` 由 Waybar 生成，按「7 列 × 3 字符」的等宽网格排版（第一列 2 字符，其余每列 3 字符），星期行里的汉字按「宽字符 = 2 字符」计算。默认字体栈里汉字会回退到 Source Han Sans 这类比例字体：一个汉字实际只占约 1.8 个等宽字符宽，星期行整体比日期网格窄，越往右偏得越多。
+
+`config.jsonc` 用 `calendar.format.days` 把整块日历包进 `Maple Mono CN`：
+
+```jsonc
+"calendar": {
+    "format": {
+        "days": "<span font_family='Maple Mono CN'>{}</span>"
+    }
+}
+```
+
+该字体中英文严格 2:1（汉字宽度正好是数字/空格的 2 倍），整块日历正好是 20 个等宽单元格，星期行与日期列严格对齐。依赖：
+
+```bash
+sudo pacman -S ttf-maplemono-cn   # AUR
+```
+
+> `format.days` 的 `{}` 是**整块日历文本（含换行）**，不是只包日期行；外面再套一层字体即可，不要拆行重排。
+
 ## 图标大小
 
 Nerd Font 的图标每个字形的实际墨迹高度差别很大（同样的字号，箭头只有铃铛的 2/3 高），所以不能简单地把所有图标设成同一个字号。`config.jsonc` 里按**墨迹高度归一化**给每个字形单独标了缩放比例，让所有图标看起来和铃铛一样大：
@@ -103,10 +125,25 @@ Nerd Font 的图标每个字形的实际墨迹高度差别很大（同样的字�
 
 - 比例范围 110%–160%，铃铛是 115%（基准）。
 - 同一组会变的状态图标保持同一比例：音量三种喇叭统一 120%，网络上下箭头统一 115%，避免数值跳动时图标忽大忽小。
+- 时钟的三种格式（`{:%H:%M}`、精确到秒的备选、`format-alt` 日期）统一 120%，和音量用同一个比例，并且 `#clock` 保持全局 16px 字号。Pango 的行盒高度由这一行里最大的 span 决定：16px 下 120% 是 30px 行盒、基线 24px，垂直居中后基线与音量（同样是 30px / 24px）落在同一条线上。原来用的 135% + `#clock { font-size: 17px }` 会把行盒撑到 37px，居中后时间基线比音量低约 2px，就是「时间与音量不在一条水平线上」的来源；以后调时钟字号或比例时，先用截图确认行盒高度没变。
 - 比例是用字体文件里每个字形的 `yMax - yMin` 算出来的（`fontTools` + `BoundsPen`），改字体后需要重新算。
 - Pango 的 `size` 必须带 `%`：`size='115'` 是 115pt，字形会直接消失。
 
 `scripts/notification-history.sh` 里的铃铛与空铃铛也按同样方式包了 `<span>`（`ICON_BELL` / `ICON_EMPTY`）；`scripts/notification-dnd.sh` 的 bell-ring 用 141%、bell-off 用 132%，同样是按墨迹高度与 115% 的铃铛对齐。
+
+### 窗口标题图标
+
+`hyprland/window` 的 `rewrite` 规则在标题前插了一个 Nerd Font 图标。这些图标的墨迹中心固定在基线上方约 `0.347em`（`fontTools` 量 `uniF0239` / `uniF268` / `uniF36F` 都一样），而中文的墨迹中心更低，所以标题是中文时图标会明显「飘」在字的上方：
+
+```jsonc
+"(.*) — Mozilla Firefox": "<span size='130%' rise='-2048'>󰈹</span> $1",
+"(.*) - Google Chrome":   "<span size='135%' rise='-2048'></span> $1",
+"nvim (.*)":              "<span size='110%' rise='-1024'></span> $1"
+```
+
+- `rise` 是 Pango 单位（1024 = 1px）；负值把字形往下压。实测 130% + `rise='-2048'` 时，图标墨迹在 14–25 行、中文墨迹在 12–27 行，两者中心同为 19.5px；不加 `rise` 时图标中心 18.5、中文 20.5，正是截图里的错位。
+- 图标与标题之间只留**一个**空格（`</span> $1`）。两个空格在 16px 下会空出近 20px，看着像断开的两个模块。
+- 没有 `rise` 时（旧配置），中文标题的图标中心比文字中心高 2px，就是截图里那种错位。
 
 > 内联 markup 只对**重新加载后的 config** 生效：改 `config.jsonc` 后执行 `killall -SIGUSR2 waybar`（或重启服务），Waybar 会重新读取配置；只改 `style.css` 时 `reload_style_on_change` 会自动重载。之前出现过「铃铛变大了、其它图标没变」，就是脚本重启后立刻生效、而 config 还跑在旧进程里的缘故；发一次 SIGUSR2 即可。
 

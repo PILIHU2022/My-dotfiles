@@ -1,0 +1,46 @@
+# fancontrol —— 温度驱动的风扇转速控制（系统级 unit）
+#
+# 部署：本文件属于 stow 包 `etc`，目标目录为 /：
+#   sudo stow -d . -t / --no-folding etc
+# 部署后即 /etc/systemd/system/fancontrol.service，会覆盖发行版
+# /usr/lib/systemd/system/fancontrol.service 的同名 unit。
+#
+# 配置文件：/etc/fancontrol，由同一个 etc 包提供（etc/etc/fancontrol）。
+# 若该文件是 stow 软链（指向本仓库），服务读取时需要访问 $HOME，
+# 所以下面用 ProtectHome=read-only，而不是发行版 unit 的 ProtectHome=true。
+#
+# 本机若已启用发行版 unit，`systemctl enable` 留下的
+# /etc/systemd/system/multi-user.target.wants/fancontrol.service 会在 stow 时
+# 与包内同名启用链冲突；stow 前先停用一次即可：
+#   sudo systemctl disable fancontrol.service
+
+[Unit]
+Description=Fan speed control (fancontrol)
+Documentation=man:fancontrol(8) man:pwmconfig(8)
+# 没有配置就什么都不做，避免空跑后报错退出
+ConditionFileNotEmpty=/etc/fancontrol
+# fancontrol 不负责加载内核模块，等 lm_sensors 先把 hwmon 设备准备好
+After=lm_sensors.service
+
+[Service]
+Type=exec
+# fancontrol 只判断 /run/fancontrol.pid 是否存在，不校验进程是否存活；
+# 被 SIGKILL 打断（或手工跑完异常退出）会留下残留 pidfile，让下次启动直接失败。
+ExecStartPre=-/usr/bin/rm -f /run/fancontrol.pid
+ExecStart=/usr/bin/fancontrol /etc/fancontrol
+
+# 只写 /sys/class/hwmon/*（PWM）、/run/fancontrol.pid 与日志；其余按最小权限收紧。
+# ProtectHome=read-only 是相对发行版 unit 的唯一放宽项，原因是仓库位于 $HOME 下。
+ProtectSystem=full
+ProtectHome=read-only
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+RestrictRealtime=true
+
+# fancontrol 会 trap SIGTERM 并 restorefans（把风扇交还 BIOS 控制），
+# 留够停服务时间，避免被 SIGKILL 打断恢复流程。
+TimeoutStopSec=30s
+
+[Install]
+WantedBy=multi-user.target

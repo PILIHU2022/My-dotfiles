@@ -65,3 +65,8 @@
 # aria2 运行时重建的 DHT 路由表与二进制配置归档。
 **/dht*.dat
 **/*.tgz
+
+# 旧 My-dotfiles 仓库遗留的忽略项（合并历史时带入）。
+.config/nvim/lazy-lock.json
+.config/nvim-mimo/
+Mozilla-chrome.tar.zstd

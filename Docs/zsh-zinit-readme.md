@@ -1,0 +1,1 @@
+../.config/zsh-zinit/README.md

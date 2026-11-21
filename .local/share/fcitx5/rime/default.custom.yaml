@@ -1,0 +1,7 @@
+patch:
+  # 方案列表
+  schema_list:
+    - schema: rime_ice # 雾凇拼音（全拼）
+
+  # 菜单
+  "menu/page_size": 9

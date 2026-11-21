@@ -1,0 +1,1 @@
+../.config/hypr/waybar/README.md

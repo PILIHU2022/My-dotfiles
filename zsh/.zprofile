@@ -58,6 +58,10 @@ fi
 #   export XDG_CURRENT_DESKTOP=Hyprland
 # }
 
-if uwsm check may-start; then
-    exec uwsm start default
+# 仅在初始 TTY 登录时自动拉起 UWSM。
+# tmux 新窗口会启动 login shell 并重新读取 .zprofile，这里不能再触发 uwsm。
+if [[ -z ${TMUX:-} && -z ${WAYLAND_DISPLAY:-} && -z ${DISPLAY:-} ]] &&
+  [[ $(tty 2>/dev/null) == /dev/tty1 ]] &&
+  uwsm check may-start; then
+  exec uwsm start default
 fi

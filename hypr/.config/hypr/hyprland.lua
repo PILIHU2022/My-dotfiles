@@ -488,9 +488,11 @@ hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("obs"))
 -- hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("copyq menu"))
 
 -- Screenshot 截图
-hl.bind("ALT + J", hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
+-- hl.bind("ALT + J", hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
+hl.bind("ALT + J", hl.dsp.exec_cmd('mark-shot'))
 -- hl.bind("ALT + K", hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
-hl.bind("ALT + K", hl.dsp.exec_cmd('grim -g "$(slurp)" - | satty -f -'))
+-- hl.bind("ALT + K", hl.dsp.exec_cmd('grim -g "$(slurp)" - | satty -f -'))
+hl.bind("ALT + K", hl.dsp.exec_cmd('mark-shot'))
 hl.bind(
   "Print",
   hl.dsp.exec_cmd(

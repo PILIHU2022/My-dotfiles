@@ -1,3 +1,10 @@
+# 交互式终端自动进入 tmux；已在 tmux 内或临时设置 TMUX_AUTOSTART=0 时跳过。
+if [[ -o interactive && -t 0 && -t 1 && -z ${TMUX:-} &&
+  ${TMUX_AUTOSTART:-1} != 0 && ${TERM:-} != dumb ]] &&
+  (( $+commands[tmux] )); then
+  exec tmux -u new-session -A -s "${TMUX_SESSION:-main}"
+fi
+
 echo 'Hi!' $USER
 # source /etc/environment
 export SUDO_EDITOR=/bin/nvim

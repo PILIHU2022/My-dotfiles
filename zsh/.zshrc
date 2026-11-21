@@ -65,7 +65,6 @@ function dsh() {
     GIT_COMMITTER_EMAIL='noreply@deepseek.com' \
     command dsh "$@"
 }
-# alias dsh="ssh dsh@127.0.0.1 'dsh web'"
 
 # For Powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

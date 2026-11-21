@@ -1,6 +1,6 @@
 # tmux 配置与键位指南
 
-本包提供一份可直接使用的 tmux 配置：保留标准 `C-b` 前缀，增加 Vim 风格窗格操作，并用内置颜色实现 Catppuccin Mocha 主题。配置不依赖 TPM（tmux 插件管理器）、Catppuccin 插件或网络下载。
+本包提供一份可直接使用的 tmux 配置：保留标准 `C-b` 前缀，增加 Vim 风格窗格操作、性能监测和常用键位提示，并用内置颜色实现 Catppuccin Mocha 主题。配置不依赖 TPM（tmux 插件管理器）、Catppuccin 插件或网络下载。
 
 ## 文件与部署
 
@@ -25,9 +25,35 @@ tmux -f ~/.config/tmux/tmux.conf
 
 配置在 tmux 3.5a 上校验。修改后按 `C-b r` 重新加载，无需重启会话。
 
+## 终端自动启动与真彩色
+
+`zsh/.zshrc` 会让新开的交互式终端自动创建或附加名为 `main` 的 tmux 会话；
+已在 tmux 内运行时不会重复启动。临时跳过自动启动：
+
+```bash
+TMUX_AUTOSTART=0 zsh
+```
+
+指定其他会话名：
+
+```bash
+TMUX_SESSION=work zsh
+```
+
+配色方面：
+
+- `kitty/.config/kitty/kitty.conf` 已加载 Catppuccin Mocha 主题。
+- kitty 及其内部 tmux 会话会设置 `COLORTERM=truecolor`。
+- tmux 使用 `tmux-256color`，并为 `xterm*` 启用 `RGB` 终端能力。
+
+若颜色不正确，先确认终端本身支持真彩色，再检查 `echo "$TERM $COLORTERM"`。
+
 ## 键位表示法
 
 `C-b` 表示按住 `Ctrl` 再按 `b`，松开后按下一个键。例如 `C-b c` 是 `Ctrl+b`，松开，再按 `c`。`C-b C-b` 会把一个原始 `C-b` 发送给窗格内的程序。
+
+状态栏左侧常驻显示 `C-b ? help`、`C-b r reload` 和 `C-b d detach` 提示；
+其中 `C-b ?` 可查看 tmux 当前全部键位。
 
 | 操作 | 键位 | 说明 |
 | --- | --- | --- |
@@ -84,7 +110,38 @@ tmux -f ~/.config/tmux/tmux.conf
 
 - 背景使用 Mantle `#181825`，文字使用 Text `#cdd6f4`。
 - 会话标签使用 Mauve `#cba6f7`，当前窗口使用 Blue `#89b4fa`。
+- 性能信息使用 Green `#a6e3a1`，时间使用 Subtext0 `#a6adc8`。
 - 非活动窗口、消息框和选中项使用 Surface 色系。
 - 活动窗格边框为蓝色，搜索命中为黄色 `#f9e2af`。
 
-若十六进制颜色显示异常，确认终端和 `$TERM` 支持真彩色；配置已为 `xterm-256color` 启用 `Tc` 能力。
+若十六进制颜色显示异常，确认终端和 `$TERM` 支持真彩色；配置已为 `xterm-kitty`
+启用 `Tc`，并通过 `terminal-features` 为 `xterm*` 声明 `RGB` 能力。
+
+## 性能监测
+
+状态栏右侧每 5 秒显示 CPU 利用率、内存占用和 CPU 温度，例如：
+
+```text
+CPU 8% | MEM 34% | TEMP 45°C
+```
+
+数据由 `tmux/.config/tmux/scripts/system-status.sh` 采集，Stow 后位于
+`~/.config/tmux/scripts/system-status.sh`：
+
+- CPU 利用率通过两次 `/proc/stat` 采样差值计算；正常情况下复用上一次采样，
+  首次运行或缓存过期时短暂采样 0.2 秒。
+- 内存占用按 `/proc/meminfo` 的 `MemTotal` 与 `MemAvailable` 计算，
+  不把缓存全部算作已用内存。
+- CPU 温度优先读取 `coretemp`、`k10temp`、`cpu_thermal`、`soc_thermal`
+  等 hwmon/thermal sysfs 节点，无需安装 `lm_sensors`；读取不到时显示 `--`。
+
+CPU 采样缓存优先写入 `${XDG_RUNTIME_DIR}/tmux-status-${UID}/cpu`；
+运行时目录不可写时回退到 `${TMPDIR:-/tmp}/tmux-status-${UID}/cpu`。缓存不会进入仓库。
+手动验证：
+
+```bash
+bash -n ~/.config/tmux/scripts/system-status.sh
+~/.config/tmux/scripts/system-status.sh
+```
+
+如需降低开销，可把 `status-interval` 调大；修改后按 `C-b r` 重载配置。

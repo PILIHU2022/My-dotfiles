@@ -73,6 +73,22 @@ function dsh() {
     command dsh "$@"
 }
 
+## Terminal proxy
+function proxyon() {
+    export http_proxy="http://127.0.0.1:7890"
+    export https_proxy="$http_proxy"
+    export HTTP_PROXY="$http_proxy"
+    export HTTPS_PROXY="$http_proxy"
+    export no_proxy="localhost,127.0.0.1,::1"
+    export NO_PROXY="$no_proxy"
+    echo "Proxy enabled: $http_proxy"
+}
+
+function proxyoff() {
+    unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY no_proxy NO_PROXY
+    echo "Proxy disabled"
+}
+
 # For Powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -168,22 +184,6 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # Load plugins which are installed by `pacman`
 # source /usr/share/autojump/autojump.zsh
-
-# Load zoxide for quick `cd`
-eval "$(zoxide init zsh)"
-
-## zoxide 目录别名：`z <别名>` 直接跳转到对应目录
-## 例：z dsh -> ~/Projects/deepseek-harness（其余查询仍交给 zoxide）
-typeset -gA ZOXIDE_ALIASES=(
-    dsh "$HOME/Projects/deepseek-harness"
-)
-function z() {
-    if [[ "$#" -eq 1 && -d "${ZOXIDE_ALIASES[$1]:-}" ]]; then
-        __zoxide_cd "${ZOXIDE_ALIASES[$1]}"
-    else
-        __zoxide_z "$@"
-    fi
-}
 
 ## Options
 export _ZO_EXCLUDE_DIRS="/tmp:/var:/proc:/sys:/node_modules" # exclude huge folders

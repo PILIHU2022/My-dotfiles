@@ -8,3 +8,9 @@ case ":$PATH:" in
   *":$HOME/.local/bin:"*) ;;
   *) export PATH="$HOME/.local/bin:$PATH" ;;
 esac
+
+# npm 全局安装的 CLI（~/.npmrc 中 prefix=~/.npm-global）
+case ":$PATH:" in
+  *":$HOME/.npm-global/bin:"*) ;;
+  *) export PATH="$HOME/.npm-global/bin:$PATH" ;;
+esac

@@ -4,8 +4,7 @@
 # 脱敏项（真实值只存在于本地 mihomo/etc/mihomo/config.yaml 与线上
 # /etc/mihomo/config.yaml，两者都被 .gitignore 排除）：
 #   1. proxy-providers.独角兽.url 的机场地址与 token
-#   2. proxies 中 GCP 节点的 server / uuid / reality 公钥
-#   3. proxy-providers.良心云.url 的订阅主机与 token
+#   2. proxy-providers.良心云.url 的订阅主机与 token
 #
 # 部署：cp 本文件为 /etc/mihomo/config.yaml，再把占位符换回真实值。
 #   建议 install -m 0600 -o root -g root，避免订阅 token 与节点凭据被普通用户读取。
@@ -17,7 +16,9 @@
 # 规则集: https://ruleset.skk.moe/ (Sukka)
 # 分组结构: 借鉴 https://github.com/HenryChiao/MIHOMO_YAMLS 的分层与 filter 写法
 #           （只取结构，不套用其整份模板，见 docs/mihomo-config-structure.md）
-# 最后更新: 2026-11-07（订阅调整；国产 AI 直连；引入 Loyalsoldier 去广告）
+# 最后更新: 2026-11-14（国产 AI/Agent 全量直连；国内判定兜底 GEOSITE,cn + GEOIP,CN；
+#           DNS 全量 IP 形式 DoH（国内 DNSPod+Ali / 国外 Cloudflare+Google），
+#           直连模式由 direct-nameserver 兜底解析；yacd 直连；TUN IPv6 修复）
 # =============================================================================
 
 # ================================ 端口配置 ====================================
@@ -52,6 +53,10 @@ tun:
   mtu: 1400                   # 最大传输单元（部分环境需调小防断流）
   auto-route: true            # 自动配置路由表
   auto-detect-interface: true # 自动检测物理网卡
+  # TUN 的 IPv6 地址（mihomo 1.19 起 inet6-address 必须是列表）。不写这一项时
+  # auto-route 只安装 IPv4 默认路由，带 AAAA 记录的域名会从物理网卡直接出去，
+  # 连 mode: global 都拦不住（AccuWeather 的 api/dataservice 主机就是如此）。
+  inet6-address: [fdfe:dcba:9876::1/126]
   dns-hijack:                 # DNS 劫持：拦截所有 DNS 请求防止泄露
     - any:53                  # 劫持 UDP :53 流量
     - tcp://any:53            # 劫持 TCP :53 流量
@@ -90,6 +95,9 @@ dns:
   enhanced-mode: fake-ip      # DNS 模式: fake-ip（返回虚拟 IP，由 mihomo 代为发起连接）
   respect-rules: true         # 遵循规则路由（域名命中 DIRECT 则用 direct-nameserver 解析）
   fake-ip-range: 198.18.0.1/16  # fake-ip 地址段（不应与真实 IP 冲突）
+  # AAAA 也走 fake-ip（与 tun 的 IPv6 地址不同段）。不配这一项时 mihomo DNS 对
+  # AAAA 返回空，只有浏览器自带 DoH 等路径能拿到真实 IPv6，容易绕过 TUN（见 docs 3.9）。
+  fake-ip-range6: 'fdfe:dcba:9877::/64'
   use-hosts: false            # 不使用 /etc/hosts（防止 DNS 泄露）
   use-system-hosts: false     # 不使用系统 hosts（防止 DNS 泄露）
 
@@ -125,33 +133,45 @@ dns:
     - 119.29.29.29            # 腾讯 DNSPod
     - 223.5.5.5               # 阿里云 DNS
 
-  # ---- 兜底 DNS 服务器 ----
-  # 未命中 nameserver-policy 的域名使用此 DNS 解析
+  # ---- 兜底 DNS 服务器（国外）----
+  # 未命中 nameserver-policy 的域名使用此 DNS 解析。
+  # 一律用 **IP 形式的 DoH 端点**（不写 dns.google / doh.pub / dns.alidns.com 这类
+  # 域名）：域名形式的 DoH 必须先经 default-nameserver 明文 UDP 解析一次，那是一条
+  # 可被本地网络旁观的查询；IP 端点没有任何引导查询，DoH 万一不可用时也还能退回
+  # 纯 IP DNS（default-nameserver 保留纯 IP，见上）。
   nameserver:
-    - https://1.1.1.1/dns-query        # Cloudflare DoH
-    - https://dns.google/dns-query      # Google DoH
+    - https://1.1.1.1/dns-query        # Cloudflare DoH（IP 端点）
+    - https://8.8.8.8/dns-query         # Google DoH（IP 端点）
 
-  # ---- 直连流量专用 DNS ----
-  # 当规则命中 DIRECT 时，使用此 DNS 解析（国内 CDN 获得正确 IP）
+  # ---- 直连出口专用 DNS（国内）----
+  # 规则命中 DIRECT、或 mode: direct 时走 DIRECT 出站，DIRECT 出站解析域名用的
+  # 就是这里（mihomo 源码 adapter/outbound/direct.go → DirectHostResolver）。
+  # 这就是「直连模式/Proxy 选直连也还能正常解析、正常建连」的机制：
+  # 国外 DoH 直连不可达也没关系，连接改由国内 DoH 解析（见 docs 3.10.5）。
   direct-nameserver:
-    - https://doh.pub/dns-query         # 腾讯 DNSPod DoH
-    - https://dns.alidns.com/dns-query  # 阿里云 DoH
+    - https://1.12.12.12/dns-query      # DNSPod DoH（IP 端点）
+    - https://223.5.5.5/dns-query       # AliDNS DoH（IP 端点）
 
   # ---- 代理节点地址解析 ----
   # 用于解析订阅 URL 与节点 server 域名。原先用明文 UDP（119.29.29.29 /
   # 223.5.5.5）：机场节点域名在明文 DNS 下会被污染或直接丢弃，日志中出现大量
   # 「dns resolve failed: couldn't find ip」，节点拨不通、播放中断。
-  # 改用 DoH；DoH 服务器自身的地址由 default-nameserver 引导解析，无循环依赖。
+  # 改用 DoH（IP 端点，同时避免引导解析）。
   proxy-server-nameserver:
-    - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
+    - https://1.12.12.12/dns-query
+    - https://223.5.5.5/dns-query
 
   # ---- 按策略分流 DNS ----
+  # geosite:cn → 国内 DNS；geolocation-!cn → 国外 DNS。
+  # 国内条目显式加 #DIRECT：不依赖 china_ip 规则也能保证国内域名查询不经过代理；
+  # 国外条目沿用 respect-rules，规则模式下这条 DoH 连接本身走代理出口。
   nameserver-policy:
     "geosite:cn,private":              # 国内域名 + 私有域名
-      - https://doh.pub/dns-query
-      - https://dns.alidns.com/dns-query
+      - 'https://1.12.12.12/dns-query#DIRECT'   # DNSPod
+      - 'https://223.5.5.5/dns-query#DIRECT'    # AliDNS
     "geosite:geolocation-!cn":         # 非中国大陆域名
+      - https://1.1.1.1/dns-query               # Cloudflare
+      - https://8.8.8.8/dns-query               # Google
       - https://1.1.1.1/dns-query
       - https://dns.google/dns-query
 
@@ -168,30 +188,6 @@ proxies:
   - name: "直连"
     type: direct
     udp: true
-
-  # ---- GCP 免费节点 ----
-  # 来源: /etc/mihomo/profiles/GCP-Free.yaml —— 那是一份**完整的** mihomo 配置
-  # （自带 mixed-port / proxy-groups / rules），不能直接当 proxy-provider 用，
-  # 所以只把其中的 proxies 段原样搬进来，节点名保持不变便于对照。
-  # 真实凭据只写在本地 config.yaml（已 .gitignore），本示例用占位符。
-  - name: "GCP-Reality-443"
-    type: vless
-    server: YOUR_GCP_SERVER_IP
-    port: 443
-    uuid: YOUR_VLESS_UUID
-    network: tcp
-    udp: true
-    tls: true
-    flow: xtls-rprx-vision
-    servername: www.cloudflare.com
-    client-fingerprint: chrome
-    reality-opts:
-      public-key: YOUR_REALITY_PUBLIC_KEY
-      short-id: ""
-      # Xray 26.9.8+ 的 Reality 服务端要求客户端 ClientHello 携带
-      # X25519MLKEM768 key share；mihomo 默认会剔除，缺这一行会表现为
-      # "REALITY authentication failed" / 客户端一直超时。
-      support-x25519mlkem768: true
 
 # ================================ 订阅代理集 ==================================
 proxy-providers:
@@ -252,26 +248,52 @@ FilterTW: &FilterTW '^(?=.*(?i)(台湾|台灣|TW|Taiwan|TPE))(?!.*(剩余|到期
 FilterJP: &FilterJP '^(?=.*(?i)(日本|🇯🇵|JP|Japan|NRT|HND|KIX))(?!.*(剩余|到期)).*$'
 FilterSG: &FilterSG '^(?=.*(?i)(新加坡|狮城|獅城|🇸🇬|SG|Sing))(?!.*(剩余|到期)).*$'
 FilterUS: &FilterUS '^(?=.*(?i)(美国|美國|🇺🇸|US|USA|LAX|SJC|JFK|SFO))(?!.*(剩余|到期)).*$'
-# 「其他地区」= 不属于上面任何一组的节点（韩国/欧洲/南美/中东…以及 GCP 节点）
+# 「其他地区」= 不属于上面任何一组的节点（韩国/欧洲/南美/中东…）
 FilterOT: &FilterOT '^(?!.*(香港|🇭🇰|HK|Hong|台湾|台灣|TW|Taiwan|TPE|日本|🇯🇵|JP|Japan|NRT|HND|KIX|新加坡|狮城|獅城|🇸🇬|SG|Sing|美国|美國|🇺🇸|US|USA|LAX|SJC|JFK|SFO|直连|剩余|到期)).*$'
 
 # ================================ 代理组 ======================================
-# 分层：Proxy(总入口) → 地区策略(手动选) → 地区自动(url-test, hidden) → 节点
+# 面板显示顺序 = 这里的顺序：Proxy（总入口）→ 手动选择 → 自动选择 → 故障转移
+# → GLOBAL → 服务组 → 验证组 → 地区策略 → 地区自动（hidden）。
+# 分层：Proxy(总入口) → 地区策略(手动选) → 地区自动(url-test, hidden) → 节点。
 # 所有叶子组 hidden，面板里只剩需要点的条目；include-all 让新机场零改动接入。
 proxy-groups:
-  # ---------- 总入口 ----------
+  # ---------- 1. 总入口 ----------
   # MATCH 兜底目标。名字沿用 Proxy，是为了不让 cache.db 里的历史选择失效。
-  - {name: "Proxy", type: select, proxies: [手动选择, 自动选择, 故障转移, 香港策略, 台湾策略, 日本策略, 新加坡策略, 美国策略, 其他策略, GCP, 直连]}
+  - {name: "Proxy", type: select, proxies: [手动选择, 自动选择, 故障转移, 香港策略, 台湾策略, 日本策略, 新加坡策略, 美国策略, 其他策略, 直连]}
 
-  # ---------- 自动 / 手动 ----------
-  - {name: "手动选择", type: select, include-all: true, filter: *FilterAL, exclude-filter: 'GCP-Reality'}
-  - {name: "自动选择", <<: *BaseUT, hidden: false, include-all: true, filter: *FilterAL, exclude-filter: 'GCP-Reality'}
+  # ---------- 2. 手动选择 ----------
+  # 全量节点的手动列表（include-all + FilterAL 自动排除广告/到期节点）。
+  - {name: "手动选择", type: select, include-all: true, filter: *FilterAL}
 
-  # 故障转移：按「地区自动」顺序逐个试，第一个活着的不一定是延迟最低的，
-  # 但整组节点全挂时会自动往后切，避免单点故障直接断网。
+  # ---------- 3. 自动选择 ----------
+  # 全量节点的最低延迟自动优选（hidden: false，面板可见）。
+  - {name: "自动选择", <<: *BaseUT, hidden: false, include-all: true, filter: *FilterAL}
+
+  # ---------- 4. 故障转移 ----------
+  # 按「地区自动」顺序逐个试：第一个活着的不一定延迟最低，但整组节点全挂时会
+  # 自动往后切，避免单点故障直接断网。
   - {name: "故障转移", <<: *BaseFB, proxies: [香港自动, 日本自动, 新加坡自动, 美国自动, 其他策略, 直连]}
 
-  # ---------- 服务专用组 ----------
+  # ---------- 5. 全局模式入口（同时决定 yacd 的面板顺序）----------
+  # 两件事：
+  # 1) 内置 GLOBAL 的默认项是列表首项 DIRECT；cache.db 丢失或重启后，mode: global
+  #    会变成「全局直连」。显式定义 GLOBAL 并把首项设为 Proxy。
+  # 2) **yacd 的分组渲染顺序不看 YAML，而是看每个组在 GLOBAL 的 all 列表里的下标**
+  #    （yacd 源码 store/proxies.tsx 的 retrieveGroupNamesFrom：把 GLOBAL.all 当作
+  #    排序键，不在其中的组权重 -1 会被顶到最前面，GLOBAL 自己永远排最后）。
+  #    所以下面这个 proxies 列表就是面板顺序：显式列出的组按列出顺序排，include-all
+  #    追加的节点排在它们之后。想要调整面板顺序，改这里，不要改 YAML 里的位置。
+  #    顺序 = Proxy → 手动选择 → 自动选择 → 故障转移 → 服务组 → 地区策略 →
+  #    其他策略 → 隐藏组（*自动）。
+  - name: "GLOBAL"
+    type: select
+    include-all: true
+    proxies: [Proxy, 手动选择, 自动选择, 故障转移,
+              AI, 流媒体, 电报, 微软, 谷歌, GitHub, Apple_Service, 验证服务,
+              香港策略, 台湾策略, 日本策略, 新加坡策略, 美国策略, 其他策略,
+              香港自动, 台湾自动, 日本自动, 新加坡自动, 美国自动, 验证自动]
+
+  # ---------- 6. 服务专用组 ----------
   # 默认都跟 Proxy；需要让某个服务单独走地区时，在面板里改这一个组即可。
   - {name: "AI", <<: *SelectPY}
   - {name: "流媒体", <<: *SelectPY}
@@ -285,20 +307,31 @@ proxy-groups:
   # Apple 都走本机 CN 出口。
   - {name: "Apple_Service", type: select, proxies: [直连, Proxy, 香港策略, 台湾策略, 日本策略, 新加坡策略, 美国策略]}
 
-  # ---------- 地区策略（可见，默认选该地区的自动组） ----------
+  # ---------- 7. 人机验证（Cloudflare Turnstile）----------
+  # 2026-11-13 排障：commandcode.ai 注册/登录报「验证失败」。根因不是规则缺失，
+  # 而是机场部分出口 IP 会被 Cloudflare 在 challenges.cloudflare.com 上直接
+  # TLS reset（实测新加坡出口 13.229.143.80：curl 连续 10/10 失败，headless Chrome
+  # 只能拿到网络错误页；同一出口访问主站 commandcode.ai 却大多正常）。于是前端
+  # 加载不到 Turnstile 脚本，8 秒后报 "Verification didn't finish in time"。
+  # 注意：主站、api 与 challenges.cloudflare.com 必须同组同出口——better-auth
+  # 会把客户端 IP 作为 remoteip 提交 siteverify。
+  # 可见入口默认「验证自动」；若自动选的出口也被 CF 重置，可在面板手动改到某个
+  # 地区策略或「直连」（实测直连对 challenges 也可用，但主站可能受限，慎选）。
+  - {name: "验证服务", type: select, proxies: [验证自动, 美国策略, 日本策略, 香港策略, 台湾策略, 新加坡策略, 其他策略, 直连, Proxy]}
+
+  # 健康检查直接用验证端点本身：只选「能真正加载验证码」的出口，自动绕开被 CF
+  # reset 的 IP；tolerance 放大是为了避免验证过程中切节点导致 Turnstile token 失配。
+  - {name: "验证自动", type: url-test, url: 'https://challenges.cloudflare.com/cdn-cgi/trace', interval: 600, tolerance: 100, hidden: true, include-all: true, filter: *FilterAL}
+
+  # ---------- 8. 地区策略（可见，默认选该地区的自动组） ----------
   - {name: "香港策略", type: select, include-all: true, filter: *FilterHK, proxies: [香港自动]}
   - {name: "台湾策略", type: select, include-all: true, filter: *FilterTW, proxies: [台湾自动]}
   - {name: "日本策略", type: select, include-all: true, filter: *FilterJP, proxies: [日本自动]}
   - {name: "新加坡策略", type: select, include-all: true, filter: *FilterSG, proxies: [新加坡自动]}
   - {name: "美国策略", type: select, include-all: true, filter: *FilterUS, proxies: [美国自动]}
-  - {name: "其他策略", type: select, include-all: true, filter: *FilterOT, exclude-filter: 'GCP-Reality'}
+  - {name: "其他策略", type: select, include-all: true, filter: *FilterOT}
 
-  # ---------- 免费节点（独立入口） ----------
-  # 延迟极低（实测 0.08s），但会间歇性 "REALITY authentication failed"，
-  # 所以不参与自动优选，只在这里手动切；Proxy 里也留了一个入口。
-  - {name: "GCP", type: select, proxies: [GCP-Reality-443]}
-
-  # ---------- 地区自动（hidden，实现细节） ----------
+  # ---------- 9. 地区自动（hidden，实现细节） ----------
   - {name: "香港自动", <<: *BaseUT, include-all: true, filter: *FilterHK}
   - {name: "台湾自动", <<: *BaseUT, include-all: true, filter: *FilterTW}
   - {name: "日本自动", <<: *BaseUT, include-all: true, filter: *FilterJP}
@@ -349,6 +382,25 @@ rule-providers:
     format: yaml
     url: 'https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt'
     path: ./rule_set/loyalsoldier/reject.yaml
+    interval: 86400
+    proxy: Proxy
+
+  # ---- 国内 AI / Agent 域名（MetaCubeX 官方规则集，2026-11-14 新增）----
+  # 来源 https://github.com/MetaCubeX/meta-rules-dat 的 geosite 集合
+  # category-ai-cn，即 mihomo 官方 geosite 数据里「中国大陆 AI 服务」那一组：
+  #   https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-cn.yaml
+  # 共 129 条，覆盖 DeepSeek / Kimi / 智谱 / MiniMax / 百川 / 商汤 / 阶跃 /
+  # 豆包 / 扣子 / Trae / MarsCode / CodeBuddy / 元宝 / 星火 / 文心 / 通义 等；
+  # 上游每天自动构建，新出的国产 AI 服务不必再手工补（见 docs 3.5）。
+  # 坑：上游 yaml 是 Clash 的 domain payload（`payload:` 列表，`+.` 前缀表示
+  # 后缀匹配），所以必须 behavior: domain + format: yaml；写成 format: text
+  # 会解析出 0 条（与 loyalsoldier_reject 同一个坑）。
+  ai_cn:
+    type: http
+    behavior: domain
+    format: yaml
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-cn.yaml'
+    path: ./rule_set/metacubex/category-ai-cn.yaml
     interval: 86400
     proxy: Proxy
 
@@ -476,22 +528,42 @@ rules:
   # 中国境内域名/IP 直连，提高访问速度
   - RULE-SET,domestic_non_ip,DIRECT
   - RULE-SET,direct_non_ip,DIRECT
-  # ---- DeepSeek：国内服务，直连 ----
-  # sukka 的 domestic / direct / ai 三个列表都没有 deepseek；Loyalsoldier 的
-  # direct.txt 里有 +.deepseek.com 与 +.deepseeksvc.com。不显式加规则的话，
-  # api.deepseek.com 会一路落到 MATCH → Proxy（实测日志里就是 match Match/）。
+  # ---- yacd 面板：腾讯云国内节点，直连 ----
+  # 示例：面板域名解析到国内腾讯云 IP。走代理会被机场出口 reset
+  # （实测 TLS unexpected eof；直连 0.03s 返回 200）。根域 / www 在海外且
+  # 本身不可达，所以只对该主机名直连，不用 DOMAIN-SUFFIX 覆盖整域。
+  - DOMAIN,yacd.example.com,DIRECT       # 替换成你的面板域名
+  # ---- 国产 AI / Agent：直连（2026-11-07 起，2026-11-14 扩成全量）----
+  # 背景：sukka 的 domestic(884 行) / direct(232) / ai(68) / global(1289) 四张表
+  # 都不含国产 AI 域名，不显式加就一路落到 MATCH → Proxy（实测 qianwenai.com：
+  #   [TCP] ... --> qianwenai.com:443 match Match using Proxy[[良心云] ...]）。
+  #
+  # 现在分两层：
+  #   1) RULE-SET,ai_cn —— MetaCubeX 官方 geosite 的 category-ai-cn（129 条），
+  #      每天自动更新，新出的国产 AI / Agent 服务不用再手工补；
+  #   2) 下面的显式条目 —— 核心服务的确定性兜底（不依赖远程规则集是否拉取成功），
+  #      以及上游 ai_cn 尚未收录、但实测解析到国内 IP 的补充域名。
+  #
+  # 已由 domestic 表覆盖、不必重复加的：通义网页/通义灵码（← aliyun.com）、
+  # 阿里百炼/DashScope（← aliyuncs.com）、豆包（doubao.com）、元宝/混元/元器
+  # （← tencent.com）、文心/文心快码（← baidu.com）、千帆（← baidubce.com）、
+  # 火山方舟（← volces.com）、夸克（quark.cn）、有道（youdao.com）。
+  #
+  # 有意不覆盖的国际版（上游 ai_cn 里也有，但解析到境外 IP，直连反而绕远）：
+  #   qwen.ai / qwenlm.ai（阿里云新加坡、香港）、z.ai（智谱海外品牌）。
+  #   不写这三条的话，ai_cn 会把它们一并判成直连；显式指向 AI 组恢复原有的
+  #   「.ai 走代理」行为（sukka global 表里有 DOMAIN-SUFFIX,ai）。
+  #
+  # 2026-11-14 实测：qwen.ai / qwenlm.ai 解析到阿里云新加坡、香港（139.95 / 8.212），
+  # z.ai 解析到阿里云国际段（8.216），都不在国内。
+  - DOMAIN-SUFFIX,qwen.ai,AI                 # Qwen 国际版（阿里云新加坡）
+  - DOMAIN-SUFFIX,qwenlm.ai,AI               # Qwen 国际版
+  - DOMAIN-SUFFIX,z.ai,AI                    # 智谱海外品牌 Z.ai
+  - RULE-SET,ai_cn,DIRECT
+
+  # ---- 核心服务兜底（不依赖远程规则集）----
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
   - DOMAIN-SUFFIX,deepseeksvc.com,DIRECT
-  # ---- 国产 AI：直连（2026-11-07 补充） ----
-  # sukka 的 domestic(884 行) / direct(232) / ai(68) / global(1289) 四张表都不含
-  # 这些国产 AI 域名，不显式加就一路落到 MATCH → Proxy（实测 qianwenai.com：
-  #   [TCP] ... --> qianwenai.com:443 match Match using Proxy[[良心云] ...]）。
-  # 已由 domestic 表覆盖、不必重复加的：通义网页（tongyi.aliyun.com ← aliyun.com）、
-  # 阿里百炼（dashscope.aliyuncs.com ← aliyuncs.com）、豆包（doubao.com）、
-  # 元宝/混元（*.tencent.com）、文心（*.baidu.com）。
-  # 有意不覆盖的：Qwen 国际版 chat.qwen.ai（香港）/ qwen.ai（英国）——出海服务，
-  # 保持走代理，避免国内直连绕远。
-  # 下列域名实测都解析到国内 IP（阿里云 / 火山引擎 / 电信）：
   - DOMAIN-SUFFIX,qianwenai.com,DIRECT      # 通义千问
   - DOMAIN-SUFFIX,kimi.com,DIRECT           # Kimi（月之暗面）
   - DOMAIN-SUFFIX,moonshot.cn,DIRECT        # Kimi 国内站
@@ -499,10 +571,26 @@ rules:
   - DOMAIN-SUFFIX,chatglm.cn,DIRECT         # 智谱清言
   - DOMAIN-SUFFIX,minimaxi.com,DIRECT       # MiniMax
   - DOMAIN-SUFFIX,hailuoai.com,DIRECT       # 海螺 AI（MiniMax）
-  - DOMAIN-SUFFIX,stepfun.com,DIRECT        # 阶跃星辰
   - DOMAIN-SUFFIX,baichuan-ai.com,DIRECT    # 百川智能
   - DOMAIN-SUFFIX,sensetime.com,DIRECT      # 商汤
+  - DOMAIN-SUFFIX,stepfun.com,DIRECT        # 阶跃星辰
   - DOMAIN-SUFFIX,lingyiwanwu.com,DIRECT    # 零一万物
+
+  # ---- 上游 ai_cn 尚未收录的国产 AI / Agent（2026-11-14 逐一实测解析到国内 IP）----
+  - DOMAIN-SUFFIX,stepchat.cn,DIRECT        # 阶跃「跃问」聊天站
+  - DOMAIN-SUFFIX,yuewen.cn,DIRECT          # 跃问
+  - DOMAIN-SUFFIX,codegeex.cn,DIRECT        # 智谱 CodeGeeX（codegeex.com 在境外，不覆盖）
+  - DOMAIN-SUFFIX,qoder.cn,DIRECT           # 阿里 Qoder 国内站（qoder.com 在境外，不覆盖）
+  - DOMAIN-SUFFIX,iflow.cn,DIRECT           # 阿里心流 iFlow（Agent CLI）
+  - DOMAIN-SUFFIX,modelscope.cn,DIRECT      # 魔搭 ModelScope（模型 / MCP 广场）
+  - DOMAIN-SUFFIX,siliconflow.cn,DIRECT     # 硅基流动（siliconflow.com 在境外，不覆盖）
+  - DOMAIN-SUFFIX,xfyun.cn,DIRECT           # 讯飞开放平台（星火 API）
+  - DOMAIN-SUFFIX,modelbest.cn,DIRECT       # 面壁智能
+  - DOMAIN-SUFFIX,mobvoi.com,DIRECT         # 出门问问
+  - DOMAIN-SUFFIX,unisound.com,DIRECT       # 云知声
+  - DOMAIN-SUFFIX,emotibot.com,DIRECT       # 竹间智能
+  - DOMAIN-SUFFIX,vidu.com,DIRECT           # 生数科技 Vidu
+  - DOMAIN-SUFFIX,minimax.chat,DIRECT       # MiniMax 旧 API 域名（minimaxi.com 之外）
   - RULE-SET,apple_cn_non_ip,DIRECT
   # ---- Apple Music：锁定中国大陆 storefront ----
   # Apple 依据「出口 IP 归属地」选择 storefront。music.apple.com 原本被
@@ -527,6 +615,12 @@ rules:
   - RULE-SET,domestic_ip,DIRECT,no-resolve
   - RULE-SET,china_ip,DIRECT,no-resolve
   - IP-CIDR,203.0.113.1/32,DIRECT,no-resolve  # VPS 服务器直连
+  # ---- 国内域名兜底：GeoSite cn（2026-11-14）----
+  # skk 的 domestic 表只有 884 行；GeoSite 的 cn 集合实测 118,302 条记录，
+  # 覆盖大量国内中小站点和国产 AI / Agent 之外的长尾域名。这是纯域名判定：
+  # 命中即直连，**不触发任何 DNS 解析**，所以既不多一次查询，也不增加泄露面。
+  # 放在 [3] 段末尾（apple / AI 例外 / china_ip 之后），前面的显式规则优先。
+  - GEOSITE,cn,DIRECT
 
   # ======== [3.2] Tailscale 直连 ========
   # 与 dns.fake-ip-filter 里的 tailscale 域名配套：
@@ -577,6 +671,14 @@ rules:
   # gemini.google.com 也在 google.com 之下，必须在「谷歌」规则之前显式指向 AI
   - DOMAIN,gemini.google.com,AI
 
+  # ======== [6.5] 人机验证（Cloudflare Turnstile）========
+  # 与「验证服务」组配套：这些域名必须与主站同一出口，且该出口不能被 Cloudflare
+  # 在 challenges.cloudflare.com 上重置，否则注册/登录的 Turnstile 校验拿不到
+  # token（典型表现：页面能打开、验证码区域空白或转圈，最后提示「验证失败」）。
+  - DOMAIN-SUFFIX,challenges.cloudflare.com,验证服务
+  - DOMAIN-SUFFIX,turnstile.cloudflare.com,验证服务
+  - DOMAIN-SUFFIX,commandcode.ai,验证服务
+
   # ======== [7] 流媒体 ========
   # Netflix / Disney+ / YouTube / Spotify 等流媒体走代理
   - RULE-SET,stream_non_ip,流媒体
@@ -594,6 +696,14 @@ rules:
 
   # ======== [10] 谷歌 / GitHub ========
   # 单独成组，方便把开发流量固定到某个地区
+  # ---- Google Fonts：DIRECT（2026-11-14）----
+  # fonts.gstatic.com / fonts.googleapis.com 走代理会在 TLS 握手阶段被机场出口
+  # 掐断（unexpected eof，多节点实测一致），Google Maps 图标因此全变豆腐块。
+  # 这两个域名有 Google 中国本地 CDN 节点，直连即可；respect-rules 下 DIRECT
+  # 出站用 direct-nameserver（国内 DoH）解析，天然拿到本地 CDN IP。
+  # 细见 docs/mihomo-config-structure.md 3.10。
+  - DOMAIN-SUFFIX,fonts.googleapis.com,DIRECT
+  - DOMAIN-SUFFIX,fonts.gstatic.com,DIRECT
   - DOMAIN-SUFFIX,google.com,谷歌
   - DOMAIN-SUFFIX,googleapis.com,谷歌
   - DOMAIN-SUFFIX,gstatic.com,谷歌
@@ -618,6 +728,23 @@ rules:
   # ======== [13] 全球其余 ========
   # 未被以上规则匹配的境外域名/服务走代理
   - RULE-SET,global_non_ip,Proxy
+
+  # ======== [13.5] 国内 IP 兜底判断 ========
+  # 域名层规则全部没命中时，再按「解析结果是不是国内 IP」判一次：是 → 直连，
+  # 否则落到下面的 MATCH → Proxy。这条专门兜住「GeoSite cn / skk 表都没收录，
+  # 但实际是国内服务」的域名，以及裸 IP 连接。
+  #
+  # 为什么不能带 no-resolve：fake-ip 模式下连接目标是 198.18.x 假地址，带
+  # no-resolve 的 IP 规则会直接跳过（同 3.8 的 yacd 案例）；不带 no-resolve 时
+  # mihomo 会用**内部 DoH** 解析域名后再比较，系统解析器全程不参与。
+  #
+  # 泄露面：只有「前面所有规则都没命中」的域名才会触发这次解析，用的是
+  # dns.nameserver（1.1.1.1 / 8.8.8.8 的 IP 形式 DoH）。在 respect-rules 下，
+  # 这条 DoH 连接本身命中 MATCH → Proxy，即查询从代理出口发出：本地网络只能
+  # 看到「到代理节点的流量」，看不到 DNS 内容（实测日志见 docs 3.10）。
+  # 代价：未知域名多一次 DNS 往返；若该域名在境外 DNS 视角下解析到海外 CDN，
+  # 会被判成非国内而继续走代理——方向是安全的（宁可走代理，不误判直连）。
+  - GEOIP,CN,DIRECT
 
   # ======== [14] 兜底 ========
   # 所有未被任何规则匹配的流量，默认走 Proxy 组

@@ -35,14 +35,14 @@
 | `starship` | `~/.config` | starship 提示符 |
 | `steam` | `~/.local/share/applications` | Steam 输入法修复（XWayland / 原生 Wayland 两档 desktop 文件） |
 | `systemd` | `~/.config/systemd/user` | 用户级 systemd unit 与启动模块化 |
-| `tmux` | `~/.config/tmux` | tmux 配置：常规键位、Vim 风格窗格操作与 Catppuccin Mocha 主题 |
+| `tmux` | `~/.config/tmux` | tmux 配置：性能监测、键位提示、Vim 风格窗格操作与 Catppuccin Mocha 主题 |
 | `uwsm` | `~/.config/uwsm` | uwsm 会话管理 |
 | `waybar` | `~/.config/waybar` | waybar 状态栏、样式与通知历史/免打扰脚本 |
 | `wofi` | `~/.config/wofi` | wofi 启动器 |
 | `xdg-desktop-portal` | `~/.config/xdg-desktop-portal` | 桌面门户配置 |
 | `yazi` | `~/.config/yazi` | yazi 文件管理器 |
 | `zi-deprecated` | `~/.config/zi` | 已弃用的 zi/zinit 插件目录（插件以 git submodule 引入） |
-| `zsh` | `~/` | `.zshenv`、`.zprofile`、`.zshrc` |
+| `zsh` | `~/` | `.zshenv`、`.zprofile`、`.zshrc`（终端自动进入 tmux） |
 | `zsh-zim` | `~/.config/zsh-zim` | zim 框架配置 |
 | `zsh-zinit` | `~/.config/zsh` | zinit 框架配置 |
 

@@ -35,7 +35,7 @@
 | `starship` | `~/.config` | starship 提示符 |
 | `steam` | `~/.local/share/applications` | Steam 输入法修复（XWayland / 原生 Wayland 两档 desktop 文件） |
 | `systemd` | `~/.config/systemd/user` | 用户级 systemd unit 与启动模块化 |
-| `tmux` | `~/.config/tmux` | tmux 配置：性能监测、键位提示、Vim 风格窗格操作与 Catppuccin Mocha 主题 |
+| `tmux` | `~/.config/tmux` | tmux 配置：本地/SSH 双层前缀避让、性能监测、Vim 风格窗格操作与 Catppuccin Mocha 主题 |
 | `uwsm` | `~/.config/uwsm` | uwsm 会话管理 |
 | `waybar` | `~/.config/waybar` | waybar 状态栏、样式与通知历史/免打扰脚本 |
 | `wofi` | `~/.config/wofi` | wofi 启动器 |

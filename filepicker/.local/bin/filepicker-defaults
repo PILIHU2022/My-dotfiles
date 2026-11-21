@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# filepicker-defaults — 统一桌面文件选择界面的默认排序。
+#
+# 目标：Thunar 和 GTK 文件对话框都按
+#   “文件夹在前 → 文件在后，各自按名称 A→Z（大小写不敏感）”
+# 排列，并把 Thunar 钉成打开目录的默认程序。
+#
+# 为什么不直接写成 Stow 管理的文本配置：这些值分别落在 dconf（GTK 文件
+# 对话框）、xfconf（Thunar）和 mimeapps.list（默认文件管理器）里，都是
+# 运行时数据库或由程序改写的文件，软链接会被覆盖。因此由用户级 oneshot
+# 在登录时幂等写入；本脚本也可以随时手动重跑。
+#
+# 用法：
+#   filepicker-defaults           应用全部设置
+#   filepicker-defaults --check   只检查当前值，不一致时退出 1
+set -euo pipefail
+
+GTK3_SCHEMA="org.gtk.Settings.FileChooser"
+GTK4_SCHEMA="org.gtk.gtk4.Settings.FileChooser"
+
+apply_gtk() {
+  local schema=$1
+  gsettings set "$schema" sort-column "'name'"
+  gsettings set "$schema" sort-order "'ascending'"
+  gsettings set "$schema" sort-directories-first true
+}
+
+check_gtk() {
+  local schema=$1
+  [[ $(gsettings get "$schema" sort-column) == "'name'" ]] \
+    && [[ $(gsettings get "$schema" sort-order) == "'ascending'" ]] \
+    && [[ $(gsettings get "$schema" sort-directories-first) == "true" ]]
+}
+
+apply_thunar() {
+  # -n/--create 对已存在的属性等同于 set，因此重复执行是幂等的。
+  xfconf-query -c thunar -p /misc-folders-first -n -t bool -s true
+  xfconf-query -c thunar -p /misc-case-sensitive -n -t bool -s false
+  # last-sort-* 是“新窗口的默认排序”，不是每个目录的记忆值。
+  xfconf-query -c thunar -p /last-sort-column -n -t string -s THUNAR_COLUMN_NAME
+  xfconf-query -c thunar -p /last-sort-order -n -t string -s GTK_SORT_ASCENDING
+}
+
+check_thunar() {
+  [[ $(xfconf-query -c thunar -p /misc-folders-first) == "true" ]] \
+    && [[ $(xfconf-query -c thunar -p /misc-case-sensitive) == "false" ]] \
+    && [[ $(xfconf-query -c thunar -p /last-sort-column) == "THUNAR_COLUMN_NAME" ]] \
+    && [[ $(xfconf-query -c thunar -p /last-sort-order) == "GTK_SORT_ASCENDING" ]]
+}
+
+main() {
+  case "${1:-}" in
+    --check)
+      local failed=0
+      check_gtk "$GTK3_SCHEMA" || { echo "GTK3 文件对话框排序不符" >&2; failed=1; }
+      check_gtk "$GTK4_SCHEMA" || { echo "GTK4 文件对话框排序不符" >&2; failed=1; }
+      check_thunar || { echo "Thunar 排序不符" >&2; failed=1; }
+      [[ $(xdg-mime query default inode/directory) == "thunar.desktop" ]] \
+        || { echo "inode/directory 的默认程序不是 thunar.desktop" >&2; failed=1; }
+      if (( failed != 0 )); then
+        return 1
+      fi
+      echo "filepicker defaults: OK"
+      ;;
+    "")
+      apply_gtk "$GTK3_SCHEMA"
+      apply_gtk "$GTK4_SCHEMA"
+      apply_thunar
+      xdg-mime default thunar.desktop inode/directory
+      ;;
+    *)
+      echo "用法: ${0##*/} [--check]" >&2
+      return 2
+      ;;
+  esac
+}
+
+main "$@"

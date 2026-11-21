@@ -16,6 +16,7 @@
 | `etc` | `/etc` | 系统级配置（`doas.conf`、`pacman.conf`、`paru.conf`、风扇曲线与 `fancontrol.service` 等），需要 root 权限部署 |
 | `fastfetch` | `~/.config/fastfetch` | fastfetch 系统信息展示 |
 | `fcitx5` | `~/.config/fcitx5` | fcitx5 输入法配置 |
+| `filepicker` | `~/.local/bin` + `~/.config/systemd/user` | 统一文件选择器：Thunar 与 GTK 文件对话框的“文件夹优先 + 名称 A-Z”排序、Thunar 作为默认目录打开程序（含用户服务） |
 | `fontconfig` | `~/.config/fontconfig` | 全局字体替换规则与 `conf.d/` 片段（Typora、网页图标字体等） |
 | `fuzzel` | `~/.config/fuzzel` | fuzzel 应用启动器 |
 | `gtk3.0` | `~/.config/gtk-3.0` | GTK3 主题与外观 |
@@ -100,6 +101,7 @@ sudo stow -d . -t / --no-folding etc
 | [systemd-units-review-and-modularization.md](docs/systemd-units-review-and-modularization.md) | systemd user unit 审查与启动模块化 |
 | [tmux-configuration.md](docs/tmux-configuration.md) | tmux 键位、复制模式、会话操作与 Catppuccin Mocha 主题 |
 | [file-dialog-ime-and-clipboard.md](docs/file-dialog-ime-and-clipboard.md) | Firefox 系统文件对话框的输入法与剪贴板问题 |
+| [filepicker-unification.md](docs/filepicker-unification.md) | 文件选择器统一：Thunar + GTK 对话框的排序、默认程序与 portal 后端 |
 | [dsh-user-migration-and-workspace-permissions.md](docs/dsh-user-migration-and-workspace-permissions.md) | 工作区权限修复与用户迁移说明 |
 | [dsh-write-tool-permission-behavior.md](docs/dsh-write-tool-permission-behavior.md) | DSH write 工具权限行为的实测结论 |
 | [dsh-pnpm-store-mismatch-after-user-migration.md](docs/dsh-pnpm-store-mismatch-after-user-migration.md) | pnpm store 不一致（`ERR_PNPM_UNEXPECTED_STORE`）的排查与修复 |

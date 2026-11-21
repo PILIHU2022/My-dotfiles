@@ -1,0 +1,16 @@
+[Unit]
+Description=Unify file picker defaults: folders first, then files A-Z
+Documentation=man:gsettings(1) man:xdg-mime(1) https://docs.xfce.org/xfce/xfconf/xfconf-query
+# 这些设置分别落在 dconf、xfconf 和 mimeapps.list 里，无法用 Stow 管理；
+# 登录时由 filepicker 包里的 ~/.local/bin/filepicker-defaults 幂等写入。
+# 重复执行安全；手动检查：filepicker-defaults --check
+PartOf=graphical-session.target hyprland-autostart.target
+After=graphical-session.target hyprland-autostart.target dbus.socket
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=%h/.local/bin/filepicker-defaults
+
+[Install]
+WantedBy=hyprland-autostart.target

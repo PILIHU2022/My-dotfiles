@@ -101,6 +101,7 @@ graphical-session.target                  （由 uwsm 拉起；RefuseManualStart
 │   ├── Wants=hyprpolkitagent.service     （发行版 unit，含 ConditionEnvironment）
 │   └── hyprland-autostart.target.wants/
 │       ├── fcitx5.service
+│       ├── filepicker-defaults.service   ← 文件选择器默认值，见 docs/filepicker-unification.md
 │       ├── mako.service                  ← 通知守护进程，Conflicts=dunst.service
 │       ├── swww-daemon.service
 │       ├── swww-wallpaper.service        （Requires + PartOf swww-daemon）

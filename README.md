@@ -9,7 +9,6 @@
 | 包 | 部署位置 | 内容 |
 | --- | --- | --- |
 | `aria2` | `~/.config/aria2` | aria2 下载器配置（RPC、BT、DHT 等） |
-| `audiosnoop` | `~/.config/audiosnoop` + `~/.local/bin` + `~/.config/systemd/user` | 声音播放审计：记录哪个软件在什么时候响了（含用户服务） |
 | `Code` | `~/.config/Code` | VS Code 用户设置 |
 | `dunst` | `~/.config/dunst` | dunst 通知守护配置（含备份主题） |
 | `electron` | `~/.config` | Electron 应用通用启动参数 |
@@ -95,7 +94,6 @@ sudo stow -d . -t / --no-folding etc
 | 文档 | 主题 |
 | --- | --- |
 | [mihomo-config-structure.md](docs/mihomo-config-structure.md) | mihomo 配置结构：分组分层、profile 机制与部署 |
-| [audiosnoop-sound-attribution.md](docs/audiosnoop-sound-attribution.md) | 声音播放审计：定位陌生音效的来源（原理、数据模型、排查剧本） |
 | [stow-mihomo-management.md](docs/stow-mihomo-management.md) | 用 GNU Stow 管理 mihomo 配置的可行性与方案 |
 | [tailscale-mihomo-fakeip-conflict.md](docs/tailscale-mihomo-fakeip-conflict.md) | Tailscale 与 mihomo（TUN/fake-ip）冲突的排查与修复 |
 | [systemd-units-review-and-modularization.md](docs/systemd-units-review-and-modularization.md) | systemd user unit 审查与启动模块化 |

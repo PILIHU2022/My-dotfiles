@@ -70,3 +70,9 @@
 .config/nvim/lazy-lock.json
 .config/nvim-mimo/
 Mozilla-chrome.tar.zstd
+
+# audiosnoop：本机声音播放审计工具，仅本机自用，不入版本库。
+# 从索引移除后本地文件仍在，可继续 stow；运行时数据本来就在 XDG 目录
+# （~/.local/share/audiosnoop/{audiosnoop.db,clips}），不需要额外忽略。
+/audiosnoop/
+/docs/audiosnoop-sound-attribution.md

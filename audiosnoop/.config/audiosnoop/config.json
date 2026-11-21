@@ -1,7 +1,0 @@
-{
-  "_readme": "audiosnoop 配置。只写需要改的键即可，未出现的键使用程序内置默认值；以下划线开头的键会被忽略。全部键与含义见 docs/audiosnoop-sound-attribution.md。片段保存与桌面通知默认关闭：前者占空间且会录到环境音，后者排查时很有用但日常偏吵。",
-  "capture_clips": false,
-  "notify": false,
-  "notify_sound_too": false,
-  "retention_days": 30
-}

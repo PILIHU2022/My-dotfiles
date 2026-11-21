@@ -72,7 +72,19 @@ fontconfig 层面的限制：
 * 还有一个能让“通用族下的 PUA 图标”显示出来的 hack：用 `<edit mode="prepend_first">` 把 `Symbols Nerd Font` 顶成 sans-serif/serif/monospace 替换列表的第一个族（Firefox 会把 font group 的首字体直接用于该字符，绕过 PUA 检查）。但它会让 Firefox 里**所有网页**的符号、盲文、几何图形字形改成 Nerd Font 的一套（实测不止基线偏移，字形明显不同），还有 `Symbols Nerd Font` 覆盖范围有限的问题，所以**没有默认启用**。只建议用 `prgname="firefox"` 限定作用域、且能接受字形变化时再开。
 * Gecko 里相关代码：`gfx/thebes/gfxPlatformFontList.cpp` 的 `InitializeCodepointsWithNoFonts()`（启动即把 U+E000–F8FF 和补充私用区写入“无字体码位”）、`gfx/thebes/gfxTextRun.cpp` 的 `gfxFontGroup::FindFontForChar()`（PUA 字符命中 `SkipFontFallbackForChar` 后直接返回，不做 pref/system 回退）。也就是说这是 Firefox 的设计行为，不是本机字体缺失。
 
-验证：`fc-match 'Font Awesome 5 Free'` 应返回 `Font Awesome 7 Free`（Solid），`fc-match FontAwesome` 应返回 ariang 的 FontAwesome；改完重启 Firefox。如需强制重建缓存可 `fc-cache -f`。
+验证：`fc-match 'Font Awesome 5 Free'` 应返回 `Font Awesome 7 Free`（Solid），`fc-match FontAwesome` 应返回 ariang 的 FontAwesome，`fc-match 'SF Pro Icons'` 应返回 `SF Pro Text`；改完重启 Firefox。如需强制重建缓存可 `fc-cache -f`。
+
+# Apple 站点（music.apple.com）的 U+F8FF
+
+`./conf.d/61-apple-web-fonts.conf`：把网页请求的 `SF Pro` / `SF Pro Icons` 两个族名 `assign` 到本机真实存在、且含 U+F8FF 的 `SF Pro Text`。
+
+* 现象：music.apple.com 的「经典摇滚代表作品、 Music 经典摇滚」这类标题里，苹果 logo 显示成 `F8 FF` 豆腐块。
+* 根因：站点把 `Apple Music` 替换成 `\uF8FF\u202FMusic`（`index~*.js` 里的 `Cp()`）；页面 html 的字体栈是 `-apple-system,BlinkMacSystemFont,Apple Color Emoji,SF Pro,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif`，而本机装的是 `SF Pro Text` / `SF Pro Display` / `SF Pro Rounded` —— `SF Pro`、`SF Pro Icons` 都不是真实族名，fontconfig 会把它们模糊匹配到 sans-serif 首族（霞鹜文楷 屏幕阅读版），文楷没有 U+F8FF，于是按上面那条规则变成 hexbox。
+* 为什么能修：`SF Pro Text` 含 12 个 PUA 码位（U+F6D5–F6D8、F765、F799–F79B、F79E、F860、F861、F8FF）；`assign` 让 CSS 请求的族名解析到它，Firefox 的“显式指定字体”路径就能画出 U+F8FF。用 `assign` 而非 `prepend` 是为了不让原族名留在族列表里被再次模糊匹配回文楷。
+* 实测（无头 Firefox + 站点原样字体栈 + 截图对照）：替换前 `经典摇滚代表作品、[F8 FF] Music 经典摇滚`，替换后正常显示苹果 logo；正文、中文（仍是文楷）、其它站点都不变。
+* 不处理 `-apple-system` / `BlinkMacSystemFont`：Firefox 在 Linux 上把它们当 `system-ui` 处理，对这两个族名写规则实测**无效**；所以正文中文仍走 `fonts.conf` 的 `system-ui → sans-serif → 霞鹜文楷`。想让 Apple 站点用苹方/Noto 黑体，只能从 Firefox 侧下手（`userContent.css` 或 `font.name.*` 偏好），不是 fontconfig 的活。
+* 局限：本机没有 Apple 的 `SF Pro Icons`，只能拿 `SF Pro Text` 顶，除苹果 logo 之外的 SF Pro Icons 私有图标仍然缺字（不会变成错误图标，只是依旧缺）；`@font-face` 同名加载失败的情况依旧救不了。
+* 顺带确认：music.apple.com 的播放三角、随机播放、加入/移出资料库按钮（含“已加入”的 ✓）都是内联 SVG path，**不受字体影响**；`从资料库中删除` 只是该按钮在“已在资料库”状态下的 aria-label，不是字体替换画出来的。证据图：`docs/fontconfig-apple-music-checkmark.png`（✓ 形状与站点 path 对照）、`docs/fontconfig-apple-music-apple-logo-hexbox.png`（修之前的 hexbox）、`docs/fontconfig-apple-music-after-fix.png`（修之后的同一条字体栈）。
 
 # 使用须知
 

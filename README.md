@@ -9,10 +9,11 @@
 | 包 | 部署位置 | 内容 |
 | --- | --- | --- |
 | `aria2` | `~/.config/aria2` | aria2 下载器配置（RPC、BT、DHT 等） |
+| `audiosnoop` | `~/.config/audiosnoop` + `~/.local/bin` + `~/.config/systemd/user` | 声音播放审计：记录哪个软件在什么时候响了（含用户服务） |
 | `Code` | `~/.config/Code` | VS Code 用户设置 |
 | `dunst` | `~/.config/dunst` | dunst 通知守护配置（含备份主题） |
 | `electron` | `~/.config` | Electron 应用通用启动参数 |
-| `etc` | `/etc` | 系统级配置（`doas.conf`、`pacman.conf`、`paru.conf`、风扇曲线等），需要 root 权限部署 |
+| `etc` | `/etc` | 系统级配置（`doas.conf`、`pacman.conf`、`paru.conf`、风扇曲线与 `fancontrol.service` 等），需要 root 权限部署 |
 | `fastfetch` | `~/.config/fastfetch` | fastfetch 系统信息展示 |
 | `fcitx5` | `~/.config/fcitx5` | fcitx5 输入法配置 |
 | `fontconfig` | `~/.config/fontconfig` | 全局字体替换规则与 `conf.d/` 片段（Typora、网页图标字体等） |
@@ -71,13 +72,19 @@ stow -d . -t ~ --restow aria2 kitty waybar zsh
 系统级包（`etc/`、`mihomo/`）的目标目录是 `/`，需要 root 且建议先 `--simulate` 预览：
 
 ```bash
-sudo stow -d . -t / -n -v etc      # 只预览，不落盘
-sudo stow -d . -t / etc
+sudo stow -d . -t / -n -v --no-folding etc      # 只预览，不落盘
+sudo stow -d . -t / --no-folding etc
 ```
 
 注意事项：
 
-- 目标路径已有同名真实文件时 stow 会报冲突，先备份或删除再 stow。
+- 系统级包一律加 `--no-folding`：避免目标目录缺失时把 `/etc/systemd/system` 之类
+  的整个目录折叠成指向用户可写仓库的软链（详见 `docs/stow-mihomo-management.md` §3.3）。
+- 目标路径已有同名真实文件时 stow 会报冲突，且**整包操作会整体中止**，先备份或删除再 stow。
+- `etc` 包里的 `etc/systemd/system/fancontrol.service` 会部署为
+  `/etc/systemd/system/fancontrol.service`（覆盖发行版同名 unit），并自带
+  `multi-user.target.wants/` 启用链；本机若已 `systemctl enable fancontrol`，
+  先 `sudo systemctl disable fancontrol.service` 再 stow，否则启用链会冲突。
 - `nvim` 与 `nvim_ds-lazyvim` 都部署到 `~/.config/nvim`，**不要同时 stow**。
 - 删除/回滚后若仍有残留空目录，可自行 `rmdir` 清理。
 
@@ -86,6 +93,7 @@ sudo stow -d . -t / etc
 | 文档 | 主题 |
 | --- | --- |
 | [mihomo-config-structure.md](docs/mihomo-config-structure.md) | mihomo 配置结构：分组分层、profile 机制与部署 |
+| [audiosnoop-sound-attribution.md](docs/audiosnoop-sound-attribution.md) | 声音播放审计：定位陌生音效的来源（原理、数据模型、排查剧本） |
 | [stow-mihomo-management.md](docs/stow-mihomo-management.md) | 用 GNU Stow 管理 mihomo 配置的可行性与方案 |
 | [tailscale-mihomo-fakeip-conflict.md](docs/tailscale-mihomo-fakeip-conflict.md) | Tailscale 与 mihomo（TUN/fake-ip）冲突的排查与修复 |
 | [systemd-units-review-and-modularization.md](docs/systemd-units-review-and-modularization.md) | systemd user unit 审查与启动模块化 |
@@ -105,7 +113,7 @@ sudo stow -d . -t / etc
 - **脱敏与占位**：仓库中不出现真实个人信息。常见占位符：
   - 邮箱 `user@example.com`、密钥 ID `0123456789ABCDEF`、SSH 指纹 `SHA256:PLACEHOLDER_FINGERPRINT`
   - 家目录统一写作 `/home/user`（脚本内优先用 `$HOME` / `os.path.expanduser("~")`）
-  - 订阅与节点：`YOUR_SUBSCRIPTION_TOKEN`、`YOUR_AIRPORT_HOST`、`YOUR_GCP_SERVER_IP` 等
+  - 订阅与节点：`YOUR_SUBSCRIPTION_TOKEN`、`YOUR_AIRPORT_HOST`、`YOUR_LIANGXIN_HOST` 等
   - 公网 VPS 示例地址：`203.0.113.1`（文档保留段）
   - 字体族名 `Iosevka Spark Mono` 等属于真实字体名，按原样保留（改名会导致字体匹配失败）
 - **运行时数据不入库**：`mihomo/config.yaml`、`profiles/`、`GeoIP.dat`、`cache.db`，

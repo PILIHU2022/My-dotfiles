@@ -6,6 +6,21 @@ Documentation=https://fcitx-im.org/
 # 原先写成两行 PartOf=，这里合并；After= 也补上了 hyprland-autostart.target。
 PartOf=graphical-session.target hyprland-autostart.target
 After=graphical-session.target hyprland-autostart.target
+# 【重要】本单元**故意不启用**（不挂到 hyprland-autostart.target.wants/）。
+# uwsm 已经按 /etc/xdg/autostart/org.fcitx.Fcitx5.desktop 自动生成
+# `app-org.fcitx.Fcitx5@autostart.service` 来启动 fcitx5；两边同时拉会各起一个
+# 实例抢 org.fcitx.Fcitx5 这个 D-Bus 名，抢输的那个在启动时报
+#   Failed to create addon: dbus  Unable to request dbus name. Is there another fcitx already running?
+# 然后立即退出，被 Restart=always 无限拉起（实测 2–3 秒一轮，一上午 9000+ 次）。
+# 需要改由 systemd 独占管理时：
+#   systemctl --user mask app-org.fcitx.Fcitx5@autostart.service
+#   systemctl --user enable --now fcitx5.service
+# 并把下面 [Install] 注释里的 WantedBy 恢复。
+#
+# 启动限流：默认策略（5 次/10 秒）配合 RestartSec=3 恰好永远触发不到，
+# 会成为真正的死循环；这里显式收紧，失败 5 次后让单元进入 failed 便于发现。
+StartLimitIntervalSec=60
+StartLimitBurst=5
 
 [Service]
 Type=exec
@@ -14,5 +29,7 @@ Restart=always
 RestartSec=3
 Slice=app-graphical.slice
 
-[Install]
-WantedBy=hyprland-autostart.target
+# 刻意不提供 [Install] 段：本单元不由 systemd 开机自启（见上方说明）。
+# 若要改回 systemd 独占，取消下面注释并 `systemctl --user enable fcitx5.service`。
+# [Install]
+# WantedBy=hyprland-autostart.target

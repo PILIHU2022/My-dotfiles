@@ -1,8 +1,14 @@
-# 交互式终端自动进入 tmux；已在 tmux 内或临时设置 TMUX_AUTOSTART=0 时跳过。
+# 每次新开交互式终端都新建一个 tmux session；已在 tmux 内或临时设置
+# TMUX_AUTOSTART=0 时跳过。默认名称包含时间与 PID，避免并发启动时冲突。
+# 显式设置 TMUX_SESSION 时沿用旧行为：同名会话存在则附加，否则新建。
 if [[ -o interactive && -t 0 && -t 1 && -z ${TMUX:-} &&
   ${TMUX_AUTOSTART:-1} != 0 && ${TERM:-} != dumb ]] &&
   (( $+commands[tmux] )); then
-  exec tmux -u new-session -A -s "${TMUX_SESSION:-main}"
+  if [[ -n ${TMUX_SESSION:-} ]]; then
+    exec tmux -u new-session -A -c "$PWD" -s "$TMUX_SESSION"
+  else
+    exec tmux -u new-session -c "$PWD" -s "term-$(date +%Y%m%d-%H%M%S)-$$"
+  fi
 fi
 
 echo 'Hi!' $USER
@@ -88,6 +94,8 @@ function proxyoff() {
     unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY no_proxy NO_PROXY
     echo "Proxy disabled"
 }
+
+export GPG_TTY=$(tty)
 
 # For Powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

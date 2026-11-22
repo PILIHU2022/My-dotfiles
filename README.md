@@ -42,7 +42,7 @@
 | `xdg-desktop-portal` | `~/.config/xdg-desktop-portal` | 桌面门户配置 |
 | `yazi` | `~/.config/yazi` | yazi 文件管理器 |
 | `zi-deprecated` | `~/.config/zi` | 已弃用的 zi/zinit 插件目录（插件以 git submodule 引入） |
-| `zsh` | `~/` | `.zshenv`、`.zprofile`、`.zshrc`（终端自动进入 tmux） |
+| `zsh` | `~/` | `.zshenv`、`.zprofile`、`.zshrc`（终端自动新建 tmux 会话） |
 | `zsh-zim` | `~/.config/zsh-zim` | zim 框架配置 |
 | `zsh-zinit` | `~/.config/zsh` | zinit 框架配置 |
 

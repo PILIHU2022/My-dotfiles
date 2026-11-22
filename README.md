@@ -98,6 +98,7 @@ sudo stow -d . -t / --no-folding etc
 | [tailscale-mihomo-fakeip-conflict.md](docs/tailscale-mihomo-fakeip-conflict.md) | Tailscale 与 mihomo（TUN/fake-ip）冲突的排查与修复 |
 | [systemd-units-review-and-modularization.md](docs/systemd-units-review-and-modularization.md) | systemd user unit 审查与启动模块化 |
 | [tmux-configuration.md](docs/tmux-configuration.md) | tmux 键位、复制模式、会话操作与 Catppuccin Mocha 主题 |
+| [tmux-keybindings.md](docs/tmux-keybindings.md) | tmux 按键详细说明：操作步骤、后续切换与会话树重命名 |
 | [file-dialog-ime-and-clipboard.md](docs/file-dialog-ime-and-clipboard.md) | Firefox 系统文件对话框的输入法与剪贴板问题 |
 | [filepicker-unification.md](docs/filepicker-unification.md) | 文件选择器统一：Thunar + GTK 对话框的排序、默认程序与 portal 后端 |
 | [dsh-user-migration-and-workspace-permissions.md](docs/dsh-user-migration-and-workspace-permissions.md) | 工作区权限修复与用户迁移说明 |

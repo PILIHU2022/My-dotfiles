@@ -96,6 +96,7 @@ sudo stow -d . -t / --no-folding etc
 | [mihomo-config-structure.md](docs/mihomo-config-structure.md) | mihomo 配置结构：分组分层、profile 机制与部署 |
 | [stow-mihomo-management.md](docs/stow-mihomo-management.md) | 用 GNU Stow 管理 mihomo 配置的可行性与方案 |
 | [tailscale-mihomo-fakeip-conflict.md](docs/tailscale-mihomo-fakeip-conflict.md) | Tailscale 与 mihomo（TUN/fake-ip）冲突的排查与修复 |
+| [apple-music-storefront-redirect.md](docs/apple-music-storefront-redirect.md) | Apple Music 网页版跳 /us、/cn 与播放报错的根因和修复 |
 | [systemd-units-review-and-modularization.md](docs/systemd-units-review-and-modularization.md) | systemd user unit 审查与启动模块化 |
 | [tmux-configuration.md](docs/tmux-configuration.md) | tmux 键位、复制模式、会话操作与 Catppuccin Mocha 主题 |
 | [tmux-keybindings.md](docs/tmux-keybindings.md) | tmux 按键详细说明：操作步骤、后续切换与会话树重命名 |

@@ -870,3 +870,7 @@ doas cp -a /etc/mihomo/config.yaml.bak.<ts> /etc/mihomo/config.yaml && doas syst
    redirect/nft 规则，需要 root 查 `ss -tlnp 'sport = :7890'` 与 `nft list ruleset`。
 5. `rule-providers` 仍带 `proxy: Proxy`：代理全挂时规则集无法刷新（有本地缓存兜底）。
    若想更容易自愈，可去掉 `proxy:` 依赖 `respect-rules`（上游做法）。
+6. **Apple Music 无地区前缀 URL**（`music.apple.com/library/...`）会被 Apple 服务端
+   按美国店渲染，刷新时出现 `/us` → `/cn/home` 跳转并可能报「请刷新页面」。
+   这不是 mihomo 分流问题；书签要写 `/cn/library/...`，详见
+   [apple-music-storefront-redirect.md](apple-music-storefront-redirect.md)。

@@ -592,18 +592,30 @@ rules:
   - DOMAIN-SUFFIX,vidu.com,DIRECT           # 生数科技 Vidu
   - DOMAIN-SUFFIX,minimax.chat,DIRECT       # MiniMax 旧 API 域名（minimaxi.com 之外）
   - RULE-SET,apple_cn_non_ip,DIRECT
-  # ---- Apple Music：锁定中国大陆 storefront ----
-  # Apple 依据「出口 IP 归属地」选择 storefront。music.apple.com 原本被
+  # ---- Apple Music：出口地区固定为中国大陆 ----
+  # 这段规则只解决「出口 IP 归属地」：music.apple.com 及 API 原本被
   # apple_services（含 DOMAIN-SUFFIX,apple.com）收进 Apple_Service 选择器，
-  # 而该选择器的配置默认值是 Proxy；运行时选择存在 cache.db，一旦丢失就会
-  # 回落到 Proxy —— 此时裸访问 music.apple.com/ 会被 302 到 /us/new，CN 账号
-  # 随即报"出现错误，请刷新"。用显式规则绕过选择器，使 storefront 恒定。
+  # 而该选择器运行时会受 cache.db 影响；显式规则让 Apple Music 恒定走 CN
+  # 直连，不依赖选择器状态。CN 账号（itua/账号 storefront 均为 cn）必须这样配。
+  #
+  # 注意：**无地区前缀的 /library/... URL 不归 mihomo 管**。Apple 服务端对
+  # `https://music.apple.com/library/playlist/...` 固定渲染
+  # `"storefront":"us"`（lang=en-US），即使来源 IP 和 itua=CN 也一样；前端随后
+  # 跳到 `/us/library/...`，再被 Apple 按 CN 出口 302 回 `/cn`、`/cn/home`。
+  # 这就是「播一会报错 → 刷新变 /us → 再刷新变 /cn」的来源。请把书签改成
+  # `https://music.apple.com/cn/library/playlist/...`，不要用无 /cn 的旧链接。
   # 该后缀同时覆盖 amp-api.music.apple.com。
   - DOMAIN-SUFFIX,music.apple.com,DIRECT
   # 以下两个后缀同样参与 Apple Music 的区域/授权判定，却被 apple_services 收在
   # Apple_Service 选择器内。一并硬编码直连，使其也不依赖任何选择器状态。
   - DOMAIN-SUFFIX,media.apple.com,DIRECT
   - DOMAIN-SUFFIX,blobstore.apple.com,DIRECT
+  # Apple Music 的 HTTPS/SVCB 记录（type 65）TargetName 是
+  # h3.apis.apple.map.fastly.net；支持 HTTPS RR 的浏览器会直接连该别名。
+  # 不显式直连时它会命中 global_non_ip 的 DOMAIN-SUFFIX,fastly.net → Proxy，
+  # 出现「页面/API 走代理、其余 Apple 流量走直连」的地区撕裂。Apple 专用别名
+  # 钉死直连（不要把 fastly.net 整域直连，GitHub 等仍需要代理）。
+  - DOMAIN-SUFFIX,apple.map.fastly.net,DIRECT
   # Apple 自有网段：store-*.blobstore.apple.com / buy.music.apple.com /
   # mvod.itunes.apple.com 等都在 17/8 内。即使域名没被嗅探出来，也能按 IP
   # 判定为直连，不依赖 sniff 是否成功。

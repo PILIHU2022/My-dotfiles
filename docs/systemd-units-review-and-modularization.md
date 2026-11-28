@@ -151,7 +151,7 @@ systemctl --user stop hyprland-autostart.target   # 停一整组（其余 unit �
 | ~~`gnome-keyring.service`~~ | **已删除**（连同 `default.target.wants/gnome-keyring.service`，该目录已空并移除），改用 KWallet 6 |
 | `ksecretd.service` | **新增**：KWallet 6 的 `org.freedesktop.secrets` 实现，随 `graphical-session.target` 起，`Before=hyprland-autostart.target` |
 | `xdg-desktop-portal/.config/xdg-desktop-portal/portals.conf` | **新增包**：把 portal 的 Secret 接口钉死到 `kwallet`，见 §9.4 |
-| `wl-clip-persist.service` | **新增**：常驻接管 CLIPBOARD + PRIMARY，使关掉 kitty 后仍能直接粘贴，见 §9.5 |
+| `wl-clip-persist.service` | **新增**：常驻接管 CLIPBOARD（**仅 `regular`，不含 PRIMARY**），使关掉 kitty 后仍能直接粘贴，见 §9.5 |
 | `kwalletd6.service` | 合并重复 `After=`，注明启用位置必须与 `WantedBy=` 一致 |
 | `polkit-kde-agent.service.back` | 未动，但已无任何引用 |
 | `.wants/` 全部软链 | 删除绝对软链，重建为**相对**软链（8 条） |
@@ -583,13 +583,13 @@ kill "$(pgrep -x wl-copy)"; sleep 0.5; wl-paste    # Nothing is copied
 
 #### 9.5.2 处理：`wl-clip-persist.service`
 
-`wl-clip-persist`（`wl-clip-persist-git 0.4.0`，已装）常驻后会在**每次选区变更时立刻把数据读进内存、自己重新声明所有权**。于是数据不再依赖原程序存活，kitty 关不关都无所谓，粘贴路径完全不变（还是普通 `Ctrl+V`）。
+`wl-clip-persist`（`wl-clip-persist-git 0.4.0`，已装）常驻后会在**每次 CLIPBOARD 选区变更时立刻把数据读进内存、自己重新声明所有权**。于是数据不再依赖原程序存活，kitty 关不关都无所谓，粘贴路径完全不变（还是普通 `Ctrl+V`）。
 
 ```ini
-ExecStart=/usr/bin/wl-clip-persist --clipboard both --disable-timestamps
+ExecStart=/usr/bin/wl-clip-persist --clipboard regular --disable-timestamps
 ```
 
-* `--clipboard both`：`CLIPBOARD`（`Ctrl+V`）和 `PRIMARY`（鼠标中键选区）都要持久化。kitty 的 `copy_to_clipboard` 默认会同时写这两个。
+* `--clipboard regular`：只持久化 `CLIPBOARD`（`Ctrl+V`）。**不要用 `both` / `primary`**：那会连 `PRIMARY`（鼠标中键选区）一起接管，抢走「选区所有权」，GTK/Qt 程序（Thunar 地址栏、rename 框、Okular 选字等）一收到 `selection_clear` 就立刻取消选中高亮——表现为「选中后高亮一闪就消失、Ctrl+A 全选立刻变回未选中」。Firefox/LibreOffice 自带选区渲染才不受影响。上游确认无解：<https://github.com/Linus789/wl-clip-persist/issues/3>、<https://github.com/Linus789/wl-clip-persist/issues/11>。
 * `--disable-timestamps`：否则 journal 里每次选区变更都刷一条。
 * `ConditionEnvironment=WAYLAND_DISPLAY`：**这次加了**，与 §4.3 里「先不加」的结论不冲突——当时的顾虑是「沙箱里无法确认 manager 环境有没有这个变量，加错了会静默 skip 整组应用」。现在有实测：本 unit 在本会话里 `active (running)`，而 `ConditionEnvironment` 不成立时 systemd 会直接判 `skipped`，说明变量确实在 manager 环境里。其它 5 个 GUI unit 依然维持原状（不加），避免一次动太多。
 * `PartOf=` / `After=` / `Slice=` 与该组其它 unit 一致；启用链放在 `hyprland-autostart.target.wants/`。
@@ -612,3 +612,4 @@ systemctl --user is-active  wl-clip-persist.service          # active
 1. **密码管理器「清空剪贴板」变成「替换为空」**：源程序退出后数据仍在 `wl-clip-persist` 内存里，清除动作随之失效。需要用的话可以额外跑 `cliphist` 并在敏感操作后手动清（`printf '' | wl-copy`）。
 2. **大对象有 3 秒读超时**：默认 `--write-timeout 3000`，超大图片/多 MIME 组合可能在源程序退出前没读完，此时该次选区不接管。可以用 `--selection-size-limit` 或调大超时。
 3. **内存占用**跟随剪贴板对象大小（一张 4K PNG 就是几 MB），属于预期。
+4. **`PRIMARY` 不再跨程序持久化**：用 `regular` 后，选中文字并关掉源程序，鼠标中键就粘不出来了（源程序存活时中键粘贴照常）。这是为换取「选区高亮不闪没」必须接受的天平另一端；若确实需要 PRIMARY 持久化，只能权衡后改回 `both`，但那会重新引发 Thunar/Okular 选区消失。

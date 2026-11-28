@@ -5,7 +5,7 @@ Documentation=https://github.com/Linus789/wl-clip-persist
 #   kitty 进程持有；kitty 一退出，compositor 就把选区作废（wl-paste 直接回
 #   "Nothing is copied"）。所以「从 kitty 复制 -> 关掉 kitty -> 别处粘贴」一定失败，
 #   这不是 kitty 的问题，是 Wayland 的协议模型，X11 时代的「剪贴板天生持久」不再成立。
-# wl-clip-persist 常驻后会立刻接管当前选区（再次声明同一个选区），让内容不再依赖
+# wl-clip-persist 常驻后会立刻接管 CLIPBOARD 选区（再次声明同一个选区），让内容不再依赖
 #   原程序存活；小程序退出后也能正常 Ctrl+V。
 #   单独启停：systemctl --user start|stop|restart wl-clip-persist.service
 #   整组启停：systemctl --user stop hyprland-autostart.target（靠下面的 PartOf=）
@@ -16,9 +16,14 @@ ConditionEnvironment=WAYLAND_DISPLAY
 
 [Service]
 Type=exec
-# both = 同时管 CLIPBOARD（Ctrl+V）和 PRIMARY（鼠标中键选区），两个都得持久化。
+# 只持久化 regular（CLIPBOARD，Ctrl+V）。【不要用 both / primary】
+# 原因：接管 PRIMARY 会抢走「选区所有权」，GTK/Qt 程序（Thunar 地址栏、rename 框、
+#   Okular 选字等）一旦收到 selection_clear 就立即取消选中高亮 —— 表现为"选中后
+#   高亮一闪就消失、Ctrl+A 全选立刻变回未选中"。Firefox/LibreOffice 自带选区渲染才不受影响。
+#   上游确认无解：https://github.com/Linus789/wl-clip-persist/issues/3
+#                https://github.com/Linus789/wl-clip-persist/issues/11
 # 关掉时间戳日志，避免 journal 里每秒一条 selection 变更。
-ExecStart=/usr/bin/wl-clip-persist --clipboard both --disable-timestamps
+ExecStart=/usr/bin/wl-clip-persist --clipboard regular --disable-timestamps
 Restart=on-failure
 RestartSec=3
 # 与 uwsm 对 XDG autostart 应用的处理保持一致：放进随会话回收的图形应用 slice。
